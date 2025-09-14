@@ -11,7 +11,7 @@ export const MedicationConfiguration = () => {
     ]);
 
     const onCreate = useCallback(() => {
-
+        console.log(11)
     }, [])
 
     return (
@@ -35,7 +35,11 @@ export const MedicationConfiguration = () => {
                             Доступны комментарии
                         </List.Item>
                         <List.Item>
-                            <Button>Принять</Button>
+                            <Button
+                                onPress={onCreate}
+                            >
+                                Принять
+                            </Button>
                         </List.Item>
                     </List>
                 </Card.Body>

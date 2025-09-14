@@ -9,6 +9,7 @@ import {Initialize} from "./initialize.component.tsx";
 import {User} from "./realms/user.ts";
 import {Kick} from "./realms/kick.ts";
 import {MedicationConfiguration} from "./realms/medication-configuration.ts";
+import {Medication} from "./realms/medication.ts";
 
 const style = StyleSheet.create({
     container: {
@@ -28,6 +29,7 @@ export const Application = () => {
                 User,
                 Kick,
                 MedicationConfiguration,
+                Medication
             ]}
         >
             <Provider locale={ruRu}>

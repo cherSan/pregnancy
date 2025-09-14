@@ -10,6 +10,7 @@ export class Medication extends Realm.Object {
             realTime: 'date?',
             planingTime: 'date?',
             comment: 'string?',
+            hasComment: 'bool',
         },
     };
 
@@ -18,4 +19,5 @@ export class Medication extends Realm.Object {
     planingTime?: Date;
     realTime?: Date;
     comment?: string;
+    hasComment: boolean = false;
 }

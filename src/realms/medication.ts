@@ -8,7 +8,7 @@ export class Medication extends Realm.Object {
             _id: 'objectId',
             name: 'string',
             realTime: 'date?',
-            planingTime: 'date?',
+            planingTime: 'date',
             comment: 'string?',
             hasComment: 'bool',
         },
@@ -16,7 +16,7 @@ export class Medication extends Realm.Object {
 
     _id!: Realm.BSON.ObjectId;
     name!: string;
-    planingTime?: Date;
+    planingTime!: Date;
     realTime?: Date;
     comment?: string;
     hasComment: boolean = false;

@@ -116,7 +116,7 @@ export const MedicationConfiguration = () => {
                                     ? <List.Item>No Data</List.Item>
                                     :  medicationConfiguration.map((mconfig) => (
                                         <SwipeAction
-                                            key={`${mconfig.name}_${mconfig.planingTimeHours}:${mconfig.planingTimeMinutes}`}
+                                            key={mconfig._id.toString()}
                                             right={[
                                                 {
                                                     text: 'Remove',

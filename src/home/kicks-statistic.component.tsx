@@ -4,9 +4,13 @@ import {useQuery, useRealm} from "@realm/react";
 import {Kick} from "../realms/kick.ts";
 import {useCallback, useMemo} from "react";
 import {BSON} from "realm";
+import {useReactive} from "ahooks";
 
 export const KicksStatistic = () => {
     const navigation = useNavigation();
+    const data = useReactive({
+        comment: ''
+    })
     const realm = useRealm();
     const kicks = useQuery(Kick);
     const lastKick = useMemo(
@@ -56,11 +60,13 @@ export const KicksStatistic = () => {
                 Kick,
                 {
                     _id: new BSON.ObjectId(),
-                    datetime: new Date()
+                    datetime: new Date(),
+                    comment: data.comment,
                 }
             );
         });
-    }, [realm])
+        data.comment = '';
+    }, [data, realm])
 
     return (
         <Card>
@@ -88,7 +94,15 @@ export const KicksStatistic = () => {
                         <Text>За последние 24 часа: {recent24Kicks?.length || 'Не известно'}</Text>
                     </List.Item>
                     <List.Item>
-                        <Input placeholder={'Комментарий'} />
+                        <Input
+                            value={data.comment}
+                            placeholder={'Комментарий'}
+                            onChange={e => {
+                                data.comment = (e.target as any).value
+                            }}
+                        />
+                    </List.Item>
+                    <List.Item>
                         <Button
                             onPress={registerKick}
                         >
@@ -98,7 +112,7 @@ export const KicksStatistic = () => {
                 </List>
             </Card.Body>
             <Card.Footer
-                content={(
+                content={[
                     <Button
                         onPress={() => {
                             navigation.navigate('Kicks')
@@ -106,7 +120,7 @@ export const KicksStatistic = () => {
                     >
                         История
                     </Button>
-                )}
+                ]}
             />
         </Card>
     )

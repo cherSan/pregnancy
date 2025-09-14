@@ -1,5 +1,5 @@
 import {useQuery, useRealm} from "@realm/react";
-import {FC, ReactNode, useEffect, useMemo, useState} from "react";
+import {FC, ReactNode, useEffect, useState} from "react";
 import {BSON} from "realm";
 import {User} from "./realms/user.ts";
 import {MedicationConfiguration} from "./realms/medication-configuration.ts";
@@ -71,5 +71,7 @@ export const Initialize: FC<Props> = ({ children }) => {
         setInitialized(true)
     }, [users, realm, setInitialized, medicationConfiguration, medication]);
 
-    return initialized ? children : null;
+    return initialized
+        ? children
+        : null;
 }

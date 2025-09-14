@@ -1,5 +1,5 @@
 import {useQuery} from "@realm/react";
-import {List} from "@ant-design/react-native";
+import {List, Text} from "@ant-design/react-native";
 import {ScrollView} from "react-native";
 import {Kick} from "../realms/kick.ts";
 
@@ -15,8 +15,10 @@ export const Kicks = () => {
             <List>
                 {
                     kicks.map((kick: Kick) => (
-                        <List.Item key={kick?.datetime?.getTime()}>
-                            {kick?.datetime?.toLocaleString()}
+                        <List.Item
+                            key={kick._id.toString()}>
+                            <Text>{kick?.datetime?.toLocaleString()}</Text>
+                            <List.Item.Brief>{kick.comment}</List.Item.Brief>
                         </List.Item>
                     ))
                 }

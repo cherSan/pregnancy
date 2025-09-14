@@ -13,7 +13,13 @@ export const RootNavigation = () => {
                     headerShown: false,
                 }}
             >
-                <Navigator.Screen name={'Home'} component={HomeNavigation} />
+                <Navigator.Screen
+                    name={'Home'}
+                    options={{
+                        title: 'Главная'
+                    }}
+                    component={HomeNavigation}
+                />
                 <Navigator.Screen name={'Settings'} component={Settings} />
             </Navigator.Navigator>
         </NavigationContainer>

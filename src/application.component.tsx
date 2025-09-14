@@ -35,12 +35,12 @@ export const Application = () => {
             <Provider locale={ruRu}>
                 <GestureHandlerRootView style={style.root}>
                     <SafeAreaProvider>
-                        <Initialize>
-                            <StatusBar barStyle={'dark-content'} />
-                            <SafeAreaView style={style.container}>
+                        <StatusBar barStyle={'dark-content'} />
+                        <SafeAreaView style={style.container}>
+                            <Initialize>
                                 <RootNavigation />
-                            </SafeAreaView>
-                        </Initialize>
+                            </Initialize>
+                        </SafeAreaView>
                     </SafeAreaProvider>
                 </GestureHandlerRootView>
             </Provider>

@@ -1,16 +1,16 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import {Home} from "./home.component.tsx";
-import {KicksHistory} from "./kicks-history.component.tsx";
 import {HeaderBackground} from "../components/header-background.tsx";
+import {NotesInformation} from "./notes-information.component.tsx";
+import {NotesHistory} from "./notes-history.component.tsx";
 
-export type HomeStackParamList = {
-    HomeInformation: undefined;
-    HomeKicks: undefined;
+export type NotesStackParamList = {
+    NotesInformation: undefined;
+    NotesHistory: undefined;
 };
 
-const Navigator = createNativeStackNavigator<HomeStackParamList>();
+export const Navigator = createNativeStackNavigator<NotesStackParamList>();
 
-export const HomeNavigation = () => {
+export const NotesNavigation = () => {
     return (
         <Navigator.Navigator
             screenOptions={{
@@ -20,17 +20,17 @@ export const HomeNavigation = () => {
             }}
         >
             <Navigator.Screen
-                name={'HomeInformation'}
-                component={Home}
+                name={'NotesInformation'}
+                component={NotesInformation}
                 options={{
-                    headerTitle: 'Информация',
+                    title: "Заметки",
                 }}
             />
             <Navigator.Screen
-                name={'HomeKicks'}
-                component={KicksHistory}
+                name={'NotesHistory'}
+                component={NotesHistory}
                 options={{
-                    headerTitle: 'История толчков',
+                    title: "История заметок",
                 }}
             />
         </Navigator.Navigator>

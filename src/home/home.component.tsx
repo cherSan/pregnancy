@@ -1,6 +1,7 @@
 import {ScrollView} from "react-native";
 import {WhiteSpace, WingBlank} from "@ant-design/react-native";
-import {KicksStatistic} from "./kicks-statistic.component.tsx";
+import {KicksInformation} from "./kicks-information.component";
+import {KickButton} from "./kick-button";
 
 export const Home = () => {
     return (
@@ -11,7 +12,9 @@ export const Home = () => {
         >
             <WingBlank size="lg">
                 <WhiteSpace />
-                <KicksStatistic />
+                <KickButton />
+                <WhiteSpace />
+                <KicksInformation />
                 <WhiteSpace />
             </WingBlank>
         </ScrollView>

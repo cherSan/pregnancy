@@ -1,9 +1,10 @@
 import {NavigationContainer} from "@react-navigation/native";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
+import {Icon} from "@ant-design/react-native";
 import {Settings} from "./settings.component.tsx";
 import {HomeNavigation} from "./home/navigation.component.tsx";
 import {MedicationNavigation} from "./medications/navigation.component.tsx";
-import {Icon} from "@ant-design/react-native";
+import {NotesNavigation} from "./notes/navigation.component.tsx";
 
 const Navigator = createBottomTabNavigator();
 
@@ -39,7 +40,7 @@ export const RootNavigation = () => {
                         title: 'Заметки',
                         tabBarIcon: () => <Icon name="frown" />
                     }}
-                    component={MedicationNavigation}
+                    component={NotesNavigation}
                 />
                 <Navigator.Screen
                     name={'Hospital'}

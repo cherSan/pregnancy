@@ -3,7 +3,7 @@ import {List, Text} from "@ant-design/react-native";
 import {ScrollView} from "react-native";
 import {Kick} from "../realms/kick.ts";
 
-export const Kicks = () => {
+export const KicksHistory = () => {
     const kicks = useQuery(Kick).sorted('datetime', true);
 
     return (

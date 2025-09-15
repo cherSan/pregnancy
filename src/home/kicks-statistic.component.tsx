@@ -1,4 +1,4 @@
-import {Button, Card, Input, List, Text} from "@ant-design/react-native";
+import {Button, Card, Icon, Input, List, Text} from "@ant-design/react-native";
 import {useNavigation} from "@react-navigation/native";
 import {useQuery, useRealm} from "@realm/react";
 import {Kick} from "../realms/kick.ts";

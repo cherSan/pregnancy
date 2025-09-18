@@ -8,10 +8,12 @@ export class User extends Realm.Object {
             _id: 'objectId',
             name: 'string',
             dob: 'date?',
+            eddate: 'date?',
         },
     };
 
     _id!: Realm.BSON.ObjectId;
     name!: string;
     dob?: Date;
+    eddate?: Date;
 }

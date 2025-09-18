@@ -11,6 +11,7 @@ import {Kick} from "./realms/kick.ts";
 import {MedicationConfiguration} from "./realms/medication-configuration.ts";
 import {Medication} from "./realms/medication.ts";
 import {Notes} from "./realms/notes.ts";
+import {Hospital} from "./realms/hospital.ts";
 
 const style = StyleSheet.create({
     container: {
@@ -26,12 +27,24 @@ const style = StyleSheet.create({
 export const Application = () => {
     return (
         <RealmProvider
+            schemaVersion={4}
+            onMigration={(oldRealm, newRealm) => {
+                if (oldRealm.schemaVersion < 3) {
+                    const oldUsers = oldRealm.objects('User');
+                    const newUsers = newRealm.objects('User');
+                    for (let i = 0; i < oldUsers.length; i++) {
+                        newUsers[i].eddate = null;
+                    }
+                }
+                if (oldRealm.schemaVersion < 4) {}
+            }}
             schema={[
                 User,
                 Kick,
                 MedicationConfiguration,
                 Medication,
                 Notes,
+                Hospital,
             ]}
         >
             <Provider locale={ruRu}>

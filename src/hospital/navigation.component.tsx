@@ -1,11 +1,16 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {Index} from "./index.component.tsx";
-import {History} from "./history.component.tsx";
 import {HeaderBackground} from "../components/header-background.tsx";
+import {AddAppointment} from "./add-appointment.component.tsx";
+import {HeaderActions} from "../components/header-action.tsx";
+import {Appointment} from "./appointment.component.tsx.tsx";
 
 export type StackParamList = {
     HospitalIndex: undefined;
-    HospitalHistory: undefined;
+    HospitalAppointmentAdd: undefined;
+    HospitalAppointment: {
+        id: string;
+    };
 };
 
 const Navigator = createNativeStackNavigator<StackParamList>();
@@ -22,15 +27,30 @@ export const HospitalNavigation = () => {
             <Navigator.Screen
                 name={'HospitalIndex'}
                 component={Index}
-                options={{
+                options={({navigation}) => ({
                     headerTitle: 'Госпиталь',
+                    headerRight: () => (
+                        <HeaderActions>
+                            <HeaderActions.Action
+                                onClick={() => navigation.navigate('HospitalAppointmentAdd')}
+                                icon={'plus'}
+                            />
+                        </HeaderActions>
+                    )
+                })}
+            />
+            <Navigator.Screen
+                name={'HospitalAppointmentAdd'}
+                component={AddAppointment}
+                options={{
+                    headerTitle: 'Записаться',
                 }}
             />
             <Navigator.Screen
-                name={'HospitalHistory'}
-                component={History}
+                name={'HospitalAppointment'}
+                component={Appointment}
                 options={{
-                    headerTitle: 'Записи',
+                    headerTitle: 'Запись',
                 }}
             />
         </Navigator.Navigator>

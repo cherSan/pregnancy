@@ -1,18 +1,14 @@
 import {Icon, List, Text, View} from "@ant-design/react-native";
 import {useQuery} from "@realm/react";
-import {ScrollView} from "react-native";
 import {Notes} from "../realms/notes.ts";
+import {ScrollView} from "../components/scroll-view.component.tsx";
 
 export const NotesHistory = () => {
     const notes = useQuery(Notes)
         .sorted('datetime', true);
 
     return (
-        <ScrollView
-            automaticallyAdjustContentInsets={false}
-            showsHorizontalScrollIndicator={false}
-            showsVerticalScrollIndicator={false}
-        >
+        <ScrollView>
             <List>
                 {
                     notes.map((note: Notes) => (

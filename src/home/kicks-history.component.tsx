@@ -1,17 +1,13 @@
 import {useQuery} from "@realm/react";
 import {List, Text} from "@ant-design/react-native";
-import {ScrollView} from "react-native";
 import {Kick} from "../realms/kick.ts";
+import {ScrollView} from "../components/scroll-view.component.tsx";
 
 export const KicksHistory = () => {
     const kicks = useQuery(Kick).sorted('datetime', true);
 
     return (
-        <ScrollView
-            automaticallyAdjustContentInsets={false}
-            showsHorizontalScrollIndicator={false}
-            showsVerticalScrollIndicator={false}
-        >
+        <ScrollView>
             <List>
                 {
                     kicks.map((kick: Kick) => (

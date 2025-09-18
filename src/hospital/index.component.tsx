@@ -6,20 +6,16 @@ import {
     WingBlank
 } from "@ant-design/react-native";
 import {FC} from "react";
-import {ScrollView} from "react-native";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {StackParamList} from './navigation.component.tsx';
+import {ScrollView} from "../components/scroll-view.component.tsx";
 
 type Props = NativeStackScreenProps<StackParamList, 'HospitalIndex'>;
 
 export const Index: FC<Props> = ({ navigation }) => {
 
     return (
-        <ScrollView
-            automaticallyAdjustContentInsets={false}
-            showsHorizontalScrollIndicator={false}
-            showsVerticalScrollIndicator={false}
-        >
+        <ScrollView>
             <WingBlank size="lg">
                 <WhiteSpace />
                 <List

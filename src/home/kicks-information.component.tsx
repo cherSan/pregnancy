@@ -1,18 +1,9 @@
 import {useMemo} from "react";
-import {NativeStackNavigationProp} from "@react-navigation/native-stack";
-import {Button, List, Text} from "@ant-design/react-native";
+import {List, Text} from "@ant-design/react-native";
 import {useQuery} from "@realm/react";
 import {Kick} from "../realms/kick.ts";
-import {HomeStackParamList} from "./navigation.component.tsx";
-import {useNavigation} from "@react-navigation/native";
-
-type NavigationProp = NativeStackNavigationProp<
-    HomeStackParamList,
-    'HomeInformation'
->;
 
 export const KicksInformation = () => {
-    const navigation = useNavigation<NavigationProp>();
 
     const kicks = useQuery(Kick);
     const lastKick = useMemo(
@@ -57,18 +48,7 @@ export const KicksInformation = () => {
     );
 
     return (
-        <List
-            renderFooter={
-                <Button
-                    type={'ghost'}
-                    onPress={() => {
-                        navigation.navigate('HomeKicks')
-                    }}
-                >
-                    История толчков
-                </Button>
-            }
-        >
+        <List>
             <List.Item
                 extra={<Text>{kicks.length || 0}</Text>}
             >

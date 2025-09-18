@@ -16,6 +16,7 @@ const style = StyleSheet.create({
     container: {
         flex: 1,
         gap: 16,
+        backgroundColor: '#FADADD',
     },
     root: {
         flex: 1,
@@ -25,7 +26,6 @@ const style = StyleSheet.create({
 export const Application = () => {
     return (
         <RealmProvider
-            deleteRealmIfMigrationNeeded
             schema={[
                 User,
                 Kick,

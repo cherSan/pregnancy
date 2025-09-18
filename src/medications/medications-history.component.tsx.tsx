@@ -1,7 +1,7 @@
 import {useQuery} from "@realm/react";
-import {List, Text, View, WhiteSpace, WingBlank} from "@ant-design/react-native";
-import {ScrollView} from "react-native";
+import {List, Text, View} from "@ant-design/react-native";
 import {Medication} from "../realms/medication.ts";
+import {ScrollView} from "../components/scroll-view.component.tsx";
 
 export const MedicationsHistory = () => {
     const medications = useQuery(Medication)
@@ -9,11 +9,7 @@ export const MedicationsHistory = () => {
         .sorted('realTime', true);
 
     return (
-        <ScrollView
-            automaticallyAdjustContentInsets={false}
-            showsHorizontalScrollIndicator={false}
-            showsVerticalScrollIndicator={false}
-        >
+        <ScrollView>
             <List>
                 {
                     medications.map((medication: Medication) => (

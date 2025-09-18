@@ -1,5 +1,5 @@
 import {
-    Button,
+    Button, Icon,
     Input,
     List,
     Text,
@@ -12,14 +12,14 @@ import {useQuery, useRealm} from "@realm/react";
 import {Medication as MP} from "../realms/medication.ts";
 import {useReactive} from "ahooks";
 import {BSON} from "realm";
-import {ScrollView} from "react-native";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {Medication} from "./medication.component.tsx";
 import {MedicationStackParamList} from "./navigation.component.tsx";
+import {ScrollView} from "../components/scroll-view.component.tsx";
 
 type Props = NativeStackScreenProps<MedicationStackParamList, 'MedicationsInformation'>;
 
-export const Medications: FC<Props> = ({ navigation }) => {
+export const Medications: FC<Props> = () => {
     const [fromDate, toDate] = useMemo(() => {
         const now = new Date();
         const from = new Date(
@@ -49,6 +49,7 @@ export const Medications: FC<Props> = ({ navigation }) => {
         .sorted('planingTime', false);
 
     const takeExtra = useCallback(() => {
+        if (!extraMedications.name) return;
         realm.write(() => {
             realm.create<MP>(
                 MP,
@@ -67,81 +68,54 @@ export const Medications: FC<Props> = ({ navigation }) => {
     }, [extraMedications, realm]);
 
     return (
-        <ScrollView
-            automaticallyAdjustContentInsets={false}
-            showsHorizontalScrollIndicator={false}
-            showsVerticalScrollIndicator={false}
-        >
-            <WingBlank size="lg">
-                <WhiteSpace />
-                <List
-                    renderFooter={
-                        <View>
-                            <Button
-                                type={'primary'}
-                                onPress={() => {
-                                    navigation.navigate('MedicationConfiguration')
-                                }}
-                            >
-                                Настройка
-                            </Button>
-                            <Button
-                                type={'ghost'}
-                                onPress={() => {
-                                    navigation.navigate('MedicationsHistory')
-                                }}
-                            >
-                                История Приема Лекарств
-                            </Button>
-                        </View>
-                    }
+        <ScrollView>
+            <List>
+                {
+                    medication?.length
+                        ? medication.map((med) => (
+                            <Medication
+                                key={med._id.toString()}
+                                medication={med}
+                            />
+                        ))
+                        : (
+                            <List.Item>
+                                <Text>Нет лекарств</Text>
+                            </List.Item>
+                        )
+                }
+            </List>
+            <WhiteSpace />
+            <List>
+                <List.Item>
+                    <Input
+                        placeholder={'Дополнительное лекарство'}
+                        value={`${extraMedications.name}`}
+                        onChange={e => {
+                            extraMedications.name = (e.target as any).value
+                        }}
+                    />
+                </List.Item>
+                <List.Item>
+                    <Input
+                        placeholder={'Комментарий'}
+                        value={`${extraMedications.comment}`}
+                        onChange={e => {
+                            extraMedications.comment = (e.target as any).value
+                        }}
+                    />
+                </List.Item>
+                <List.Item
+                    disabled={true}
+                    arrow={'horizontal'}
+                    onPress={takeExtra}
+                    thumb={<Icon name="apple" />}
                 >
-                    {
-                        medication?.length
-                            ? medication.map((med) => (
-                                <Medication
-                                    key={med._id.toString()}
-                                    medication={med}
-                                />
-                            ))
-                            : (
-                                <List.Item>
-                                    <Text>Нет лекарств</Text>
-                                </List.Item>
-                            )
-                    }
-                </List>
-                <WhiteSpace />
-                <List
-                    renderFooter={
-                        <Button
-                            type={'primary'}
-                            onPress={takeExtra}
-                        >
-                            Принять
-                        </Button>
-                    }
-                >
-                    <List.Item>
-                        <Input
-                            placeholder={'Дополнительное лекарство'}
-                            value={`${extraMedications.name}`}
-                            onChange={e => {
-                                extraMedications.name = (e.target as any).value
-                            }}
-                        />
-                    </List.Item>
-                    <List.Item>
-                        <Input
-                            placeholder={'Комментарий'}
-                            value={`${extraMedications.comment}`}
-                            onChange={e => {
-                                extraMedications.comment = (e.target as any).value
-                            }}
-                        />
-                    </List.Item>
-                </List>
-            </WingBlank>
+                    <Text>
+                        Принять
+                    </Text>
+                </List.Item>
+            </List>
         </ScrollView>
     )
 }

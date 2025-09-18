@@ -1,5 +1,4 @@
 import {Button, Input, List, View, WhiteSpace, WingBlank} from "@ant-design/react-native";
-import {ScrollView} from "react-native";
 import {useNavigation} from "@react-navigation/native";
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 import {useReactive} from "ahooks";
@@ -8,6 +7,7 @@ import {BSON} from "realm";
 import {useRealm} from "@realm/react";
 import {NotesStackParamList} from "./navigation.component.tsx";
 import {Notes} from "../realms/notes.ts";
+import { ScrollView } from "../components/scroll-view.component.tsx";
 
 type NavigationProp = NativeStackNavigationProp<
     NotesStackParamList,
@@ -41,12 +41,7 @@ export const NotesInformation = () => {
     }, [realm, data]);
 
     return (
-        <ScrollView
-            automaticallyAdjustContentInsets={false}
-            showsHorizontalScrollIndicator={false}
-            showsVerticalScrollIndicator={false}
-            keyboardShouldPersistTaps={true}
-        >
+        <ScrollView>
             <WingBlank size="lg">
                 <WhiteSpace />
                 <List

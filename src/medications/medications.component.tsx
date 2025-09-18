@@ -1,6 +1,5 @@
 import {
     Button,
-    Icon,
     Input,
     Text,
     WhiteSpace,

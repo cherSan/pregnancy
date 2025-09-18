@@ -16,7 +16,7 @@ const style = StyleSheet.create({
     container: {
         flex: 1,
         gap: 16,
-        backgroundColor: '#FADADD',
+        backgroundColor: '#eee',
     },
     root: {
         flex: 1,

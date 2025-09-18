@@ -2,6 +2,7 @@ import {Icon, List, Text, View} from "@ant-design/react-native";
 import {useQuery} from "@realm/react";
 import {Notes} from "../realms/notes.ts";
 import {ScrollView} from "../components/scroll-view.component.tsx";
+import {StyleSheet} from "react-native";
 
 export const NotesHistory = () => {
     const notes = useQuery(Notes)
@@ -14,23 +15,24 @@ export const NotesHistory = () => {
                     notes.map((note: Notes) => (
                         <List.Item
                             multipleLine={true}
+                            wrap={true}
                             key={
                                 note._id.toString()
                             }
-                            thumb={
-                                note.important
-                                    ? <Icon name="alert" color={'red'} />
-                                    : null
-                            }
                         >
                             <View>
-                                <View>
-                                    <Text>
+                                <View style={styles.header}>
+                                    {
+                                        note.important
+                                            ? <Icon name="alert" color={'red'} />
+                                            : null
+                                    }
+                                    <Text style={styles.title}>
                                         { note?.datetime?.toLocaleString() }
                                     </Text>
                                 </View>
                                 <View>
-                                    <Text style={{ fontWeight: '900' }}>
+                                    <Text style={styles.title}>
                                         { note.title || 'No Title' }
                                     </Text>
                                 </View>
@@ -38,11 +40,9 @@ export const NotesHistory = () => {
                             {
                                 note.important
                                     ? (
-                                        <List.Item.Brief>
-                                            <Text style={{ color: 'red' }}>
-                                                {note.important}
-                                            </Text>
-                                        </List.Item.Brief>
+                                        <Text style={styles.import}>
+                                            {note.important}
+                                        </Text>
                                     )
                                     : null
                             }
@@ -56,3 +56,20 @@ export const NotesHistory = () => {
         </ScrollView>
     )
 }
+
+const styles = StyleSheet.create({
+    header: {
+        flex: 1,
+        elevation: 1,
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+    },
+    title: {
+        fontWeight: '900'
+    },
+    import: {
+        color: '#5d88d6'
+    }
+});

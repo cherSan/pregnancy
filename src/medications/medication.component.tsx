@@ -1,7 +1,8 @@
 import {FC, useCallback, useMemo} from "react";
-import {List, Modal, SwipeAction, Text} from "@ant-design/react-native";
+import {Modal, SwipeAction, Text} from "@ant-design/react-native";
 import {useRealm} from "@realm/react";
 import {Medication as MP} from "../realms/medication.ts";
+import { List } from "../components/list.component.tsx";
 
 type Props = {
     medication: MP;

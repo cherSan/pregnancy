@@ -1,9 +1,8 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Home} from "./home.component.tsx";
 import {KicksHistory} from "./kicks-history.component.tsx";
 import {HeaderBackground} from "../components/header-background.tsx";
-import {StyleSheet, TouchableOpacity} from "react-native";
-import {Icon} from "@ant-design/react-native";
+import {HeaderActions} from "../components/header-action.tsx";
 
 export type HomeStackParamList = {
     HomeInformation: undefined;
@@ -24,14 +23,15 @@ export const HomeNavigation = () => {
             <Navigator.Screen
                 name={'HomeInformation'}
                 component={Home}
-                options={({ navigation }) => ({
+                options={({navigation}) => ({
                     headerTitle: 'Информация',
                     headerRight: () => (
-                        <TouchableOpacity
-                            onPress={() => navigation.navigate('HomeKicks')}
-                        >
-                            <Icon name="history" style={styles.button} />
-                        </TouchableOpacity>
+                        <HeaderActions>
+                            <HeaderActions.Action
+                                onClick={() => navigation.navigate('HomeKicks')}
+                                icon={'history'}
+                            />
+                        </HeaderActions>
                     ),
                 })}
             />
@@ -46,8 +46,3 @@ export const HomeNavigation = () => {
     )
 }
 
-const styles = StyleSheet.create({
-    button: {
-        color: '#E63946',
-    }
-});

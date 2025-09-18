@@ -1,9 +1,18 @@
-import {ImageBackground, StyleSheet} from "react-native";
+import LinearGradient from "react-native-linear-gradient";
+import {StyleSheet} from "react-native";
 
 export const HeaderBackground = () => (
-    <ImageBackground
-        source={require("../../assets/images/home-header-gradient.jpg")}
-        style={StyleSheet.absoluteFill}
-        resizeMode="cover"
+    <LinearGradient
+        colors={['#5d88d6', '#cce0f8']}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.background}
     />
 );
+
+const styles = StyleSheet.create({
+    background: {
+        flex: 1,
+        elevation: 5,
+    },
+});

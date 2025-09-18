@@ -1,7 +1,8 @@
 import {useMemo} from "react";
-import {List, Text} from "@ant-design/react-native";
+import {Text} from "@ant-design/react-native";
 import {useQuery} from "@realm/react";
 import {Kick} from "../realms/kick.ts";
+import {List} from "../components/list.component.tsx";
 
 export const KicksInformation = () => {
 

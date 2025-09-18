@@ -1,7 +1,8 @@
 import {useQuery} from "@realm/react";
-import {List, Text} from "@ant-design/react-native";
+import {Text} from "@ant-design/react-native";
 import {Kick} from "../realms/kick.ts";
 import {ScrollView} from "../components/scroll-view.component.tsx";
+import {List} from "../components/list.component.tsx";
 
 export const KicksHistory = () => {
     const kicks = useQuery(Kick).sorted('datetime', true);

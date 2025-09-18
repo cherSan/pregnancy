@@ -1,10 +1,11 @@
-import {StyleSheet, TouchableOpacity} from "react-native";
-import {Button, Icon, Input, List, Modal, Switch, View} from "@ant-design/react-native";
+import {StyleSheet} from "react-native";
+import {Button, Input, List, Modal, Switch} from "@ant-design/react-native";
 import {useReactive} from "ahooks";
 import {useCallback, useState} from "react";
 import {BSON} from "realm";
 import {useRealm} from "@realm/react";
 import {MedicationConfiguration as MCC} from "../realms/medication-configuration.ts";
+import {HeaderActions} from "../components/header-action.tsx";
 
 export const AddMedication = () => {
     const realm = useRealm();
@@ -53,19 +54,19 @@ export const AddMedication = () => {
 
     return (
         <>
-            <View style={styles.headerActions}>
-                <TouchableOpacity
-                    onPress={() => toggleModal(true)}
-                >
-                    <Icon name="plus" style={styles.button} />
-                </TouchableOpacity>
-            </View>
+            <HeaderActions>
+                <HeaderActions.Action
+                    onClick={() => toggleModal(true)}
+                    icon={'plus'}
+                />
+            </HeaderActions>
             <Modal
                 popup
-                modalType={'portal'}
+                modalType={'modal'}
                 visible={createModelVisibility}
                 animationType="slide-up"
                 closable={true}
+                maskClosable={true}
                 onClose={() => toggleModal(false)}
             >
                 <List>
@@ -97,15 +98,13 @@ export const AddMedication = () => {
                     >
                         Доступны комментарии
                     </List.Item>
-                </List>
-                <View style={styles.headerActionsB}>
                     <Button type={'primary'} onPress={onCreate} style={styles.aButton}>
-                        Create
+                        Запланировать
                     </Button>
-                    <Button type={'warning'} style={styles.aButton} onPress={() => toggleModal(false)}>
-                        Close
+                    <Button type={'ghost'} style={styles.aButton} onPress={() => toggleModal(false)}>
+                        Закрыть
                     </Button>
-                </View>
+                </List>
             </Modal>
         </>
     )
@@ -116,7 +115,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     button: {
-        color: '#E63946',
+        color: '#5d88d6',
     },
     headerActions: {
         display: 'flex',

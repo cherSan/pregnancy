@@ -9,7 +9,7 @@ const style = StyleSheet.create({
     container: {
         flex: 1,
         gap: 16,
-        backgroundColor: '#FADADD',
+        backgroundColor: '#cce0f8',
     }
 });
 

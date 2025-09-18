@@ -1,11 +1,9 @@
 import {
-    Button, Icon,
+    Button,
+    Icon,
     Input,
-    List,
     Text,
-    View,
     WhiteSpace,
-    WingBlank
 } from "@ant-design/react-native";
 import {FC, useCallback, useMemo} from "react";
 import {useQuery, useRealm} from "@realm/react";
@@ -16,6 +14,7 @@ import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {Medication} from "./medication.component.tsx";
 import {MedicationStackParamList} from "./navigation.component.tsx";
 import {ScrollView} from "../components/scroll-view.component.tsx";
+import {List} from "../components/list.component.tsx";
 
 type Props = NativeStackScreenProps<MedicationStackParamList, 'MedicationsInformation'>;
 
@@ -105,16 +104,13 @@ export const Medications: FC<Props> = () => {
                         }}
                     />
                 </List.Item>
-                <List.Item
-                    disabled={true}
-                    arrow={'horizontal'}
+                <Button
+                    role={'list'}
+                    type={'primary'}
                     onPress={takeExtra}
-                    thumb={<Icon name="apple" />}
                 >
-                    <Text>
-                        Принять
-                    </Text>
-                </List.Item>
+                    Принять
+                </Button>
             </List>
         </ScrollView>
     )

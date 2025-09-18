@@ -1,8 +1,9 @@
-import {List, SwipeAction} from "@ant-design/react-native";
+import {SwipeAction} from "@ant-design/react-native";
 import {useQuery, useRealm} from "@realm/react";
 import {useCallback} from "react";
 import {MedicationConfiguration as MCC} from "../realms/medication-configuration.ts";
 import {ScrollView} from "../components/scroll-view.component.tsx";
+import {List} from "../components/list.component.tsx";
 
 function formatTime(hours: number, minutes: number) {
     const hh = hours.toString().padStart(2, '0');

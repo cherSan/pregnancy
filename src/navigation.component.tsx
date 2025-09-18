@@ -5,6 +5,7 @@ import {Settings} from "./settings.component.tsx";
 import {HomeNavigation} from "./home/navigation.component.tsx";
 import {MedicationNavigation} from "./medications/navigation.component.tsx";
 import {NotesNavigation} from "./notes/navigation.component.tsx";
+import {HospitalNavigation} from "./hospital/navigation.component.tsx";
 
 const Navigator = createBottomTabNavigator();
 
@@ -48,7 +49,7 @@ export const RootNavigation = () => {
                         title: 'Госпиталь',
                         tabBarIcon: () => <Icon name="home" />
                     }}
-                    component={MedicationNavigation}
+                    component={HospitalNavigation}
                 />
                 <Navigator.Screen
                     name={'Settings'}

@@ -25,7 +25,7 @@ export const Medication: FC<Props> = ({
                         medication.comment = comment;
                     });
                 },
-                'default',
+                'text',
                 '',
                 ['comment'],
             )
@@ -34,12 +34,11 @@ export const Medication: FC<Props> = ({
 
     return (
         <SwipeAction
-            key={medication._id.toString()}
             right={
                 !medication.realTime
                     ? [
                         {
-                            text: 'Done',
+                            text: 'Принять',
                             onPress: done,
                             backgroundColor: 'blue',
                             color: 'white',

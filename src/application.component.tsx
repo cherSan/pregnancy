@@ -10,6 +10,7 @@ import {User} from "./realms/user.ts";
 import {Kick} from "./realms/kick.ts";
 import {MedicationConfiguration} from "./realms/medication-configuration.ts";
 import {Medication} from "./realms/medication.ts";
+import {Notes} from "./realms/notes.ts";
 
 const style = StyleSheet.create({
     container: {
@@ -29,7 +30,8 @@ export const Application = () => {
                 User,
                 Kick,
                 MedicationConfiguration,
-                Medication
+                Medication,
+                Notes,
             ]}
         >
             <Provider locale={ruRu}>

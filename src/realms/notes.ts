@@ -7,15 +7,15 @@ export class Notes extends Realm.Object {
         properties: {
             _id: 'objectId',
             datetime: 'date',
-            title: 'string',
-            comment: 'string',
-            happy: 'int?',
+            title: 'string?',
+            comment: 'string?',
+            important: 'string?',
         },
     };
 
     _id!: Realm.BSON.ObjectId;
     datetime: Date = new Date();
-    title!: string;
+    title?: string;
     comment?: string;
-    happy?: number;
+    important?: string;
 }

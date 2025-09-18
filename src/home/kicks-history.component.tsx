@@ -18,7 +18,11 @@ export const KicksHistory = () => {
                         <List.Item
                             key={kick._id.toString()}>
                             <Text>{kick?.datetime?.toLocaleString()}</Text>
-                            <List.Item.Brief>{kick.comment}</List.Item.Brief>
+                            {
+                                kick.comment
+                                    ? <List.Item.Brief>{kick.comment}</List.Item.Brief>
+                                    : null
+                            }
                         </List.Item>
                     ))
                 }

@@ -1,9 +1,9 @@
 import {useQuery} from "@realm/react";
-import {List, Text, View, WhiteSpace, WingBlank} from "@ant-design/react-native";
+import {List, Text, View} from "@ant-design/react-native";
 import {ScrollView} from "react-native";
 import {Medication} from "../realms/medication.ts";
 
-export const MedicationsHistory = () => {
+export const History = () => {
     const medications = useQuery(Medication)
         .filtered('realTime != NULL')
         .sorted('realTime', true);

@@ -2,8 +2,12 @@ import {Button, Input, List, View, WhiteSpace, WingBlank} from "@ant-design/reac
 import {ScrollView} from "react-native";
 import {useNavigation} from "@react-navigation/native";
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
-import {NotesStackParamList} from "./navigation.component.tsx";
 import {useReactive} from "ahooks";
+import {useCallback} from "react";
+import {BSON} from "realm";
+import {useRealm} from "@realm/react";
+import {NotesStackParamList} from "./navigation.component.tsx";
+import {Notes} from "../realms/notes.ts";
 
 type NavigationProp = NativeStackNavigationProp<
     NotesStackParamList,
@@ -12,17 +16,36 @@ type NavigationProp = NativeStackNavigationProp<
 
 export const NotesInformation = () => {
     const navigation = useNavigation<NavigationProp>();
+    const realm = useRealm();
 
     const data = useReactive({
         title: '',
-        comment: ''
-    })
+        comment: '',
+        important: '',
+    });
+
+    const onCreate = useCallback(() => {
+        realm.write(() => {
+            realm.create<Notes>(
+                Notes,
+                {
+                    _id: new BSON.ObjectId(),
+                    datetime: new Date(),
+                    ...data
+                }
+            );
+        });
+        data.title = '';
+        data.comment = '';
+        data.important = '';
+    }, [realm, data]);
 
     return (
         <ScrollView
             automaticallyAdjustContentInsets={false}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps={true}
         >
             <WingBlank size="lg">
                 <WhiteSpace />
@@ -31,9 +54,7 @@ export const NotesInformation = () => {
                         <View>
                             <Button
                                 type={'primary'}
-                                onPress={() => {
-
-                                }}
+                                onPress={onCreate}
                             >
                                 Сохранить
                             </Button>
@@ -51,27 +72,37 @@ export const NotesInformation = () => {
                     <List.Item>
                         <Input
                             value={data.title}
+                            autoCapitalize={'characters'}
                             placeholder={'Заголовок'}
                             onChange={(e) => {data.title = (e.target as any).value}}
-                        />
-                    </List.Item>
-                    <List.Item
-                        multipleLine={true}
-                    >
-                        <Input.TextArea
-                            rows={3}
-                            showCount
-                            allowClear
-                            value={data.comment}
-                            placeholder={'Описание'}
-                            onChange={(e) => {data.comment = (e.target as any).value}}
                         />
                     </List.Item>
                     <List.Item>
                         <Input
-                            value={data.title}
-                            placeholder={'Заголовок'}
-                            onChange={(e) => {data.title = (e.target as any).value}}
+                            multiline={true}
+                            numberOfLines={4}
+                            maxLength={1280}
+                            placeholder={'Описание'}
+                            value={data.comment}
+                            onChange={(e) => {
+                                data.comment = (e.target as any).value;
+                            }}
+                        />
+                    </List.Item>
+                    <List.Item>
+                        <Input
+                            style={{
+                                borderWidth: 1,
+                                borderColor: 'red',
+                            }}
+                            multiline={true}
+                            numberOfLines={4}
+                            maxLength={1280}
+                            placeholder={'ВАЖНО!'}
+                            value={data.important}
+                            onChange={(e) => {
+                                data.important = (e.target as any).value;
+                            }}
                         />
                     </List.Item>
                 </List>

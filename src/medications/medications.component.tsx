@@ -98,8 +98,11 @@ export const Medications: FC<Props> = ({ navigation }) => {
                 >
                     {
                         medication?.length
-                            ? medication.map((medication) => (
-                                <Medication medication={medication} />
+                            ? medication.map((med) => (
+                                <Medication
+                                    key={med._id.toString()}
+                                    medication={med}
+                                />
                             ))
                             : (
                                 <List.Item>

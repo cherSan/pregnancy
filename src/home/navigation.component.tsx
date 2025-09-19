@@ -1,9 +1,7 @@
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Home} from "./home.component.tsx";
 import {KicksHistory} from "./kicks-history.component.tsx";
-import {HeaderBackground} from "../components/header-background.tsx";
-import {HeaderActions} from "../components/header-action.tsx";
 import {MotherInformation} from "./mother-information.tsx";
+import {createAppStack} from "../components/create-stack-navigation.tsx";
 
 export type HomeStackParamList = {
     HomeInformation: undefined;
@@ -11,51 +9,31 @@ export type HomeStackParamList = {
     MotherInformation: undefined;
 };
 
-const Navigator = createNativeStackNavigator<HomeStackParamList>();
-
-export const HomeNavigation = () => {
-    return (
-        <Navigator.Navigator
-            screenOptions={{
-                headerBackground: HeaderBackground,
-                headerTintColor: "#444",
-                headerTitleStyle: { fontWeight: "600" },
-            }}
-        >
-            <Navigator.Screen
-                name={'HomeInformation'}
-                component={Home}
-                options={({navigation}) => ({
-                    headerTitle: 'Информация',
-                    headerRight: () => (
-                        <HeaderActions>
-                            <HeaderActions.Action
-                                onClick={() => navigation.navigate('HomeKicks')}
-                                icon={'history'}
-                            />
-                            <HeaderActions.Action
-                                onClick={() => navigation.navigate('MotherInformation')}
-                                icon={'info-circle'}
-                            />
-                        </HeaderActions>
-                    ),
-                })}
-            />
-            <Navigator.Screen
-                name={'HomeKicks'}
-                component={KicksHistory}
-                options={{
-                    headerTitle: 'История толчков',
-                }}
-            />
-            <Navigator.Screen
-                name={'MotherInformation'}
-                component={MotherInformation}
-                options={{
-                    headerTitle: 'Мама',
-                }}
-            />
-        </Navigator.Navigator>
-    )
-}
+export const HomeNavigation = createAppStack<HomeStackParamList>([
+    {
+        name: 'HomeInformation',
+        component: Home,
+        title: 'Информация',
+        actions: [
+            {
+                action: (navigation) => navigation.navigate('HomeKicks'),
+                icon: 'history'
+            },
+            {
+                action: (navigation) => navigation.navigate('MotherInformation'),
+                icon: 'info-circle'
+            },
+        ]
+    },
+    {
+        name: 'HomeKicks',
+        component: KicksHistory,
+        title: 'История толчков',
+    },
+    {
+        name: 'MotherInformation',
+        component: MotherInformation,
+        title: 'Мама',
+    }
+])
 

@@ -1,10 +1,7 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {MedicationConfiguration} from "./medications-configuration.component.tsx";
-import {HeaderBackground} from "../components/header-background.tsx";
 import {MedicationsHistory} from "./medications-history.component.tsx.tsx";
 import {Medications} from "./medications.component.tsx";
-import {AddMedication} from "./add.medication.component.tsx";
-import {HeaderActions} from "../components/header-action.tsx";
+import {createAppStack} from "../components/create-stack-navigation.tsx";
 
 export type MedicationStackParamList = {
     MedicationsInformation: undefined;
@@ -12,51 +9,30 @@ export type MedicationStackParamList = {
     MedicationsHistory: undefined;
 };
 
-export const Navigator = createNativeStackNavigator<MedicationStackParamList>();
-
-export const MedicationNavigation = () => {
-    return (
-        <Navigator.Navigator
-            screenOptions={{
-                headerBackground: HeaderBackground,
-                headerTintColor: "#444",
-                headerTitleStyle: { fontWeight: "600" },
-            }}
-        >
-            <Navigator.Screen
-                name={'MedicationsInformation'}
-                component={Medications}
-                options={({ navigation }) => ({
-                    headerTitle: 'Медикаменты',
-                    headerRight: () => (
-                        <HeaderActions>
-                            <HeaderActions.Action
-                                onClick={() => navigation.navigate('MedicationsHistory')}
-                                icon={'history'}
-                            />
-                            <HeaderActions.Action
-                                onClick={() => navigation.navigate('MedicationConfiguration')}
-                                icon={'setting'}
-                            />
-                        </HeaderActions>
-                    ),
-                })}
-            />
-            <Navigator.Screen
-                name={'MedicationConfiguration'}
-                component={MedicationConfiguration}
-                options={() => ({
-                    headerTitle: 'Расписание',
-                    headerRight: AddMedication,
-                })}
-            />
-            <Navigator.Screen
-                name={'MedicationsHistory'}
-                component={MedicationsHistory}
-                options={{
-                    title: "История приема лекарств",
-                }}
-            />
-        </Navigator.Navigator>
-    )
-}
+export const MedicationNavigation = createAppStack<MedicationStackParamList>([
+    {
+        name: 'MedicationsInformation',
+        component: Medications,
+        title: 'Медикаменты',
+        actions: [
+            {
+                action: (navigation) => navigation.navigate('MedicationsHistory'),
+                icon: 'history'
+            },
+            {
+                action: (navigation) => navigation.navigate('MedicationConfiguration'),
+                icon: 'setting'
+            }
+        ]
+    },
+    {
+        name: 'MedicationConfiguration',
+        component: MedicationConfiguration,
+        title: 'Расписание лекарств',
+    },
+    {
+        name: 'MedicationsHistory',
+        component: MedicationsHistory,
+        title: 'История приема лекарств',
+    }
+])

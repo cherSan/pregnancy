@@ -43,7 +43,7 @@ HeaderActions.Action = HeaderActionButton;
 
 const styles = StyleSheet.create({
     button: {
-        color: '#5d88d6',
+        color: '#fff',
         fontSize: 24,
     },
     headerActions: {

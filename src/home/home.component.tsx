@@ -53,6 +53,7 @@ export const Home = () => {
                     )
                     : null
             }
+            <WhiteSpace />
         </ScrollView>
     )
 }

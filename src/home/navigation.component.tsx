@@ -3,10 +3,12 @@ import {Home} from "./home.component.tsx";
 import {KicksHistory} from "./kicks-history.component.tsx";
 import {HeaderBackground} from "../components/header-background.tsx";
 import {HeaderActions} from "../components/header-action.tsx";
+import {MotherInformation} from "./mother-information.tsx";
 
 export type HomeStackParamList = {
     HomeInformation: undefined;
     HomeKicks: undefined;
+    MotherInformation: undefined;
 };
 
 const Navigator = createNativeStackNavigator<HomeStackParamList>();
@@ -31,6 +33,10 @@ export const HomeNavigation = () => {
                                 onClick={() => navigation.navigate('HomeKicks')}
                                 icon={'history'}
                             />
+                            <HeaderActions.Action
+                                onClick={() => navigation.navigate('MotherInformation')}
+                                icon={'info-circle'}
+                            />
                         </HeaderActions>
                     ),
                 })}
@@ -40,6 +46,13 @@ export const HomeNavigation = () => {
                 component={KicksHistory}
                 options={{
                     headerTitle: 'История толчков',
+                }}
+            />
+            <Navigator.Screen
+                name={'MotherInformation'}
+                component={MotherInformation}
+                options={{
+                    headerTitle: 'Мама',
                 }}
             />
         </Navigator.Navigator>

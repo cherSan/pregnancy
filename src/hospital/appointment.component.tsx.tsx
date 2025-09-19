@@ -2,11 +2,14 @@ import {FC, useCallback, useMemo} from "react";
 import {useObject, useRealm} from "@realm/react";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {StyleSheet} from "react-native";
-import {Button, List, Slider, Text, TextareaItem, Toast, View} from "@ant-design/react-native";
+import {Button, Input, List, Text, TextareaItem} from "@ant-design/react-native";
 import {ScrollView} from "../components/scroll-view.component.tsx";
 import {StackParamList} from "./navigation.component.tsx";
 import {Hospital} from "../realms/hospital.ts";
 import {BSON} from "realm";
+import {MotherWeight} from "../realms/mother-weight.ts";
+import {MotherPressure} from "../realms/mother-pressure.ts";
+import {MotherTemperature} from "../realms/mother-temperature.ts";
 
 type Props = NativeStackScreenProps<StackParamList, 'HospitalAppointment'>;
 
@@ -14,6 +17,7 @@ export const Appointment: FC<Props> = ({ route }) => {
     const realm = useRealm();
     const id = useMemo(() => route.params.id, [route]);
     const appointment = useObject(Hospital, new BSON.ObjectId(id));
+
     const finialise = useCallback(() => {
         if (!appointment) return;
         realm.write(() => {
@@ -26,20 +30,126 @@ export const Appointment: FC<Props> = ({ route }) => {
             appointment.recommendations = e;
         })
     }, [appointment, realm])
-
-    const weightMotherToastValue = useCallback((value: number | [number, number]) => {
-        let text = ''
-        if (typeof value === 'number') {
-            text = `${value}`
-        } else {
-            text = `[${value.join(',')}]`
-        }
-        Toast.show({ content: `Вес：${text}`, position: 'top' })
-    }, []);
-    const weightMother = useCallback((e: number) => {
+    const questions = useCallback((e: string) => {
         if (!appointment) return;
         realm.write(() => {
-            appointment.weightMother = e;
+            appointment.questions = [
+                e
+            ];
+        })
+    }, [appointment, realm])
+
+    const motherWeight = useCallback((e: string) => {
+        if (!appointment) return;
+        const value = parseFloat(e);
+        realm.write(() => {
+            if(!appointment.motherWeight) {
+                appointment.motherWeight = realm.create<MotherWeight>(
+                    MotherWeight,
+                    {
+                        _id: new BSON.ObjectId(),
+                        value,
+                        datetime: new Date()
+                    }
+                )
+            } else {
+                appointment.motherWeight.value = value;
+                appointment.motherWeight.datetime = new Date();
+            }
+        })
+    }, [appointment, realm])
+
+    const motherPressureTop = useCallback((e: string) => {
+        if (!appointment) return;
+        const value = parseFloat(e);
+        realm.write(() => {
+            if(!appointment.motherPressure) {
+                appointment.motherPressure = realm.create<MotherPressure>(
+                    MotherPressure,
+                    {
+                        _id: new BSON.ObjectId(),
+                        valueTop: value,
+                        valueBottom: 0,
+                        datetime: new Date()
+                    }
+                )
+            } else {
+                appointment.motherPressure.valueTop = value;
+                appointment.motherPressure.datetime = new Date();
+            }
+        })
+    }, [appointment, realm])
+
+    const motherPressureBottom = useCallback((e: string) => {
+        if (!appointment) return;
+        const value = parseFloat(e);
+        realm.write(() => {
+            if(!appointment.motherPressure) {
+                appointment.motherPressure = realm.create<MotherPressure>(
+                    MotherPressure,
+                    {
+                        _id: new BSON.ObjectId(),
+                        valueTop: 0,
+                        valueBottom: value,
+                        datetime: new Date()
+                    }
+                )
+            } else {
+                appointment.motherPressure.valueBottom = value;
+                appointment.motherPressure.datetime = new Date();
+            }
+        })
+    }, [appointment, realm])
+
+    const motherTemperature = useCallback((e: string) => {
+        if (!appointment) return;
+        const value = parseFloat(e);
+        realm.write(() => {
+            if(!appointment.motherTemperature) {
+                appointment.motherTemperature = realm.create<MotherTemperature>(
+                    MotherTemperature,
+                    {
+                        _id: new BSON.ObjectId(),
+                        value: value,
+                        datetime: new Date()
+                    }
+                )
+            } else {
+                appointment.motherTemperature.value = value;
+                appointment.motherTemperature.datetime = new Date();
+            }
+        })
+    }, [appointment, realm])
+
+    const babyWeight = useCallback((e: string) => {
+        if (!appointment) return;
+        const value = parseFloat(e);
+        realm.write(() => {
+            appointment.babyWeight = value;
+        })
+    }, [appointment, realm])
+
+    const babySize = useCallback((e: string) => {
+        if (!appointment) return;
+        const value = parseFloat(e);
+        realm.write(() => {
+            appointment.babySize = value;
+        })
+    }, [appointment, realm])
+
+    const babyHeadSize = useCallback((e: string) => {
+        if (!appointment) return;
+        const value = parseFloat(e);
+        realm.write(() => {
+            appointment.babyHeadSize = value;
+        })
+    }, [appointment, realm])
+
+    const babyHeartBeat = useCallback((e: string) => {
+        if (!appointment) return;
+        const value = parseFloat(e);
+        realm.write(() => {
+            appointment.babyHeartBeat = value;
         })
     }, [appointment, realm])
 
@@ -47,7 +157,9 @@ export const Appointment: FC<Props> = ({ route }) => {
 
     return (
         <ScrollView>
-            <List>
+            <List
+                renderHeader={'Прием'}
+            >
                 <List.Item
                     extra={appointment.datetime.toLocaleString()}
                 >
@@ -63,33 +175,136 @@ export const Appointment: FC<Props> = ({ route }) => {
                 >
                     Клиника
                 </List.Item>
-                <List.Item
-                    arrow={'horizontal'}
-                >
-                    Вопросы
+            </List>
+            <List
+                renderHeader={'Q&A'}
+            >
+                <List.Item>
+                    {
+                        appointment.isCompleted
+                            ? (
+                                <Text>Q: {appointment.questions?.[0]}</Text>
+                            )
+                            : (
+                                <TextareaItem
+                                    rows={4}
+                                    count={5000}
+                                    placeholder="Вопросы"
+                                    defaultValue={appointment.questions?.[0] ?? ''}
+                                    onChangeText={questions}
+                                />
+                            )
+                    }
                 </List.Item>
                 <List.Item>
-                    <TextareaItem
-                        rows={4}
-                        count={5000}
-                        placeholder="Рекомендация"
-                        value={appointment.recommendations ?? ''}
-                        onChangeText={recommendation}
+                    {
+                        appointment.isCompleted
+                            ? (
+                                <Text>A: {appointment.recommendations}</Text>
+                            )
+                            : (
+                                <TextareaItem
+                                    rows={4}
+                                    disabled={appointment.isCompleted}
+                                    count={5000}
+                                    placeholder="Рекомендация"
+                                    defaultValue={appointment.recommendations ?? ''}
+                                    onChangeText={recommendation}
+                                />
+                            )
+                    }
+                </List.Item>
+            </List>
+            <List
+                renderHeader={'Информация о маме'}
+            >
+                <List.Item>
+                    <Input
+                        type={'number'}
+                        disabled={appointment.isCompleted}
+                        placeholder={'Вес мамы'}
+                        defaultValue={`${appointment.motherWeight?.value || ''}`}
+                        onChangeText={motherWeight}
+                        suffix="кг"
                     />
                 </List.Item>
                 <List.Item>
-                    <View>
-                        <Text>{appointment.weightMother}</Text>
-                    </View>
-                    <Slider
-                        min={50}
-                        max={80}
-                        step={.1}
-                        onChange={weightMotherToastValue}
-                        value={appointment.weightMother}
-                        onAfterChange={weightMother}
+                    <Input
+                        type={'number'}
+                        disabled={appointment.isCompleted}
+                        placeholder={'Давление мамы верхнее'}
+                        defaultValue={`${appointment.motherPressure?.valueTop || ''}`}
+                        onChangeText={motherPressureTop}
+                        suffix="мм рт. ст."
                     />
                 </List.Item>
+                <List.Item>
+                    <Input
+                        type={'number'}
+                        disabled={appointment.isCompleted}
+                        placeholder={'Давление мамы нижнее'}
+                        defaultValue={`${appointment.motherPressure?.valueBottom || ''}`}
+                        onChangeText={motherPressureBottom}
+                        suffix="мм рт. ст."
+                    />
+                </List.Item>
+                <List.Item>
+                    <Input
+                        type={'number'}
+                        disabled={appointment.isCompleted}
+                        placeholder={'Температура мамы'}
+                        defaultValue={`${appointment.motherTemperature?.value || ''}`}
+                        onChangeText={motherTemperature}
+                        suffix="С"
+                    />
+                </List.Item>
+
+            </List>
+            <List
+                renderHeader={'Информация о малыше'}
+            >
+                <List.Item>
+                    <Input
+                        type={'number'}
+                        disabled={appointment.isCompleted}
+                        placeholder={'Вес ребенка'}
+                        defaultValue={`${appointment.babyWeight || ''}`}
+                        onChangeText={babyWeight}
+                        suffix="кг"
+                    />
+                </List.Item>
+                <List.Item>
+                    <Input
+                        type={'number'}
+                        disabled={appointment.isCompleted}
+                        placeholder={'Размер ребенка'}
+                        defaultValue={`${appointment.babySize || ''}`}
+                        onChangeText={babySize}
+                        suffix="см"
+                    />
+                </List.Item>
+                <List.Item>
+                    <Input
+                        type={'number'}
+                        disabled={appointment.isCompleted}
+                        placeholder={'Размер головы'}
+                        defaultValue={`${appointment.babyHeadSize || ''}`}
+                        onChangeText={babyHeadSize}
+                        suffix="см"
+                    />
+                </List.Item>
+                <List.Item>
+                    <Input
+                        type={'number'}
+                        disabled={appointment.isCompleted}
+                        placeholder={'Серцебиение'}
+                        defaultValue={`${appointment.babyHeartBeat || ''}`}
+                        onChangeText={babyHeartBeat}
+                        suffix="герц"
+                    />
+                </List.Item>
+            </List>
+            <List>
                 {
                     !appointment.isCompleted
                         ? (

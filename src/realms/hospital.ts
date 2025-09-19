@@ -1,4 +1,7 @@
 import { Realm } from 'realm';
+import {MotherWeight} from "./mother-weight.ts";
+import {MotherPressure} from "./mother-pressure.ts";
+import {MotherTemperature} from "./mother-temperature.ts";
 
 export class Hospital extends Realm.Object<Hospital> {
     _id!: Realm.BSON.ObjectId;
@@ -13,9 +16,9 @@ export class Hospital extends Realm.Object<Hospital> {
     recommendations?: string;
 
     // Показатели мамы
-    weightMother?: number;            // вес матери (кг)
-    bloodPressure?: string;           // давление: "120/80"
-    temperature?: number;             // температура (°C)
+    motherWeight?: MotherWeight;            // вес матери (кг)
+    motherPressure?: MotherPressure;           // давление: "120/80"
+    motherTemperature?: MotherTemperature;             // температура (°C)
 
     // Показатели ребёнка
     babyWeight?: number;              // вес плода (г)
@@ -46,7 +49,10 @@ export class Hospital extends Realm.Object<Hospital> {
             questions: 'string[]',
             recommendations: 'string?',
 
-            weightMother: 'float?',
+            motherWeight: "MotherWeight?",
+            motherPressure: "MotherPressure?",
+            motherTemperature: "MotherTemperature?",
+
             bloodPressure: 'string?',
             temperature: 'float?',
 

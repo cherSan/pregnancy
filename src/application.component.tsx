@@ -12,6 +12,10 @@ import {MedicationConfiguration} from "./realms/medication-configuration.ts";
 import {Medication} from "./realms/medication.ts";
 import {Notes} from "./realms/notes.ts";
 import {Hospital} from "./realms/hospital.ts";
+import {MotherPressure} from "./realms/mother-pressure.ts";
+import {MotherTemperature} from "./realms/mother-temperature.ts";
+import {MotherWeight} from "./realms/mother-weight.ts";
+import {MotherMood} from "./realms/mother-mood.ts";
 
 const style = StyleSheet.create({
     container: {
@@ -27,7 +31,7 @@ const style = StyleSheet.create({
 export const Application = () => {
     return (
         <RealmProvider
-            schemaVersion={4}
+            schemaVersion={6}
             onMigration={(oldRealm, newRealm) => {
                 if (oldRealm.schemaVersion < 3) {
                     const oldUsers = oldRealm.objects('User');
@@ -37,6 +41,7 @@ export const Application = () => {
                     }
                 }
                 if (oldRealm.schemaVersion < 4) {}
+                if (oldRealm.schemaVersion < 5) {}
             }}
             schema={[
                 User,
@@ -45,6 +50,10 @@ export const Application = () => {
                 Medication,
                 Notes,
                 Hospital,
+                MotherPressure,
+                MotherTemperature,
+                MotherWeight,
+                MotherMood,
             ]}
         >
             <Provider locale={ruRu}>

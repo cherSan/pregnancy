@@ -1,4 +1,4 @@
-import React, {FC, ReactNode, useMemo} from "react";
+import React, {ComponentType, FC, ReactNode, useMemo} from "react";
 import {View, StyleSheet, Dimensions, TouchableOpacity} from "react-native";
 import { ScrollView } from "./scroll-view.component.tsx";
 import Animated, {
@@ -29,6 +29,7 @@ type Props = {
     children: ReactNode;
     title: string;
     actions: Actions[];
+    headerRight: ComponentType<any>;
 };
 
 const { width } = Dimensions.get("window");
@@ -39,6 +40,7 @@ export const Page: FC<Props> = ({
     children,
     actions = [],
     title,
+    headerRight: Right,
 }) => {
     const now = new Date();
 
@@ -137,6 +139,9 @@ export const Page: FC<Props> = ({
             <Animated.View style={[styles.header, headerStyle]}>
                 <HeaderBackground />
                 <View style={styles.actions}>
+                    {
+                        Right ? <Right /> : null
+                    }
                     <HeaderActions>
                         {
                             actions.map((action) => (

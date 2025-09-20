@@ -2,6 +2,7 @@ import {MedicationConfiguration} from "./medications-configuration.component.tsx
 import {MedicationsHistory} from "./medications-history.component.tsx.tsx";
 import {Medications} from "./medications.component.tsx";
 import {createAppStack} from "../components/create-stack-navigation.tsx";
+import {AddMedication} from "./add.medication.component.tsx";
 
 export type MedicationStackParamList = {
     MedicationsInformation: undefined;
@@ -29,6 +30,7 @@ export const MedicationNavigation = createAppStack<MedicationStackParamList>([
         name: 'MedicationConfiguration',
         component: MedicationConfiguration,
         title: 'Расписание лекарств',
+        headerRight: AddMedication
     },
     {
         name: 'MedicationsHistory',

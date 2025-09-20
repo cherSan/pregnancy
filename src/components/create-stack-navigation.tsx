@@ -17,6 +17,7 @@ type ScreenConfig<ParamList extends ParamListBase> = {
     component: React.ComponentType<any>;
     title: string;
     actions?: Actions<ParamList>[];
+    headerRight?: React.ComponentType<any>;
 };
 
 export const createAppStack = <ParamList extends ParamListBase>(
@@ -39,6 +40,7 @@ export const createAppStack = <ParamList extends ParamListBase>(
                             {...props}
                             title={s.title}
                             actions={s.actions}
+                            headerRight={s.headerRight}
                         >
                             <s.component
                                 {...props}

@@ -16,7 +16,9 @@ export const HomeNavigation = createAppStack<HomeStackParamList>([
         title: 'Информация',
         actions: [
             {
-                action: (navigation) => navigation.navigate('HomeKicks'),
+                action: (navigation) => {
+                    navigation.navigate('HomeKicks')
+                },
                 icon: 'history'
             },
             {

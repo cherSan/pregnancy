@@ -5,8 +5,6 @@ import {
 } from '@react-navigation/native-stack';
 import {IconNames} from "@ant-design/react-native/lib/icon";
 import {ParamListBase} from "@react-navigation/native";
-import { HeaderBackground } from './header-background';
-import {HeaderActions} from "./header-action.tsx";
 import {Page} from "./page.component.tsx";
 
 type Actions<ParamList extends ParamListBase> = {
@@ -32,36 +30,19 @@ export const createAppStack = <ParamList extends ParamListBase>(
         return (
             <Stack.Navigator
                 screenOptions={{
-                    headerBackground: HeaderBackground,
-                    headerTintColor: '#fff',
-                    headerTitleStyle: {
-                        fontWeight: '600'
-                    },
-                    headerShadowVisible: true,
-                    headerTransparent: false,
-                    headerBlurEffect: 'dark',
+                    headerShown: false,
                 }}
             >
                 {memoScreens.map((s) => {
-                    const headerRight = useCallback((navigation: NativeStackNavigationProp<ParamList, keyof ParamList>) => {
-                        if (!s.actions) return null;
-                        return (
-                            <HeaderActions>
-                                {
-                                    s.actions.map((action) => (
-                                        <HeaderActions.Action
-                                            key={action.icon}
-                                            onClick={() => action.action(navigation)}
-                                            icon={action.icon}
-                                        />
-                                    ))
-                                }
-                            </HeaderActions>
-                        )
-                    }, [s.actions])
                     const component = useCallback((props: any) => (
-                        <Page {...props}>
-                            <s.component {...props} />
+                        <Page
+                            {...props}
+                            title={s.title}
+                            actions={s.actions}
+                        >
+                            <s.component
+                                {...props}
+                            />
                         </Page>
                     ), [s])
                     return (
@@ -69,14 +50,10 @@ export const createAppStack = <ParamList extends ParamListBase>(
                             key={String(s.name)}
                             name={s.name}
                             component={component}
-                            options={({navigation}) => ({
-                                title: s.title,
-                                headerRight: () => headerRight(navigation),
-                            })}
                         />
                     );
                 })}
             </Stack.Navigator>
         );
     };
-    }
+}

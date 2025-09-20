@@ -12,7 +12,6 @@ const style = StyleSheet.create({
         flex: 1,
         gap: 16,
         backgroundColor: '#cce0f8',
-        zIndex: 99
     }
 });
 

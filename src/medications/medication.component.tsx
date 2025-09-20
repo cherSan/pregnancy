@@ -3,6 +3,7 @@ import {Modal, SwipeAction, Text} from "@ant-design/react-native";
 import {useRealm} from "@realm/react";
 import {Medication as MP} from "../realms/medication.ts";
 import { List } from "../components/list.component.tsx";
+import {useDate} from "../hooks/useDate.ts";
 
 type Props = {
     medication: MP;
@@ -11,7 +12,7 @@ type Props = {
 export const Medication: FC<Props> = ({
     medication
 }) => {
-    const now = useMemo(() => new Date(), []);
+    const {now} = useDate();
     const realm = useRealm();
     const done = useCallback(() => {
         realm.write(() => {

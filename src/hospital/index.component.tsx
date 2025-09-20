@@ -1,10 +1,11 @@
-import {FC, useMemo} from "react";
+import {FC} from "react";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {useQuery} from "@realm/react";
 import {Icon, Text} from "@ant-design/react-native";
 import {StackParamList} from './navigation.component.tsx';
 import {List} from "../components/list.component.tsx";
 import {Hospital} from "../realms/hospital.ts";
+import {useDate} from "../hooks/useDate.ts";
 
 type Props = NativeStackScreenProps<StackParamList, 'HospitalAppointments'>;
 
@@ -12,7 +13,7 @@ export const Index: FC<Props> = ({ navigation }) => {
     const hospitals = useQuery(Hospital)
         .sorted('datetime', true);
 
-    const now = useMemo(() => new Date(), [])
+    const {now} = useDate();
 
     return (
         <List>

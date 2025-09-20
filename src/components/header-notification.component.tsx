@@ -100,7 +100,6 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         opacity: 1,
         padding: 10,
-        backgroundColor: "#f2f9ff",
         paddingVertical: 10,
         paddingHorizontal: 16,
         borderRadius: 12,

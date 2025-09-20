@@ -11,7 +11,7 @@ export class MotherMood extends Realm.Object<MotherMood> {
         properties: {
             _id: 'objectId',
             datetime: 'date',
-            valueTop: 'int',
+            value: 'int',
         },
     };
 }

@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 10,
-        gap: 16,
+        gap: 20,
         backgroundColor: '#cce0f8',
     }
 });

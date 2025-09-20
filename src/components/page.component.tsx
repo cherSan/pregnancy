@@ -161,7 +161,7 @@ export const Page: FC<Props> = ({
             <ScrollView onScroll={onScroll}>
                 <View style={{ height: HEADER_MAX_HEIGHT }} />
                 {children}
-                <View style={{height: 400}}></View>
+                <View style={{ height: 50 }} />
             </ScrollView>
         </View>
     )

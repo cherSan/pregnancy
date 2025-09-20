@@ -31,7 +31,7 @@ const style = StyleSheet.create({
 export const Application = () => {
     return (
         <RealmProvider
-            schemaVersion={6}
+            schemaVersion={7}
             onMigration={(oldRealm, newRealm) => {
                 if (oldRealm.schemaVersion < 3) {
                     const oldUsers = oldRealm.objects('User');

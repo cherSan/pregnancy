@@ -1,6 +1,6 @@
-import {Icon, View} from "@ant-design/react-native";
+import {Icon} from "@ant-design/react-native";
 import {FC, ReactNode} from "react";
-import {StyleSheet} from "react-native";
+import {StyleSheet, View} from "react-native";
 import {IconNames} from "@ant-design/react-native/lib/icon";
 import {Pressable} from "react-native-gesture-handler";
 

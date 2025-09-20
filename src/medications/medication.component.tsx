@@ -1,6 +1,7 @@
-import {FC, useCallback, useMemo} from "react";
-import {Modal, SwipeAction, Text} from "@ant-design/react-native";
+import {FC, useCallback} from "react";
+import {Modal, SwipeAction} from "@ant-design/react-native";
 import {useRealm} from "@realm/react";
+import { Text } from "react-native";
 import {Medication as MP} from "../realms/medication.ts";
 import { List } from "../components/list.component.tsx";
 import {useDate} from "../hooks/useDate.ts";

@@ -1,13 +1,13 @@
-import {ScrollView, StyleSheet} from "react-native"
+import {FC} from "react";
+import {ScrollView, StyleSheet, Text} from "react-native"
 import {useQuery} from "@realm/react";
+import {Extrapolation, interpolate, SharedValue, useAnimatedStyle} from "react-native-reanimated";
 import {MotherWeight} from "../realms/mother-weight.ts";
 import {MotherTemperature} from "../realms/mother-temperature.ts";
 import {MotherPressure} from "../realms/mother-pressure.ts";
 import {Colors} from "../constants/colors.ts";
 import {Card} from "./card.component.tsx";
-import {Text} from "@ant-design/react-native";
-import {FC} from "react";
-import {Extrapolation, interpolate, SharedValue, useAnimatedStyle} from "react-native-reanimated";
+import {MotherMood} from "../realms/mother-mood.ts";
 
 type Prop = {
     scrollY: SharedValue<number>,
@@ -40,6 +40,10 @@ export const MotherSummary: FC<Prop> = ({
 
     const pressure = useQuery(MotherPressure)
         .filtered('valueTop != 0 AND valueTop != NULL AND valueBottom != 0 AND valueBottom != NULL')
+        .sorted('datetime', true);
+
+    const moods = useQuery(MotherMood)
+        .filtered('value != 0 AND value != NULL')
         .sorted('datetime', true);
 
     return (
@@ -81,6 +85,17 @@ export const MotherSummary: FC<Prop> = ({
                     )
                     : null
             }
+            {
+                moods?.[0]
+                    ? (
+                        <Card style={[styles.card, cardsAnimationStyle]}>
+                            <Text style={styles.title}>Настроение</Text>
+                            <Text style={styles.value}>{moods[0].value.toString()}</Text>
+                            <Text style={styles.date}>{moods[0].datetime.toLocaleString()}</Text>
+                        </Card>
+                    )
+                    : null
+            }
         </ScrollView>
     )
 }
@@ -116,6 +131,6 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: 60,
         left: 0,
-        right: 0,
+        minWidth: '100%'
     },
 });

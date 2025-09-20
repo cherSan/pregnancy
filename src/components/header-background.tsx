@@ -1,6 +1,5 @@
 import LinearGradient from "react-native-linear-gradient";
-import {StyleSheet} from "react-native";
-import {View} from "@ant-design/react-native";
+import {StyleSheet, View} from "react-native";
 import {Colors} from "../constants/colors.ts";
 
 export const HeaderBackground = () => (

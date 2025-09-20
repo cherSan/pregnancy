@@ -1,6 +1,7 @@
 import {ComponentProps, FC, useEffect} from "react";
 import Animated, {useAnimatedStyle, useSharedValue, withSequence, withSpring} from "react-native-reanimated";
 import {StyleSheet} from "react-native";
+import {Colors} from "../constants/colors.ts";
 
 type Props = ComponentProps<typeof Animated.View>
 
@@ -29,15 +30,24 @@ export const Card: FC<Props> = ({
 }
 
 const styles = StyleSheet.create({
+    gradient: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+    },
     card: {
         display: "flex",
         flexDirection: "column",
         padding: 10,
         borderRadius: 12,
-        backgroundColor: "rgba(255,255,255,.6)",
-        color: "#eee",
-        shadowColor: '#000',
+        backgroundColor: '#fff',
+        shadowColor: Colors.secondary.contrastText,
         overflow: 'hidden',
         elevation: 6,
+        borderWidth: 1,
+        borderColor: Colors.neutral[100],
+        borderStyle: 'solid',
     }
 });

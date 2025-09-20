@@ -1,7 +1,6 @@
-import {Text} from "@ant-design/react-native";
 import {FC, ReactNode, useMemo} from "react";
+import {StyleSheet, Text} from "react-native";
 import {Colors} from "../constants/colors.ts";
-import {StyleSheet} from "react-native";
 
 type Type = 'error' | 'success' | 'warning' | 'info';
 
@@ -31,7 +30,6 @@ export const AlertText: FC<Props> = ({
 const styles = StyleSheet.create({
     text: {
         fontSize: 10,
-        backgroundColor: 'transparent',
     },
     time: {
         fontWeight: 'bold',

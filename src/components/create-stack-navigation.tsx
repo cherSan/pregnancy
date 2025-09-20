@@ -7,6 +7,7 @@ import {IconNames} from "@ant-design/react-native/lib/icon";
 import {ParamListBase} from "@react-navigation/native";
 import { HeaderBackground } from './header-background';
 import {HeaderActions} from "./header-action.tsx";
+import {Page} from "./page.component.tsx";
 
 type Actions<ParamList extends ParamListBase> = {
     action: (navigation: NativeStackNavigationProp<ParamList, keyof ParamList>) => void;
@@ -43,31 +44,34 @@ export const createAppStack = <ParamList extends ParamListBase>(
             >
                 {memoScreens.map((s) => {
                     const headerRight = useCallback((navigation: NativeStackNavigationProp<ParamList, keyof ParamList>) => {
-                        return () => {
-                            if (!s.actions) return null;
-                            return (
-                                <HeaderActions>
-                                    {
-                                        s.actions.map((action) => (
-                                            <HeaderActions.Action
-                                                key={action.icon}
-                                                onClick={() => action.action(navigation)}
-                                                icon={action.icon}
-                                            />
-                                        ))
-                                    }
-                                </HeaderActions>
-                            )
-                        }
+                        if (!s.actions) return null;
+                        return (
+                            <HeaderActions>
+                                {
+                                    s.actions.map((action) => (
+                                        <HeaderActions.Action
+                                            key={action.icon}
+                                            onClick={() => action.action(navigation)}
+                                            icon={action.icon}
+                                        />
+                                    ))
+                                }
+                            </HeaderActions>
+                        )
                     }, [s.actions])
+                    const component = useCallback((props: any) => (
+                        <Page {...props}>
+                            <s.component {...props} />
+                        </Page>
+                    ), [s])
                     return (
                         <Stack.Screen
                             key={String(s.name)}
                             name={s.name}
-                            component={s.component}
+                            component={component}
                             options={({navigation}) => ({
                                 title: s.title,
-                                headerRight: headerRight(navigation)
+                                headerRight: () => headerRight(navigation),
                             })}
                         />
                     );

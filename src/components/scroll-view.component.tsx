@@ -1,8 +1,10 @@
-import {FC, ReactNode} from "react";
-import {ScrollView as SV, StyleSheet} from "react-native";
+import {ComponentProps, FC, ReactNode} from "react";
+import {StyleSheet} from "react-native";
+import Animated from "react-native-reanimated";
 
 type Props = {
     children: ReactNode;
+    onScroll?: ComponentProps<typeof Animated.ScrollView>["onScroll"];
 }
 
 const style = StyleSheet.create({
@@ -10,14 +12,19 @@ const style = StyleSheet.create({
         flex: 1,
         gap: 16,
         backgroundColor: '#cce0f8',
+        zIndex: 99
     }
 });
 
 export const ScrollView: FC<Props> = (
-    { children }
+    {
+        children,
+        onScroll,
+    }
 ) => {
     return (
-        <SV
+        <Animated.ScrollView
+            onScroll={onScroll}
             style={style.container}
             automaticallyAdjustContentInsets={false}
             showsHorizontalScrollIndicator={false}
@@ -26,6 +33,6 @@ export const ScrollView: FC<Props> = (
             keyboardShouldPersistTaps={"always"}
         >
             {children}
-        </SV>
+        </Animated.ScrollView>
     )
 }

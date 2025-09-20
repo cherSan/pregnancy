@@ -16,7 +16,9 @@ export const HeaderBackground = () => (
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        width: "100%",
+        height: "100%",
         elevation: 5,
-        shadowOpacity: 0.2
+        shadowOpacity: 0.2,
     },
 });

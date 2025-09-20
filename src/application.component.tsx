@@ -59,7 +59,7 @@ export const Application = () => {
             <Provider locale={ruRu}>
                 <GestureHandlerRootView style={style.root}>
                     <SafeAreaProvider>
-                        <StatusBar barStyle={'dark-content'} />
+                        <StatusBar translucent backgroundColor={'transparent'} />
                         <SafeAreaView style={style.container}>
                             <Initialize>
                                 <RootNavigation />

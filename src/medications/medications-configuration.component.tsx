@@ -26,34 +26,32 @@ export const MedicationConfiguration = () => {
     }, [realm]);
 
     return (
-        <ScrollView>
-            <List>
-                {
-                    !medicationConfiguration?.length
-                        ? <List.Item>No Data</List.Item>
-                        :  medicationConfiguration.map((mconfig) => (
-                            <SwipeAction
-                                key={mconfig._id.toString()}
-                                right={[
-                                    {
-                                        text: 'Remove',
-                                        onPress: () => remove(mconfig),
-                                        backgroundColor: 'red',
-                                        color: 'white',
-                                    },
-                                ]}
-                                closeOnAction
-                                closeOnTouchOutside
+        <List>
+            {
+                !medicationConfiguration?.length
+                    ? <List.Item>No Data</List.Item>
+                    :  medicationConfiguration.map((mconfig) => (
+                        <SwipeAction
+                            key={mconfig._id.toString()}
+                            right={[
+                                {
+                                    text: 'Remove',
+                                    onPress: () => remove(mconfig),
+                                    backgroundColor: 'red',
+                                    color: 'white',
+                                },
+                            ]}
+                            closeOnAction
+                            closeOnTouchOutside
+                        >
+                            <List.Item
+                                extra={formatTime(mconfig.planingTimeHours, mconfig.planingTimeMinutes)}
                             >
-                                <List.Item
-                                    extra={formatTime(mconfig.planingTimeHours, mconfig.planingTimeMinutes)}
-                                >
-                                    {mconfig.name}
-                                </List.Item>
-                            </SwipeAction>
-                        ))
-                }
-            </List>
-        </ScrollView>
+                                {mconfig.name}
+                            </List.Item>
+                        </SwipeAction>
+                    ))
+            }
+        </List>
     )
 }

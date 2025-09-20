@@ -1,10 +1,8 @@
 import {useQuery} from "@realm/react";
 import {useMemo} from "react";
-import {Input, Text, View, WhiteSpace, WingBlank} from "@ant-design/react-native";
+import {Text, View, WhiteSpace, WingBlank} from "@ant-design/react-native";
 import {KicksInformation} from "./kicks-information.component";
 import {KickButton} from "./kick-button";
-import {ScrollView} from "../components/scroll-view.component.tsx";
-import {List} from "../components/list.component.tsx";
 import {User} from "../realms/user.ts";
 import {StyleSheet} from "react-native";
 
@@ -26,7 +24,7 @@ export const Home = () => {
         return { weeks, days };
     }, [user?.eddate]);
     return (
-        <ScrollView>
+        <View>
             <KicksInformation />
             <WhiteSpace />
             <WingBlank size="lg">
@@ -54,7 +52,7 @@ export const Home = () => {
                     : null
             }
             <WhiteSpace />
-        </ScrollView>
+        </View>
     )
 }
 

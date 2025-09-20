@@ -6,7 +6,6 @@ import {Button, Input, List, TextareaItem} from "@ant-design/react-native";
 import {StyleSheet} from "react-native";
 import {useNavigation} from "@react-navigation/core";
 import {Notes} from "../realms/notes.ts";
-import {ScrollView} from "../components/scroll-view.component.tsx";
 
 export const AddNote = () => {
     const realm = useRealm();
@@ -38,44 +37,42 @@ export const AddNote = () => {
     }, [realm, data, navigation]);
 
     return (
-        <ScrollView>
-            <List>
-                <List.Item>
-                    <Input
-                        placeholder={'Заголовок'}
-                        value={`${data.title}`}
-                        onChange={e => {
-                            data.title = (e.target as any).value
-                        }}
-                    />
-                </List.Item>
-                <List.Item>
-                    <TextareaItem
-                        rows={4}
-                        count={5000}
-                        placeholder="Сообщение"
-                        value={`${data.comment}`}
-                        onChangeText={e => {
-                            data.comment = e;
-                        }}
-                    />
-                </List.Item>
-                <List.Item>
-                    <TextareaItem
-                        rows={4}
-                        count={5000}
-                        placeholder="Важно"
-                        value={`${data.important}`}
-                        onChangeText={e => {
-                            data.important = e;
-                        }}
-                    />
-                </List.Item>
-                <Button type={'primary'} onPress={onCreate} style={styles.aButton}>
-                    Добавить
-                </Button>
-            </List>
-        </ScrollView>
+        <List>
+            <List.Item>
+                <Input
+                    placeholder={'Заголовок'}
+                    value={`${data.title}`}
+                    onChange={e => {
+                        data.title = (e.target as any).value
+                    }}
+                />
+            </List.Item>
+            <List.Item>
+                <TextareaItem
+                    rows={4}
+                    count={5000}
+                    placeholder="Сообщение"
+                    value={`${data.comment}`}
+                    onChangeText={e => {
+                        data.comment = e;
+                    }}
+                />
+            </List.Item>
+            <List.Item>
+                <TextareaItem
+                    rows={4}
+                    count={5000}
+                    placeholder="Важно"
+                    value={`${data.important}`}
+                    onChangeText={e => {
+                        data.important = e;
+                    }}
+                />
+            </List.Item>
+            <Button type={'primary'} onPress={onCreate} style={styles.aButton}>
+                Добавить
+            </Button>
+        </List>
     );
 }
 

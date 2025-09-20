@@ -2,8 +2,7 @@ import {FC, useCallback, useMemo} from "react";
 import {useObject, useRealm} from "@realm/react";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {StyleSheet} from "react-native";
-import {Button, Input, List, Text, TextareaItem} from "@ant-design/react-native";
-import {ScrollView} from "../components/scroll-view.component.tsx";
+import {Button, Input, List, Text, TextareaItem, View} from "@ant-design/react-native";
 import {StackParamList} from "./navigation.component.tsx";
 import {Hospital} from "../realms/hospital.ts";
 import {BSON} from "realm";
@@ -156,7 +155,7 @@ export const Appointment: FC<Props> = ({ route }) => {
     if (!appointment) return null;
 
     return (
-        <ScrollView>
+        <View>
             <List
                 renderHeader={'Прием'}
             >
@@ -315,7 +314,7 @@ export const Appointment: FC<Props> = ({ route }) => {
                         : <></>
                 }
             </List>
-        </ScrollView>
+        </View>
     )
 }
 

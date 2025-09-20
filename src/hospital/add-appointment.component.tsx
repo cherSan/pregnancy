@@ -5,7 +5,6 @@ import {useCallback} from "react";
 import {BSON} from "realm";
 import {useRealm} from "@realm/react";
 import {Hospital} from "../realms/hospital.ts";
-import {ScrollView} from "../components/scroll-view.component.tsx";
 import {useNavigation} from "@react-navigation/core";
 
 export const AddAppointment = () => {
@@ -48,51 +47,49 @@ export const AddAppointment = () => {
     }, [realm, structure, navigation]);
 
     return (
-        <ScrollView>
-            <List>
-                <DatePicker
-                    value={structure.datetime}
-                    precision="minute"
-                    minDate={new Date(2010, 11, 3)}
-                    maxDate={new Date(2100, 11, 3)}
-                    onChange={(e) => {
-                        structure.datetime = e
+        <List>
+            <DatePicker
+                value={structure.datetime}
+                precision="minute"
+                minDate={new Date(2010, 11, 3)}
+                maxDate={new Date(2100, 11, 3)}
+                onChange={(e) => {
+                    structure.datetime = e
+                }}
+            >
+                <List.Item>Дата приема</List.Item>
+            </DatePicker>
+            <List.Item>
+                <Input
+                    placeholder={'Врач'}
+                    value={`${structure.doctor}`}
+                    onChangeText={e => {
+                        structure.doctor = e;
                     }}
-                >
-                    <List.Item>Дата приема</List.Item>
-                </DatePicker>
-                <List.Item>
-                    <Input
-                        placeholder={'Врач'}
-                        value={`${structure.doctor}`}
-                        onChangeText={e => {
-                            structure.doctor = e;
-                        }}
-                    />
-                </List.Item>
-                <List.Item>
-                    <Input
-                        placeholder={'Больница'}
-                        value={`${structure.hospital}`}
-                        onChangeText={e => {
-                            structure.hospital = e;
-                        }}
-                    />
-                </List.Item>
-                <List.Item>
-                    <Input
-                        placeholder={'Тип Визита'}
-                        value={`${structure.visitType}`}
-                        onChangeText={e => {
-                            structure.visitType = e;
-                        }}
-                    />
-                </List.Item>
-                <Button type={'primary'} onPress={onCreate} style={styles.aButton}>
-                    Запланировать
-                </Button>
-            </List>
-        </ScrollView>
+                />
+            </List.Item>
+            <List.Item>
+                <Input
+                    placeholder={'Больница'}
+                    value={`${structure.hospital}`}
+                    onChangeText={e => {
+                        structure.hospital = e;
+                    }}
+                />
+            </List.Item>
+            <List.Item>
+                <Input
+                    placeholder={'Тип Визита'}
+                    value={`${structure.visitType}`}
+                    onChangeText={e => {
+                        structure.visitType = e;
+                    }}
+                />
+            </List.Item>
+            <Button type={'primary'} onPress={onCreate} style={styles.aButton}>
+                Запланировать
+            </Button>
+        </List>
     )
 }
 

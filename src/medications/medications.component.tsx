@@ -1,7 +1,7 @@
 import {
     Button,
     Input,
-    Text,
+    Text, View,
     WhiteSpace,
 } from "@ant-design/react-native";
 import {FC, useCallback, useMemo} from "react";
@@ -12,7 +12,6 @@ import {BSON} from "realm";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {Medication} from "./medication.component.tsx";
 import {MedicationStackParamList} from "./navigation.component.tsx";
-import {ScrollView} from "../components/scroll-view.component.tsx";
 import {List} from "../components/list.component.tsx";
 
 type Props = NativeStackScreenProps<MedicationStackParamList, 'MedicationsInformation'>;
@@ -66,7 +65,7 @@ export const Medications: FC<Props> = () => {
     }, [extraMedications, realm]);
 
     return (
-        <ScrollView>
+        <View>
             <List>
                 {
                     medication?.length
@@ -111,6 +110,6 @@ export const Medications: FC<Props> = () => {
                     Принять
                 </Button>
             </List>
-        </ScrollView>
+        </View>
     )
 }

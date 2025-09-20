@@ -19,6 +19,7 @@ import {MotherWeight} from "../realms/mother-weight.ts";
 import {MotherTemperature} from "../realms/mother-temperature.ts";
 import {MotherPressure} from "../realms/mother-pressure.ts";
 import {Medication} from "../realms/medication.ts";
+import {User} from "../realms/user.ts";
 
 type Actions = {
     action: Function;
@@ -134,6 +135,8 @@ export const Page: FC<Props> = ({
         .filtered('planingTime >= $0', now)
         .sorted('planingTime', true);
 
+    const user = useQuery(User);
+
     return (
         <View style={styles.container}>
             <Animated.View style={[styles.header, headerStyle]}>
@@ -217,8 +220,10 @@ export const Page: FC<Props> = ({
                             )
                             : null
                     }
-
                 </Animated.View>
+                <Animated.Text style={[styles.name, cardsAnimationStyle]}>
+                    { user[0] ? `Привет, ${user[0].name}` : null }
+                </Animated.Text>
                 <Animated.Text style={[styles.title, titleAnimatedStyle]}>
                     { title }
                 </Animated.Text>
@@ -226,7 +231,6 @@ export const Page: FC<Props> = ({
             <ScrollView onScroll={onScroll}>
                 <View style={{ height: HEADER_MAX_HEIGHT }} />
                 {children}
-                <View style={{ height: 200 }} />
             </ScrollView>
         </View>
     )
@@ -315,5 +319,14 @@ const styles = StyleSheet.create({
         alignItems: "center",
         opacity: 1,
         color: '#fff',
+    },
+    name: {
+        fontSize: 20,
+        position: "absolute",
+        lineHeight: 20,
+        fontWeight: "700",
+        top: 20,
+        left: 60,
+        color: '#fff'
     }
 });

@@ -1,5 +1,4 @@
 import {Button, Input, Tabs, View} from "@ant-design/react-native";
-import {ScrollView} from "../components/scroll-view.component.tsx";
 import {useQuery, useRealm} from "@realm/react";
 import {MotherTemperature} from "../realms/mother-temperature.ts";
 import {MotherWeight} from "../realms/mother-weight.ts";
@@ -7,7 +6,6 @@ import {MotherPressure} from "../realms/mother-pressure.ts";
 import {List} from "../components/list.component.tsx";
 import {useReactive} from "ahooks";
 import {useCallback} from "react";
-import {Hospital} from "../realms/hospital.ts";
 import {BSON} from "realm";
 
 export const MotherInformation = () => {
@@ -103,20 +101,18 @@ export const MotherInformation = () => {
                         Сохранить
                     </Button>
                 </List>
-                <ScrollView>
-                    <List>
-                        {
-                            wight.map((item) => (
-                                <List.Item
-                                    key={item._id.toString()}
-                                    extra={item.datetime.toLocaleString()}
-                                >
-                                    {item.value.toString()}
-                                </List.Item>
-                            ))
-                        }
-                    </List>
-                </ScrollView>
+                <List>
+                    {
+                        wight.map((item) => (
+                            <List.Item
+                                key={item._id.toString()}
+                                extra={item.datetime.toLocaleString()}
+                            >
+                                {item.value.toString()}
+                            </List.Item>
+                        ))
+                    }
+                </List>
             </View>
             <View style={{ flex: 1 }}>
                 <List>
@@ -133,20 +129,18 @@ export const MotherInformation = () => {
                         Сохранить
                     </Button>
                 </List>
-                <ScrollView>
-                    <List>
-                        {
-                            temprature.map((item) => (
-                                <List.Item
-                                    key={item._id.toString()}
-                                    extra={item.datetime.toLocaleString()}
-                                >
-                                    {item.value.toString()}
-                                </List.Item>
-                            ))
-                        }
-                    </List>
-                </ScrollView>
+                <List>
+                    {
+                        temprature.map((item) => (
+                            <List.Item
+                                key={item._id.toString()}
+                                extra={item.datetime.toLocaleString()}
+                            >
+                                {item.value.toString()}
+                            </List.Item>
+                        ))
+                    }
+                </List>
             </View>
             <View style={{ flex: 1 }}>
                 <List>
@@ -163,20 +157,18 @@ export const MotherInformation = () => {
                         Сохранить
                     </Button>
                 </List>
-                <ScrollView>
-                    <List>
-                        {
-                            presure.map((item) => (
-                                <List.Item
-                                    key={item._id.toString()}
-                                    extra={item.datetime.toLocaleString()}
-                                >
-                                    {item.valueTop.toString()} / {item.valueBottom.toString()}
-                                </List.Item>
-                            ))
-                        }
-                    </List>
-                </ScrollView>
+                <List>
+                    {
+                        presure.map((item) => (
+                            <List.Item
+                                key={item._id.toString()}
+                                extra={item.datetime.toLocaleString()}
+                            >
+                                {item.valueTop.toString()} / {item.valueBottom.toString()}
+                            </List.Item>
+                        ))
+                    }
+                </List>
             </View>
         </Tabs>
     )

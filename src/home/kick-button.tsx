@@ -3,9 +3,11 @@ import {BSON} from "realm";
 import {useRealm} from "@realm/react";
 import LinearGradient from "react-native-linear-gradient";
 import {useReactive} from "ahooks";
-import {Animated, StyleSheet, TouchableOpacity} from "react-native";
-import {Input, Text, View, WhiteSpace} from "@ant-design/react-native";
+import {Animated, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Input, WhiteSpace} from "@ant-design/react-native";
 import {Kick} from "../realms/kick.ts";
+import {Colors} from "../constants/colors.ts";
+import {Card} from "../components/card.component.tsx";
 
 type Props = {
     title?: string;
@@ -64,7 +66,7 @@ export const KickButton: React.FC<Props> = ({ title = "Толчок" }) => {
                 activeOpacity={0.8}
                 onLayout={e => setButtonWidth(e.nativeEvent.layout.width)}
             >
-                <View style={styles.button}>
+                <Card style={styles.button}>
                     <Text style={styles.text}>{title}</Text>
                     <Animated.View
                         style={[
@@ -79,7 +81,7 @@ export const KickButton: React.FC<Props> = ({ title = "Толчок" }) => {
                             style={styles.lg}
                         />
                     </Animated.View>
-                </View>
+                </Card>
             </TouchableOpacity>
         </View>
     );
@@ -87,20 +89,15 @@ export const KickButton: React.FC<Props> = ({ title = "Толчок" }) => {
 
 const styles = StyleSheet.create({
     button: {
+        flex: 1,
+        height: 80,
         width: '100%',
-        height: 100,
-        backgroundColor: '#5d88d6',
+        backgroundColor: Colors.background.gradient[0],
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 12,
         borderWidth: 2,
-        borderColor: '#4a6fc1',
+        borderColor: Colors.primary.active,
         overflow: 'hidden',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 6,
     },
     text: {
         color: '#fff',

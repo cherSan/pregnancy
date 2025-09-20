@@ -41,13 +41,13 @@ export const Settings = () => {
         <List>
             <List.Item>
                 <Input
-                    value={user.name}
+                    defaultValue={user.name}
                     onChangeText={onNameChange}
                     placeholder={'User Name'}
                 />
             </List.Item>
             <DatePicker
-                value={user.dob}
+                defaultValue={user.dob}
                 precision="day"
                 minDate={new Date(1980, 7, 6)}
                 maxDate={new Date(2000, 11, 3)}
@@ -57,7 +57,7 @@ export const Settings = () => {
                 <List.Item arrow="horizontal">Дата рождения</List.Item>
             </DatePicker>
             <DatePicker
-                value={user.eddate}
+                defaultValue={user.eddate}
                 precision="day"
                 minDate={new Date()}
                 maxDate={new Date(2100, 11, 3)}

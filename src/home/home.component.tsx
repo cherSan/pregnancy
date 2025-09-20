@@ -1,19 +1,22 @@
 import {useQuery} from "@realm/react";
 import {useMemo} from "react";
+import {StyleSheet} from "react-native";
 import {Text, View, WhiteSpace, WingBlank} from "@ant-design/react-native";
 import {KicksInformation} from "./kicks-information.component";
 import {KickButton} from "./kick-button";
 import {User} from "../realms/user.ts";
-import {StyleSheet} from "react-native";
+import {useDate} from "../hooks/useDate.ts";
+import {Card} from "../components/card.component.tsx";
+import {Colors} from "../constants/colors.ts";
 
 export const Home = () => {
+    const { now } = useDate();
     const users = useQuery(User);
     const user = users[0];
     const edd = useMemo(() => {
         const eddData = user?.eddate;
         if(!eddData) return null;
-        const today = new Date();
-        const diffMs = eddData.getTime() - today.getTime();
+        const diffMs = eddData.getTime() - now.getTime();
         const daysUntilEDD = Math.round(diffMs / (1000 * 60 * 60 * 24));
 
         const totalPregnancyDays = 280;
@@ -22,19 +25,18 @@ export const Home = () => {
         const days = daysElapsed % 7;
 
         return { weeks, days };
-    }, [user?.eddate]);
+    }, [user?.eddate, now]);
+
     return (
         <View>
             <KicksInformation />
             <WhiteSpace />
-            <WingBlank size="lg">
-                <KickButton />
-            </WingBlank>
+            <KickButton />
+            <WhiteSpace />
             {
                 edd
                     ? (
-                    <WingBlank size="lg">
-                        <View style={styles.card}>
+                        <Card style={styles.card}>
                             <Text style={styles.title}>Срок беременности</Text>
                             <View style={styles.ageContainer}>
                                 <View style={styles.ageBlock}>
@@ -46,8 +48,7 @@ export const Home = () => {
                                     <Text style={styles.label}>дней</Text>
                                 </View>
                             </View>
-                        </View>
-                    </WingBlank>
+                        </Card>
                     )
                     : null
             }
@@ -58,21 +59,13 @@ export const Home = () => {
 
 const styles = StyleSheet.create({
     card: {
-        backgroundColor: "#fff",
-        padding: 20,
-        borderRadius: 16,
-        shadowColor: "#000",
-        shadowOpacity: 0.1,
-        shadowRadius: 10,
-        shadowOffset: { width: 0, height: 5 },
         alignItems: "center",
-        marginVertical: 10,
     },
     title: {
         fontSize: 18,
         fontWeight: "600",
         marginBottom: 12,
-        color: "#333",
+        color: Colors.secondary.contrastText,
     },
     ageContainer: {
         flexDirection: "row",

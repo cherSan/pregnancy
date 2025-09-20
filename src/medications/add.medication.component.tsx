@@ -73,7 +73,7 @@ export const AddMedication = () => {
                     <List.Item>
                         <Input
                             placeholder={'Лекарство'}
-                            value={`${structure.name}`}
+                            defaultValue={`${structure.name}`}
                             onChange={e => {
                                 structure.name = (e.target as any).value
                             }}
@@ -82,7 +82,7 @@ export const AddMedication = () => {
                     <List.Item>
                         <Input
                             placeholder={'Время (12:01, 01:20, 17:30)'}
-                            value={`${structure.time}`}
+                            defaultValue={`${structure.time}`}
                             onChange={e => {
                                 structure.time = (e.target as any).value
                             }}
@@ -92,7 +92,7 @@ export const AddMedication = () => {
                         extra={
                             <Switch
                                 onChange={e => {structure.hasComment = e}}
-                                checked={structure.hasComment}
+                                defaultChecked={structure.hasComment}
                             />
                         }
                     >

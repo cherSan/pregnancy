@@ -1,37 +1,22 @@
-import {Button, Input, Tabs, View} from "@ant-design/react-native";
-import {useQuery, useRealm} from "@realm/react";
+import {Button, Input, Text} from "@ant-design/react-native";
+import {useRealm} from "@realm/react";
+import {useReactive} from "ahooks";
+import {useCallback} from "react";
+import {BSON} from "realm";
 import {MotherTemperature} from "../realms/mother-temperature.ts";
 import {MotherWeight} from "../realms/mother-weight.ts";
 import {MotherPressure} from "../realms/mother-pressure.ts";
 import {List} from "../components/list.component.tsx";
-import {useReactive} from "ahooks";
-import {useCallback} from "react";
-import {BSON} from "realm";
 
 export const MotherInformation = () => {
     const realm = useRealm();
-    
-    const tabs = [
-        { title: 'Вес' },
-        { title: 'Температура' },
-        { title: 'Давление' },
-    ];
 
     const newData = useReactive({
-        temprature: '',
+        temperature: '',
         weight: '',
         pressure: '',
     })
 
-    const temprature = useQuery(MotherTemperature)
-        .filtered('value != 0')
-        .sorted('datetime', true);
-    const wight = useQuery(MotherWeight)
-        .filtered('value != 0')
-        .sorted('datetime', true);
-    const presure = useQuery(MotherPressure)
-        .filtered('valueTop != 0 && valueBottom != 0')
-        .sorted('datetime', true);
     
     const saveWeight = useCallback(() => {
         const value = parseFloat(newData.weight);
@@ -51,7 +36,7 @@ export const MotherInformation = () => {
     }, [newData, realm]);
 
     const saveTemperature = useCallback(() => {
-        const value = parseFloat(newData.temprature);
+        const value = parseFloat(newData.temperature);
         if (isNaN(value) || !value) return;
         realm.write(() => {
             realm.create<MotherTemperature>(
@@ -62,7 +47,7 @@ export const MotherInformation = () => {
                     datetime: new Date(),
                 }
             );
-            newData.temprature = '';
+            newData.temperature = '';
         });
     }, [newData, realm]);
 
@@ -85,91 +70,45 @@ export const MotherInformation = () => {
         });
     }, [newData, realm]);
     return (
-        <Tabs tabs={tabs}>
-            <View style={{ flex: 1 }}>
-                <List>
-                    <List.Item>
-                        <Input
-                            placeholder={'Вес'}
-                            value={newData.weight}
-                            onChangeText={v => {
-                                newData.weight = v
-                            }}
-                        />
-                    </List.Item>
+        <>
+            <List>
+                <Input
+                    placeholder={'Вес'}
+                    value={newData.weight}
+                    onChangeText={v => {
+                        newData.weight = v
+                    }}
+                />
+                <List.Item>
                     <Button onPress={saveWeight}>
-                        Сохранить
+                        <Text>Сохранить</Text>
                     </Button>
-                </List>
-                <List>
-                    {
-                        wight.map((item) => (
-                            <List.Item
-                                key={item._id.toString()}
-                                extra={item.datetime.toLocaleString()}
-                            >
-                                {item.value.toString()}
-                            </List.Item>
-                        ))
-                    }
-                </List>
-            </View>
-            <View style={{ flex: 1 }}>
-                <List>
-                    <List.Item>
-                        <Input
-                            placeholder={'Температура'}
-                            value={newData.temprature}
-                            onChangeText={v => {
-                                newData.temprature = v
-                            }}
-                        />
-                    </List.Item>
-                    <Button onPress={saveTemperature}>
-                        Сохранить
-                    </Button>
-                </List>
-                <List>
-                    {
-                        temprature.map((item) => (
-                            <List.Item
-                                key={item._id.toString()}
-                                extra={item.datetime.toLocaleString()}
-                            >
-                                {item.value.toString()}
-                            </List.Item>
-                        ))
-                    }
-                </List>
-            </View>
-            <View style={{ flex: 1 }}>
-                <List>
-                    <List.Item>
-                        <Input
-                            placeholder={'Формат: 120 80'}
-                            value={newData.pressure}
-                            onChangeText={v => {
-                                newData.pressure = v
-                            }}
-                        />
-                    </List.Item>
-                    <Button onPress={savePressure}>
-                        Сохранить
-                    </Button>
-                </List>
-                <List>
-                    {
-                        presure.map((item) => (
-                            <List.Item
-                                key={item._id.toString()}
-                                extra={item.datetime.toLocaleString()}
-                            >
-                                {item.valueTop.toString()} / {item.valueBottom.toString()}
-                            </List.Item>
-                        ))
-                    }
-                </List>
-            </View>
-        </Tabs>
+                </List.Item>
+            </List>
+            <List>
+                <Input
+                    placeholder={'Температура'}
+                    value={newData.temperature}
+                    onChangeText={v => {
+                        newData.temperature = v
+                    }}
+                />
+                <Button onPress={saveTemperature}>
+                    <Text>Сохранить</Text>
+                </Button>
+            </List>
+            <List>
+                <Input
+                    placeholder={'Формат: 120 80'}
+                    value={newData.pressure}
+                    onChangeText={v => {
+                        newData.pressure = v
+                    }}
+                />
+                <Button onPress={savePressure}>
+                    <Text>Сохранить</Text>
+                </Button>
+            </List>
+        </>
     )
 }

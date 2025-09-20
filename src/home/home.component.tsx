@@ -7,7 +7,6 @@ import {PregnancyTime} from "../components/pregnancy-time.component.tsx";
 export const Home = () => {
     return (
         <View>
-            <WhiteSpace />
             <PregnancyTime />
             <WhiteSpace />
             <KicksInformation />

@@ -77,7 +77,7 @@ export const Page: FC<Props> = ({
         const top = interpolate(
             scrollY.value,
             [0, HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT],
-            [HEADER_MAX_HEIGHT - 40, 20],
+            [HEADER_MAX_HEIGHT - 20, 20],
             Extrapolation.CLAMP
         )
 
@@ -161,7 +161,6 @@ export const Page: FC<Props> = ({
             <ScrollView onScroll={onScroll}>
                 <View style={{ height: HEADER_MAX_HEIGHT }} />
                 {children}
-                <View style={{ height: 50 }} />
             </ScrollView>
         </View>
     )

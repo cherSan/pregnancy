@@ -2,8 +2,7 @@ import {useMemo} from "react";
 import {useQuery} from "@realm/react";
 import {Kick} from "../realms/kick.ts";
 import {useDate} from "../hooks/useDate.ts";
-import {Card} from "../components/card.component.tsx";
-import {Record} from "../components/record.component.tsx";
+import {List} from "../components/list.component.tsx";
 
 export const KicksInformation = () => {
     const { now } = useDate()
@@ -46,31 +45,31 @@ export const KicksInformation = () => {
     );
 
     return (
-        <Card>
-            <Record
+        <List>
+            <List.Item
                 title={'Всего толчков'}
                 extra={kicks.length.toString()}
             />
-            <Record
+            <List.Item
                 title={'Последний толчок'}
                 extra={lastKick?.datetime?.toLocaleString() || 'Не известно'}
             />
-            <Record
+            <List.Item
                 title={'За последний час'}
                 extra={recent1Kicks?.length.toString() || 'Не известно'}
             />
-            <Record
+            <List.Item
                 title={'За последние 2 часа'}
                 extra={recent2Kicks?.length.toString() || 'Не известно'}
             />
-            <Record
+            <List.Item
                 title={'За последние 12 часов'}
                 extra={recent12Kicks?.length.toString() || 'Не известно'}
             />
-            <Record
+            <List.Item
                 title={'За последние 24 часа'}
                 extra={recent24Kicks?.length.toString() || 'Не известно'}
             />
-        </Card>
+        </List>
     )
 }

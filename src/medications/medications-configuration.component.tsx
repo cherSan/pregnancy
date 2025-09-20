@@ -2,8 +2,8 @@ import {SwipeAction} from "@ant-design/react-native";
 import {useQuery, useRealm} from "@realm/react";
 import {useCallback} from "react";
 import {MedicationConfiguration as MCC} from "../realms/medication-configuration.ts";
-import {ScrollView} from "../components/scroll-view.component.tsx";
 import {List} from "../components/list.component.tsx";
+import {AddMedication} from "./add.medication.component.tsx";
 
 function formatTime(hours: number, minutes: number) {
     const hh = hours.toString().padStart(2, '0');
@@ -26,32 +26,35 @@ export const MedicationConfiguration = () => {
     }, [realm]);
 
     return (
-        <List>
-            {
-                !medicationConfiguration?.length
-                    ? <List.Item>No Data</List.Item>
-                    :  medicationConfiguration.map((mconfig) => (
-                        <SwipeAction
-                            key={mconfig._id.toString()}
-                            right={[
-                                {
-                                    text: 'Remove',
-                                    onPress: () => remove(mconfig),
-                                    backgroundColor: 'red',
-                                    color: 'white',
-                                },
-                            ]}
-                            closeOnAction
-                            closeOnTouchOutside
-                        >
-                            <List.Item
-                                extra={formatTime(mconfig.planingTimeHours, mconfig.planingTimeMinutes)}
+        <>
+            <AddMedication />
+            <List>
+                {
+                    !medicationConfiguration?.length
+                        ? <List.Item>Нема</List.Item>
+                        :  medicationConfiguration.map((mconfig) => (
+                            <SwipeAction
+                                key={mconfig._id.toString()}
+                                right={[
+                                    {
+                                        text: 'Remove',
+                                        onPress: () => remove(mconfig),
+                                        backgroundColor: 'red',
+                                        color: 'white',
+                                    },
+                                ]}
+                                closeOnAction
+                                closeOnTouchOutside
                             >
-                                {mconfig.name}
-                            </List.Item>
-                        </SwipeAction>
-                    ))
-            }
-        </List>
+                                <List.Item
+                                    title={mconfig.name}
+                                    extra={formatTime(mconfig.planingTimeHours, mconfig.planingTimeMinutes)}
+                                />
+                            </SwipeAction>
+                        ))
+                }
+            </List>
+        </>
+
     )
 }

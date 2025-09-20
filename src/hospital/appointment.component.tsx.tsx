@@ -2,13 +2,14 @@ import {FC, useCallback, useMemo} from "react";
 import {useObject, useRealm} from "@realm/react";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {StyleSheet} from "react-native";
-import {Button, Input, List, Text, TextareaItem, View} from "@ant-design/react-native";
+import {Button, Input, Text, TextareaItem} from "@ant-design/react-native";
 import {StackParamList} from "./navigation.component.tsx";
 import {Hospital} from "../realms/hospital.ts";
 import {BSON} from "realm";
 import {MotherWeight} from "../realms/mother-weight.ts";
 import {MotherPressure} from "../realms/mother-pressure.ts";
 import {MotherTemperature} from "../realms/mother-temperature.ts";
+import {List} from "../components/list.component.tsx";
 
 type Props = NativeStackScreenProps<StackParamList, 'HospitalAppointment'>;
 
@@ -155,28 +156,25 @@ export const Appointment: FC<Props> = ({ route }) => {
     if (!appointment) return null;
 
     return (
-        <View>
+        <>
             <List
-                renderHeader={'Прием'}
+                title={'Прием'}
             >
                 <List.Item
+                    title={'Время приема'}
                     extra={appointment.datetime.toLocaleString()}
-                >
-                    Время приема
-                </List.Item>
+                />
                 <List.Item
+                    title={'Доктор'}
                     extra={appointment.doctor}
-                >
-                    Доктор
-                </List.Item>
+                />
                 <List.Item
+                    title={'Клиника'}
                     extra={appointment.hospital}
-                >
-                    Клиника
-                </List.Item>
+                />
             </List>
             <List
-                renderHeader={'Q&A'}
+                title={'Q&A'}
             >
                 <List.Item>
                     {
@@ -215,7 +213,7 @@ export const Appointment: FC<Props> = ({ route }) => {
                 </List.Item>
             </List>
             <List
-                renderHeader={'Информация о маме'}
+                title={'Мама'}
             >
                 <List.Item>
                     <Input
@@ -260,7 +258,7 @@ export const Appointment: FC<Props> = ({ route }) => {
 
             </List>
             <List
-                renderHeader={'Информация о малыше'}
+                title={'Малыш'}
             >
                 <List.Item>
                     <Input
@@ -303,18 +301,18 @@ export const Appointment: FC<Props> = ({ route }) => {
                     />
                 </List.Item>
             </List>
-            <List>
-                {
-                    !appointment.isCompleted
-                        ? (
+            {
+                !appointment.isCompleted
+                    ? (
+                        <List>
                             <Button type={'primary'} onPress={finialise} style={styles.aButton}>
                                 Завершить
                             </Button>
-                        )
-                        : <></>
-                }
-            </List>
-        </View>
+                        </List>
+                    )
+                    : null
+            }
+        </>
     )
 }
 

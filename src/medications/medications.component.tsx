@@ -1,8 +1,7 @@
 import {
     Button,
     Input,
-    Text, View,
-    WhiteSpace,
+    Text,
 } from "@ant-design/react-native";
 import {FC, useCallback, useMemo} from "react";
 import {useQuery, useRealm} from "@realm/react";
@@ -65,7 +64,7 @@ export const Medications: FC<Props> = () => {
     }, [extraMedications, realm]);
 
     return (
-        <View>
+        <>
             <List>
                 {
                     medication?.length
@@ -82,26 +81,21 @@ export const Medications: FC<Props> = () => {
                         )
                 }
             </List>
-            <WhiteSpace />
             <List>
-                <List.Item>
-                    <Input
-                        placeholder={'Дополнительное лекарство'}
-                        value={`${extraMedications.name}`}
-                        onChange={e => {
-                            extraMedications.name = (e.target as any).value
-                        }}
-                    />
-                </List.Item>
-                <List.Item>
-                    <Input
-                        placeholder={'Комментарий'}
-                        value={`${extraMedications.comment}`}
-                        onChange={e => {
-                            extraMedications.comment = (e.target as any).value
-                        }}
-                    />
-                </List.Item>
+                <Input
+                    placeholder={'Дополнительное лекарство'}
+                    value={`${extraMedications.name}`}
+                    onChange={e => {
+                        extraMedications.name = (e.target as any).value
+                    }}
+                />
+                <Input
+                    placeholder={'Комментарий'}
+                    value={`${extraMedications.comment}`}
+                    onChange={e => {
+                        extraMedications.comment = (e.target as any).value
+                    }}
+                />
                 <Button
                     role={'list'}
                     type={'primary'}
@@ -110,6 +104,6 @@ export const Medications: FC<Props> = () => {
                     Принять
                 </Button>
             </List>
-        </View>
+        </>
     )
 }

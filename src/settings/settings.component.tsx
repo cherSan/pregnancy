@@ -39,13 +39,11 @@ export const Settings = () => {
 
     return (
         <List>
-            <List.Item>
-                <Input
-                    defaultValue={user.name}
-                    onChangeText={onNameChange}
-                    placeholder={'User Name'}
-                />
-            </List.Item>
+            <Input
+                defaultValue={user.name}
+                onChangeText={onNameChange}
+                placeholder={'User Name'}
+            />
             <DatePicker
                 defaultValue={user.dob}
                 precision="day"
@@ -54,7 +52,7 @@ export const Settings = () => {
                 onChange={onDOBChange}
                 format="YYYY-MM-DD"
             >
-                <List.Item arrow="horizontal">Дата рождения</List.Item>
+                <List.Item>Дата рождения</List.Item>
             </DatePicker>
             <DatePicker
                 defaultValue={user.eddate}
@@ -64,7 +62,7 @@ export const Settings = () => {
                 onChange={onEDDChange}
                 format="YYYY-MM-DD"
             >
-                <List.Item arrow="horizontal">EDD</List.Item>
+                <List.Item>EDD</List.Item>
             </DatePicker>
         </List>
     )

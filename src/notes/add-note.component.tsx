@@ -2,10 +2,11 @@ import {useReactive} from "ahooks";
 import {useCallback} from "react";
 import {BSON} from "realm";
 import {useRealm} from "@realm/react";
-import {Button, Input, List, TextareaItem} from "@ant-design/react-native";
+import {Button, Input, TextareaItem} from "@ant-design/react-native";
 import {StyleSheet} from "react-native";
 import {useNavigation} from "@react-navigation/core";
 import {Notes} from "../realms/notes.ts";
+import {List} from "../components/list.component.tsx";
 
 export const AddNote = () => {
     const realm = useRealm();
@@ -38,37 +39,31 @@ export const AddNote = () => {
 
     return (
         <List>
-            <List.Item>
-                <Input
-                    placeholder={'Заголовок'}
-                    value={`${data.title}`}
-                    onChange={e => {
-                        data.title = (e.target as any).value
-                    }}
-                />
-            </List.Item>
-            <List.Item>
-                <TextareaItem
-                    rows={4}
-                    count={5000}
-                    placeholder="Сообщение"
-                    value={`${data.comment}`}
-                    onChangeText={e => {
-                        data.comment = e;
-                    }}
-                />
-            </List.Item>
-            <List.Item>
-                <TextareaItem
-                    rows={4}
-                    count={5000}
-                    placeholder="Важно"
-                    value={`${data.important}`}
-                    onChangeText={e => {
-                        data.important = e;
-                    }}
-                />
-            </List.Item>
+            <Input
+                placeholder={'Заголовок'}
+                value={`${data.title}`}
+                onChange={e => {
+                    data.title = (e.target as any).value
+                }}
+            />
+            <TextareaItem
+                rows={4}
+                count={5000}
+                placeholder="Сообщение"
+                value={`${data.comment}`}
+                onChangeText={e => {
+                    data.comment = e;
+                }}
+            />
+            <TextareaItem
+                rows={4}
+                count={5000}
+                placeholder="Важно"
+                value={`${data.important}`}
+                onChangeText={e => {
+                    data.important = e;
+                }}
+            />
             <Button type={'primary'} onPress={onCreate} style={styles.aButton}>
                 Добавить
             </Button>

@@ -1,11 +1,12 @@
 import {StyleSheet} from "react-native";
-import {Button, DatePicker, Input, List} from "@ant-design/react-native";
+import {Button, DatePicker, Input, List as L} from "@ant-design/react-native";
 import {useReactive} from "ahooks";
 import {useCallback} from "react";
 import {BSON} from "realm";
 import {useRealm} from "@realm/react";
 import {Hospital} from "../realms/hospital.ts";
 import {useNavigation} from "@react-navigation/core";
+import {List} from "../components/list.component.tsx";
 
 export const AddAppointment = () => {
     const realm = useRealm();
@@ -48,17 +49,19 @@ export const AddAppointment = () => {
 
     return (
         <List>
-            <DatePicker
-                value={structure.datetime}
-                precision="minute"
-                minDate={new Date(2010, 11, 3)}
-                maxDate={new Date(2100, 11, 3)}
-                onChange={(e) => {
-                    structure.datetime = e
-                }}
-            >
-                <List.Item>Дата приема</List.Item>
-            </DatePicker>
+            <List.Item>
+                <DatePicker
+                    value={structure.datetime}
+                    precision="minute"
+                    minDate={new Date(2010, 11, 3)}
+                    maxDate={new Date(2100, 11, 3)}
+                    onChange={(e) => {
+                        structure.datetime = e
+                    }}
+                >
+                    <L.Item>Дата</L.Item>
+                </DatePicker>
+            </List.Item>
             <List.Item>
                 <Input
                     placeholder={'Врач'}

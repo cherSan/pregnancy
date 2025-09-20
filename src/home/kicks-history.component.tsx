@@ -1,5 +1,4 @@
 import {useQuery} from "@realm/react";
-import {Text} from "@ant-design/react-native";
 import {Kick} from "../realms/kick.ts";
 import {List} from "../components/list.component.tsx";
 
@@ -11,14 +10,10 @@ export const KicksHistory = () => {
             {
                 kicks.map((kick: Kick) => (
                     <List.Item
-                        key={kick._id.toString()}>
-                        <Text>{kick?.datetime?.toLocaleString()}</Text>
-                        {
-                            kick.comment
-                                ? <List.Item.Brief>{kick.comment}</List.Item.Brief>
-                                : null
-                        }
-                    </List.Item>
+                        key={kick._id.toString()}
+                        title={kick?.datetime?.toLocaleString()}
+                        description={kick.comment}
+                    />
                 ))
             }
         </List>

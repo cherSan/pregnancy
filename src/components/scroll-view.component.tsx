@@ -1,20 +1,26 @@
 import {ComponentProps, FC, ReactNode} from "react";
-import {StyleSheet} from "react-native";
+import {Dimensions, StyleSheet, View} from "react-native";
 import Animated from "react-native-reanimated";
 
 type Props = ComponentProps<typeof Animated.ScrollView> & {
     children: ReactNode;
 }
 
+const { height: viewportHeight } = Dimensions.get("window");
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 10,
-        gap: 20,
         backgroundColor: '#cce0f8',
+    },
+    view: {
+        flex: 1,
+        minHeight: viewportHeight + 120,
+        gap: 20,
+        paddingHorizontal: 10,
+        paddingBottom: 30,
     }
 });
-
 export const ScrollView: FC<Props> = (
     {
         children,
@@ -32,7 +38,9 @@ export const ScrollView: FC<Props> = (
             keyboardShouldPersistTaps={"always"}
             {...props}
         >
-            {children}
+            <View style={styles.view}>
+                {children}
+            </View>
         </Animated.ScrollView>
     )
 }

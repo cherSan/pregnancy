@@ -1,10 +1,10 @@
 import {FC, useCallback} from "react";
-import {Modal, SwipeAction} from "@ant-design/react-native";
+import {Icon, Modal, SwipeAction} from "@ant-design/react-native";
 import {useRealm} from "@realm/react";
-import { Text } from "react-native";
 import {Medication as MP} from "../realms/medication.ts";
 import { List } from "../components/list.component.tsx";
 import {useDate} from "../hooks/useDate.ts";
+import {Colors} from "../constants/colors.ts";
 
 type Props = {
     medication: MP;
@@ -53,24 +53,26 @@ export const Medication: FC<Props> = ({
             closeOnTouchOutside
         >
             <List.Item
-                extra={
-                    <Text
-                        style={{
-                            color: medication.realTime
-                                ? 'green'
-                                : (
+                icon={
+                    medication.realTime
+                        ? (
+                            <Icon name={'check'} color={Colors.accent.success} />
+                        )
+                        : (
+                            <Icon
+                                name={'clock-circle'}
+                                color={
                                     !medication.realTime && medication.planingTime?.getTime() < now.getTime()
-                                        ? 'red'
-                                        : undefined
-                                )
-                        }}
-                    >
-                        { medication.realTime?.toLocaleTimeString() || medication.planingTime?.toLocaleTimeString() }
-                    </Text>
+                                        ? Colors.accent.error
+                                        : Colors.accent.info
+                                }
+                            />
+                        )
                 }
-            >
-                <Text>{ medication?.name }</Text>
-            </List.Item>
+                title={medication.realTime?.toLocaleTimeString() || medication.planingTime?.toLocaleTimeString()}
+                extra={medication?.name}
+                description={medication.comment}
+            />
         </SwipeAction>
     )
 }

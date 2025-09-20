@@ -1,7 +1,8 @@
 import {StyleSheet} from "react-native";
-import {Icon, List, Text, View} from "@ant-design/react-native";
+import {Icon, Text} from "@ant-design/react-native";
 import {useQuery} from "@realm/react";
 import {Notes} from "../realms/notes.ts";
+import {List} from "../components/list.component.tsx";
 
 export const NotesHistory = () => {
     const notes = useQuery(Notes)
@@ -12,29 +13,16 @@ export const NotesHistory = () => {
             {
                 notes.map((note: Notes) => (
                     <List.Item
-                        multipleLine={true}
-                        wrap={true}
-                        key={
-                            note._id.toString()
+                        key={note._id.toString()}
+                        icon={
+                            note.important
+                                ? <Icon name="alert" color={'red'} />
+                                : null
                         }
+                        title={note.title || 'No Title'}
+                        extra={note?.datetime?.toLocaleString()}
+                        description={note.comment}
                     >
-                        <View>
-                            <View style={styles.header}>
-                                {
-                                    note.important
-                                        ? <Icon name="alert" color={'red'} />
-                                        : null
-                                }
-                                <Text style={styles.title}>
-                                    { note?.datetime?.toLocaleString() }
-                                </Text>
-                            </View>
-                            <View>
-                                <Text style={styles.title}>
-                                    { note.title || 'No Title' }
-                                </Text>
-                            </View>
-                        </View>
                         {
                             note.important
                                 ? (
@@ -44,9 +32,6 @@ export const NotesHistory = () => {
                                 )
                                 : null
                         }
-                        <List.Item.Brief>
-                            {note.comment}
-                        </List.Item.Brief>
                     </List.Item>
                 ))
             }

@@ -23,7 +23,6 @@ export const Index: FC<Props> = ({ navigation }) => {
                         <List.Item
                             key={h._id.toString()}
                             extra={h.datetime.toLocaleString()}
-                            arrow={'horizontal'}
                             onPress={() => {
                                 navigation.navigate(
                                     {
@@ -34,7 +33,7 @@ export const Index: FC<Props> = ({ navigation }) => {
                                     }
                                 )
                             }}
-                            thumb={
+                            icon={
                                 h.isCompleted
                                     ? <Icon name={'check'} color={'green'} />
                                     : (

@@ -112,7 +112,6 @@ export const PregnancyTime = () => {
 
     return (
         <Card style={styles.card}>
-            <Text style={styles.title}>Срок беременности</Text>
             <View style={styles.ageContainer}>
                 <View style={styles.ageBlock}>
                     <Text style={styles.number}>{edd.weeks}</Text>
@@ -126,7 +125,7 @@ export const PregnancyTime = () => {
                     <Text style={styles.number}>
                         {average || 'N/A' }
                     </Text>
-                    <Text style={styles.label}>сренднее нстроение</Text>
+                    <Text style={styles.label}>нстроение</Text>
                 </View>
             </View>
             <View style={styles.rate}>

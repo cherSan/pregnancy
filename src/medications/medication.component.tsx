@@ -43,7 +43,7 @@ export const Medication: FC<Props> = ({
                         {
                             text: 'Принять',
                             onPress: done,
-                            backgroundColor: 'blue',
+                            backgroundColor: Colors.accent.success,
                             color: 'white',
                         },
                     ]

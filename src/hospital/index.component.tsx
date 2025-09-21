@@ -23,6 +23,8 @@ export const Index: FC<Props> = ({ navigation }) => {
                         <List.Item
                             key={h._id.toString()}
                             extra={h.datetime.toLocaleString()}
+                            title={h.visitType}
+                            description={h.doctor}
                             onPress={() => {
                                 navigation.navigate(
                                     {
@@ -44,9 +46,6 @@ export const Index: FC<Props> = ({ navigation }) => {
                                     )
                             }
                         >
-                            <Text>
-                                {h.doctor}
-                            </Text>
                             <Text>
                                 {h.hospital}
                             </Text>

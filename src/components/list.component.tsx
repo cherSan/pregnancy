@@ -16,8 +16,8 @@ export const List: FC<Props> & { Item: typeof Record } = ({children, title}) => 
             {
                 title
                     ? (
-                        <View>
-                            <Text>{title}</Text>
+                        <View style={styles.header}>
+                            <Text style={styles.title}>{title}</Text>
                         </View>
                     )
                     : null
@@ -42,6 +42,17 @@ const styles = StyleSheet.create({
         flex: 1,
         borderColor: Colors.background.solidLight,
     },
+    header: {
+        display: "flex",
+        flexDirection: "row",
+        paddingBottom: 14,
+        justifyContent: "flex-end",
+    },
+    title: {
+        fontSize: 16,
+        fontWeight: "bold",
+        color: Colors.secondary.contrastText
+    }
 });
 
 

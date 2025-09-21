@@ -47,7 +47,13 @@ export const HeaderNotification: FC<Props> = ({
         .filtered('datetime >= $0 AND (isCompleted == false OR isCompleted == null)', now)
         .sorted('datetime', false)
         [0];
-    if (!upcoming[0] && !missed[0] && !nextHospitalVisit) return null;
+
+    if (
+        !upcoming[0]
+        && !missed[0]
+        && !nextHospitalVisit
+    ) return null;
+
     return (
         <Card style={[styles.container, animationStyle]}>
             {

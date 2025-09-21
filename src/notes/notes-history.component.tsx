@@ -8,6 +8,8 @@ export const NotesHistory = () => {
     const notes = useQuery(Notes)
         .sorted('datetime', true);
 
+    if (!notes.length) return null;
+
     return (
         <List>
             {

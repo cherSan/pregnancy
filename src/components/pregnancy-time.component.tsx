@@ -30,14 +30,8 @@ export const PregnancyTime = () => {
     }, [user?.eddate, now]);
 
 
-    const moods = useQuery(MotherMood);
-
-    const average = useMemo(() => {
-        if (!moods || moods.length === 0) return null;
-
-        const sum = moods.reduce((acc, item) => acc + item.value, 0);
-        return Number((sum / moods.length).toFixed(2));
-    }, [moods]);
+    const moods = useQuery(MotherMood)
+        .sorted('datetime', true);
 
     const onPress = useCallback((value: number) => {
         realm.write(() => {
@@ -53,60 +47,23 @@ export const PregnancyTime = () => {
     }, [realm])
 
     const stars = useMemo(() => {
-        const fullStars = average ? Math.floor(average) : 0;
-        const fraction = average ? average % 1 : 0;
-
         return Array.from({ length: 5 }, (_, i) => {
             const index = i + 1;
-
-            if (!average) {
+            if (moods[0].value && index <= moods[0].value) {
                 return (
                     <Pressable key={index} onPress={() => onPress(index)}>
-                        <Icon name="star" size={40} color="lightgray" />
+                        <Icon name="star" size={40} color="gold" />
                     </Pressable>
-                );
-            }
-
-            if (index <= fullStars) {
-                return (
-                    <Pressable key={index} onPress={() => onPress(index)}>
-                        <View style={styles.starBlock}>
-                            <Icon name="star" size={40} color="gold" />
-                        </View>
-                    </Pressable>
-                );
-            }
-
-            if (index === fullStars + 1 && fraction > 0) {
-                return (
-                    <Pressable key={index} onPress={() => onPress(index)}>
-                        <View style={styles.starBlock}>
-                            <Icon name="star" size={40} color="lightgray" />
-                            <View
-                                style={{
-                                    position: 'absolute',
-                                    left: 0,
-                                    top: 0,
-                                    overflow: "hidden",
-                                    width: `${fraction * 100}%`,
-                                }}
-                            >
-                                <Icon name="star" size={40} color="gold" />
-                            </View>
-                        </View>
-                    </Pressable>
-                );
+                )
             }
 
             return (
                 <Pressable key={index} onPress={() => onPress(index)}>
-                    <View style={styles.starBlock}>
-                        <Icon name="star" size={40} color="lightgray" />
-                    </View>
+                    <Icon name="star" size={40} color="lightgray" />
                 </Pressable>
             );
         });
-    }, [average, onPress]);
+    }, [moods, onPress]);
 
     if (!edd || !user) return null;
 
@@ -120,12 +77,6 @@ export const PregnancyTime = () => {
                 <View style={styles.ageBlock}>
                     <Text style={styles.number}>{edd.days}</Text>
                     <Text style={styles.label}>дней</Text>
-                </View>
-                <View style={styles.ageBlock}>
-                    <Text style={styles.number}>
-                        {average || 'N/A' }
-                    </Text>
-                    <Text style={styles.label}>нстроение</Text>
                 </View>
             </View>
             <View style={styles.rate}>

@@ -1,7 +1,6 @@
 import {NavigationContainer} from "@react-navigation/native";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {Icon} from "@ant-design/react-native";
-import {Settings} from "./settings/settings.component.tsx";
 import {HomeNavigation} from "./home/navigation.component.tsx";
 import {MedicationNavigation} from "./medications/navigation.component.tsx";
 import {NotesNavigation} from "./notes/navigation.component.tsx";
@@ -56,7 +55,7 @@ export const RootNavigation = () => {
                     name={'Settings'}
                     component={SettingsNavigation}
                     options={{
-                        title: 'Настройки',
+                        title: 'Информация',
                         tabBarIcon: () => <Icon name="profile" />
                     }}
                 />

@@ -3,6 +3,8 @@ import {DatePicker, Input} from "@ant-design/react-native";
 import {useQuery, useRealm} from "@realm/react";
 import {User} from "../realms/user.ts";
 import {List} from "../components/list.component.tsx";
+import {KicksInformation} from "./kicks-information.component.tsx";
+import {MedicationStatistic} from "./medications-statistic.component.tsx";
 
 export const Settings = () => {
     const realm = useRealm()
@@ -38,32 +40,36 @@ export const Settings = () => {
     }, [user, realm]);
 
     return (
-        <List>
-            <Input
-                defaultValue={user.name}
-                onChangeText={onNameChange}
-                placeholder={'User Name'}
-            />
-            <DatePicker
-                defaultValue={user.dob}
-                precision="day"
-                minDate={new Date(1980, 7, 6)}
-                maxDate={new Date(2000, 11, 3)}
-                onChange={onDOBChange}
-                format="YYYY-MM-DD"
-            >
-                <List.Item>Дата рождения</List.Item>
-            </DatePicker>
-            <DatePicker
-                defaultValue={user.eddate}
-                precision="day"
-                minDate={new Date()}
-                maxDate={new Date(2100, 11, 3)}
-                onChange={onEDDChange}
-                format="YYYY-MM-DD"
-            >
-                <List.Item>EDD</List.Item>
-            </DatePicker>
-        </List>
+        <>
+            <List>
+                <Input
+                    defaultValue={user.name}
+                    onChangeText={onNameChange}
+                    placeholder={'User Name'}
+                />
+                <DatePicker
+                    defaultValue={user.dob}
+                    precision="day"
+                    minDate={new Date(1980, 7, 6)}
+                    maxDate={new Date(2000, 11, 3)}
+                    onChange={onDOBChange}
+                    format="YYYY-MM-DD"
+                >
+                    <List.Item title="Дата рождения" />
+                </DatePicker>
+                <DatePicker
+                    defaultValue={user.eddate}
+                    precision="day"
+                    minDate={new Date()}
+                    maxDate={new Date(2100, 11, 3)}
+                    onChange={onEDDChange}
+                    format="YYYY-MM-DD"
+                >
+                    <List.Item title="EDD" />
+                </DatePicker>
+            </List>
+            <KicksInformation />
+            <MedicationStatistic />
+        </>
     )
 }

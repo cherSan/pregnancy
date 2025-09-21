@@ -1,5 +1,5 @@
 import {StyleSheet} from "react-native";
-import {Button, DatePicker, Input, List as L} from "@ant-design/react-native";
+import {Button, DatePicker, Input} from "@ant-design/react-native";
 import {useReactive} from "ahooks";
 import {useCallback} from "react";
 import {BSON} from "realm";
@@ -59,7 +59,7 @@ export const AddAppointment = () => {
                         structure.datetime = e
                     }}
                 >
-                    <L.Item>Дата</L.Item>
+                    <List.Item title="Дата" />
                 </DatePicker>
             </List.Item>
             <List.Item>

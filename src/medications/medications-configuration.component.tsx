@@ -31,13 +31,13 @@ export const MedicationConfiguration = () => {
             <List>
                 {
                     !medicationConfiguration?.length
-                        ? <List.Item>Нема</List.Item>
+                        ? <List.Item>Нет лекарств</List.Item>
                         :  medicationConfiguration.map((mconfig) => (
                             <SwipeAction
                                 key={mconfig._id.toString()}
                                 right={[
                                     {
-                                        text: 'Remove',
+                                        text: 'Убрать',
                                         onPress: () => remove(mconfig),
                                         backgroundColor: 'red',
                                         color: 'white',

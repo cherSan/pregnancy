@@ -7,7 +7,6 @@ import {MotherTemperature} from "../realms/mother-temperature.ts";
 import {MotherPressure} from "../realms/mother-pressure.ts";
 import {Colors} from "../constants/colors.ts";
 import {Card} from "./card.component.tsx";
-import {MotherMood} from "../realms/mother-mood.ts";
 
 type Prop = {
     scrollY: SharedValue<number>,
@@ -42,9 +41,11 @@ export const MotherSummary: FC<Prop> = ({
         .filtered('valueTop != 0 AND valueTop != NULL AND valueBottom != 0 AND valueBottom != NULL')
         .sorted('datetime', true);
 
-    const moods = useQuery(MotherMood)
-        .filtered('value != 0 AND value != NULL')
-        .sorted('datetime', true);
+    if (
+        !pressure.length
+        && !weight.length
+        && !temperature.length
+    ) return null;
 
     return (
         <ScrollView
@@ -81,17 +82,6 @@ export const MotherSummary: FC<Prop> = ({
                             <Text style={styles.title}>Давление</Text>
                             <Text style={styles.value}>{pressure[0].valueTop.toString()} / {pressure[0].valueBottom.toString()}</Text>
                             <Text style={styles.date}>{pressure[0].datetime.toLocaleString()}</Text>
-                        </Card>
-                    )
-                    : null
-            }
-            {
-                moods?.[0]
-                    ? (
-                        <Card style={[styles.card, cardsAnimationStyle]}>
-                            <Text style={styles.title}>Настроение</Text>
-                            <Text style={styles.value}>{moods[0].value.toString()}</Text>
-                            <Text style={styles.date}>{moods[0].datetime.toLocaleString()}</Text>
                         </Card>
                     )
                     : null

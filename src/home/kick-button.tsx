@@ -3,7 +3,7 @@ import {BSON} from "realm";
 import {useRealm} from "@realm/react";
 import LinearGradient from "react-native-linear-gradient";
 import {useReactive} from "ahooks";
-import {Animated, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Animated, StyleSheet, Text, TouchableOpacity} from "react-native";
 import {Input, WhiteSpace} from "@ant-design/react-native";
 import {Kick} from "../realms/kick.ts";
 import {Colors} from "../constants/colors.ts";
@@ -50,7 +50,7 @@ export const KickButton: React.FC<Props> = ({ title = "Толчок" }) => {
     }, [data, realm])
 
     return (
-        <View>
+        <Card>
             <Input
                 multiline={true}
                 numberOfLines={4}
@@ -83,7 +83,7 @@ export const KickButton: React.FC<Props> = ({ title = "Толчок" }) => {
                     </Animated.View>
                 </Card>
             </TouchableOpacity>
-        </View>
+        </Card>
     );
 };
 

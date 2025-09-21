@@ -44,12 +44,12 @@ HeaderActions.Action = HeaderActionButton;
 const styles = StyleSheet.create({
     button: {
         color: '#fff',
-        fontSize: 24,
+        fontSize: 20,
     },
     headerActions: {
         display: 'flex',
         flexDirection: 'row',
-        gap: 16,
+        gap: 8,
         alignItems: 'center',
         justifyContent: 'center',
         padding: 0,

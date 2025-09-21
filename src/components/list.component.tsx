@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
         backgroundColor: "transparent",
         flex: 1,
         borderColor: Colors.background.solidLight,
+        padding: 8,
     },
     header: {
         display: "flex",

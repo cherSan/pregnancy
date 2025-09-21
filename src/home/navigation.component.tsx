@@ -1,6 +1,5 @@
 import {Home} from "./home.component.tsx";
 import {KicksHistory} from "./kicks-history.component.tsx";
-import {MotherInformation} from "./mother-information.tsx";
 import {createAppStack} from "../components/create-stack-navigation.tsx";
 
 export type HomeStackParamList = {
@@ -20,22 +19,13 @@ export const HomeNavigation = createAppStack<HomeStackParamList>([
                     navigation.navigate('HomeKicks')
                 },
                 icon: 'history'
-            },
-            {
-                action: (navigation) => navigation.navigate('MotherInformation'),
-                icon: 'info-circle'
-            },
+            }
         ]
     },
     {
         name: 'HomeKicks',
         component: KicksHistory,
         title: 'История толчков',
-    },
-    {
-        name: 'MotherInformation',
-        component: MotherInformation,
-        title: 'Мама',
     }
 ])
 

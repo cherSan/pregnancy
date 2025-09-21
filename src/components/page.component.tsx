@@ -27,8 +27,12 @@ type Actions = {
 type Props = {
     children: ReactNode;
     title: string;
-    actions: Actions[];
-    headerRight: ComponentType<any>;
+    actions?: Actions[];
+    headerRight?: ComponentType<any>;
+    weight?: boolean;
+    temperature?: boolean;
+    pressure?: boolean;
+    mood?: boolean;
 };
 
 const HEADER_MAX_HEIGHT = 300;
@@ -39,6 +43,10 @@ export const Page: FC<Props> = ({
     actions = [],
     title,
     headerRight: Right,
+    weight = false,
+    temperature = false,
+    pressure = false,
+    mood = false,
 }) => {
     const navigation = useNavigation();
     
@@ -125,6 +133,10 @@ export const Page: FC<Props> = ({
                     scrollY={scrollY}
                     heightMax={HEADER_MAX_HEIGHT}
                     heightMin={HEADER_MIN_HEIGHT}
+                    t={temperature}
+                    m={mood}
+                    w={weight}
+                    p={pressure}
                 />
                 <Animated.Text style={[styles.title, nameAnimatedStyle]}>
                     { user[0] ? `Привет, ${user[0].name}` : null }
@@ -139,7 +151,7 @@ export const Page: FC<Props> = ({
                             : (
                                 <HeaderActions>
                                     {
-                                        actions.map((action) => (
+                                        actions?.map((action) => (
                                             <HeaderActions.Action
                                                 key={action.icon}
                                                 onClick={() => action.action(navigation)}

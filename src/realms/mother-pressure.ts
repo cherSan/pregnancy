@@ -5,6 +5,7 @@ export class MotherPressure extends Realm.Object<MotherPressure> {
     datetime!: Date;
     valueTop!: number;
     valueBottom!: number;
+    pulse?: number;
 
     static schema: Realm.ObjectSchema = {
         name: 'MotherPressure',
@@ -14,6 +15,7 @@ export class MotherPressure extends Realm.Object<MotherPressure> {
             datetime: 'date',
             valueTop: 'double',
             valueBottom: 'double',
+            pulse: 'int?'
         },
     };
 }

@@ -134,7 +134,6 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         color: Colors.secondary.contrastText,
         backgroundColor: 'transparent',
-        padding: 8,
 
     },
     header: {

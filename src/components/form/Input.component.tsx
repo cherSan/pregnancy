@@ -5,17 +5,36 @@ import {Text} from "@ant-design/react-native";
 
 type Props = ComponentProps<typeof TextInput> & {
     error?: string;
+    inline?: boolean;
 };
 
 export const Input: FC<Props> = ({
     error,
+    placeholder,
+    inline = false,
     ...props
 }) => {
     return (
         <View style={[styles.inputWrapper]}>
+            {
+                inline
+                    ? (
+                        <View style={styles.placeholder}>
+                            <Text
+                                style={styles.placeholderText}
+                                numberOfLines={1}
+                                ellipsizeMode="tail"
+                            >
+                                {placeholder}
+                            </Text>
+                        </View>
+                    )
+                    : null
+            }
             <TextInput
-                style={styles.input}
+                style={[styles.input, inline ? styles.inlineInput: {}]}
                 placeholderTextColor={Colors.neutral[400]}
+                placeholder={!inline ? placeholder : ''}
                 {...props}
             />
             <View style={styles.errorContainer}>
@@ -26,7 +45,24 @@ export const Input: FC<Props> = ({
 }
 
 const styles = StyleSheet.create({
+    placeholderText: {
+        textAlign: 'right',
+        color: Colors.neutral[400],
+        fontWeight: 'bold',
+    },
+    placeholder: {
+        position: 'absolute',
+        top: 10,
+        width: '46%',
+        overflow: 'hidden',
+    },
+    inlineInput: {
+        paddingLeft: '50%',
+        overflow: 'hidden',
+        width: '100%',
+    },
     inputWrapper: {
+        gap: 10,
         position: "relative",
         paddingHorizontal: 4,
         display: "flex",

@@ -20,7 +20,11 @@ export const AlertText: FC<Props> = ({
     }), [type])
 
     return (
-        <Text style={[styles.text, style]}>
+        <Text
+            style={[styles.text, style]}
+            numberOfLines={1}
+            ellipsizeMode={'tail'}
+        >
             {time ? <Text style={styles.time}>{time} : </Text> : null}
             <Text>{children}</Text>
         </Text>

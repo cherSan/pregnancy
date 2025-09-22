@@ -12,7 +12,11 @@ import {MotherMood} from "../realms/mother-mood.ts";
 
 export const PregnancyTime = () => {
     const realm = useRealm();
-    const { now } = useDate();
+    const {
+        now,
+        startOfTheDay,
+        endOfTheDay
+    } = useDate();
     const users = useQuery(User);
     const user = users[0];
     const edd = useMemo(() => {
@@ -31,6 +35,7 @@ export const PregnancyTime = () => {
 
 
     const moods = useQuery(MotherMood)
+        .filtered('datetime >= $0 && datetime <= $1', startOfTheDay, endOfTheDay)
         .sorted('datetime', true);
 
     const onPress = useCallback((value: number) => {
@@ -49,7 +54,7 @@ export const PregnancyTime = () => {
     const stars = useMemo(() => {
         return Array.from({ length: 5 }, (_, i) => {
             const index = i + 1;
-            if (moods[0].value && index <= moods[0].value) {
+            if (moods[0]?.value && index <= moods[0]?.value) {
                 return (
                     <Pressable key={index} onPress={() => onPress(index)}>
                         <Icon name="star" size={40} color="gold" />

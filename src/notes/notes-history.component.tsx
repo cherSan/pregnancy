@@ -23,13 +23,13 @@ export const NotesHistory = () => {
                         }
                         title={note.title || 'No Title'}
                         extra={note?.datetime?.toLocaleString()}
-                        description={note.comment}
+                        description={note.important}
                     >
                         {
-                            note.important
+                            note.comment
                                 ? (
                                     <Text style={styles.import}>
-                                        {note.important}
+                                        {note.comment}
                                     </Text>
                                 )
                                 : null

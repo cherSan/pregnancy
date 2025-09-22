@@ -1,4 +1,4 @@
-import {FC, useMemo, useCallback} from "react";
+import {FC, useMemo, useCallback, useRef} from "react";
 import { useObject, useRealm } from "@realm/react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Button } from "@ant-design/react-native";
@@ -160,10 +160,11 @@ export const Appointment: FC<Props> = ({ route }) => {
             });
         }
     });
-
+    const timeout = useRef<number>(null);
     const handleChange = useCallback((field: keyof typeof formik.values) => (ev: string) => {
         formik.handleChange(field)(ev);
-        return setTimeout(formik.submitForm, 1000);
+        if (timeout.current !== null) clearTimeout(timeout.current)
+        timeout.current = setTimeout(formik.submitForm, 300);
     }, [formik]);
 
     const finialise = useCallback(() => {
@@ -184,7 +185,7 @@ export const Appointment: FC<Props> = ({ route }) => {
                 <List.Item title="Тип визита" extra={formik.values.visitType} />
             </List>
 
-            <List title="Q&A">
+            <List title="Вопросы и Рекомендации">
                 <Textarea
                     placeholder="Вопросы"
                     minRows={4}
@@ -209,6 +210,7 @@ export const Appointment: FC<Props> = ({ route }) => {
 
             <List title="Мама">
                 <Input
+                    inline={true}
                     placeholder="Вес мамы"
                     keyboardType="numeric"
                     value={`${formik.values.motherWeight}`}
@@ -218,6 +220,7 @@ export const Appointment: FC<Props> = ({ route }) => {
                     editable={!appointment.isCompleted}
                 />
                 <Input
+                    inline={true}
                     placeholder="Давление верхнее"
                     keyboardType="numeric"
                     value={`${formik.values.motherPressureTop}`}
@@ -227,6 +230,7 @@ export const Appointment: FC<Props> = ({ route }) => {
                     editable={!appointment.isCompleted}
                 />
                 <Input
+                    inline={true}
                     placeholder="Давление нижнее"
                     keyboardType="numeric"
                     value={`${formik.values.motherPressureBottom}`}
@@ -236,6 +240,7 @@ export const Appointment: FC<Props> = ({ route }) => {
                     editable={!appointment.isCompleted}
                 />
                 <Input
+                    inline={true}
                     placeholder="Пульс"
                     keyboardType="numeric"
                     value={`${formik.values.motherPulse}`}
@@ -245,6 +250,7 @@ export const Appointment: FC<Props> = ({ route }) => {
                     editable={!appointment.isCompleted}
                 />
                 <Input
+                    inline={true}
                     placeholder="Температура"
                     keyboardType="numeric"
                     value={`${formik.values.motherTemperature}`}
@@ -257,6 +263,7 @@ export const Appointment: FC<Props> = ({ route }) => {
 
             <List title="Малыш">
                 <Input
+                    inline={true}
                     placeholder="Вес ребенка"
                     keyboardType="numeric"
                     value={`${formik.values.babyWeight}`}
@@ -266,6 +273,7 @@ export const Appointment: FC<Props> = ({ route }) => {
                     editable={!appointment.isCompleted}
                 />
                 <Input
+                    inline={true}
                     placeholder="Размер ребенка"
                     keyboardType="numeric"
                     value={`${formik.values.babySize}`}
@@ -275,6 +283,7 @@ export const Appointment: FC<Props> = ({ route }) => {
                     editable={!appointment.isCompleted}
                 />
                 <Input
+                    inline={true}
                     placeholder="Размер головы"
                     keyboardType="numeric"
                     value={`${formik.values.babyHeadSize}`}
@@ -284,6 +293,7 @@ export const Appointment: FC<Props> = ({ route }) => {
                     editable={!appointment.isCompleted}
                 />
                 <Input
+                    inline={true}
                     placeholder="Сердцебиение"
                     keyboardType="numeric"
                     value={`${formik.values.babyHeartBeat}`}

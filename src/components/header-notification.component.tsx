@@ -62,22 +62,24 @@ export const HeaderNotification: FC<Props> = ({
                         <AlertText
                             time={upcoming[0]?.planingTime.toLocaleString()}
                         >
-                            Лекарство: {upcoming[0]?.name}
+                            Запланирован прием {upcoming[0]?.name}
                         </AlertText>
                     )
                     : null
             }
             {
-                missed[0]
-                    ? (
+                Array.from({ length: Math.min(missed.length, 2)}).map((_, i) => {
+                    const item = missed[i];
+                    return (
                         <AlertText
-                            time={missed[0]?.planingTime.toLocaleString()}
+                            key={item._id.toString()}
+                            time={item?.planingTime.toLocaleString()}
                             type={'error'}
                         >
-                            Пропущено лекарство: {missed[0]?.name}
+                            Пропущен прием {item.name}
                         </AlertText>
                     )
-                    : null
+                })
             }
             {
                 nextHospitalVisit
@@ -99,7 +101,7 @@ const styles = StyleSheet.create({
         position: "absolute",
         right: 10,
         left: 10,
-        top: 170,
+        top: 160,
         display: "flex",
         justifyContent: "center",
         gap: 4,

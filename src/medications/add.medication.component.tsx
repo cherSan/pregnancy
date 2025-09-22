@@ -50,14 +50,16 @@ export const AddMedication = () => {
         <List>
             <Input
                 placeholder={'Лекарство'}
-                defaultValue={`${structure.name}`}
-                onChange={e => {
-                    structure.name = (e.target as any).value
+                status={!structure.name ? 'error' : undefined}
+                value={structure.name || ''}
+                onChangeText={e => {
+                    structure.name = e
                 }}
             />
             <Input
                 placeholder={'Время (12.01, 01.20, 17.30)'}
-                defaultValue={`${structure.time}`}
+                value={structure.time}
+                status={!structure.time ? 'error' : undefined}
                 keyboardType={'numeric'}
                 onChangeText={e => {
                     structure.time = e

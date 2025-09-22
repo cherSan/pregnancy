@@ -2,15 +2,16 @@ import {FC, useCallback, useMemo} from "react";
 import {useObject, useRealm} from "@realm/react";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {StyleSheet} from "react-native";
-import {Button, Text, TextareaItem} from "@ant-design/react-native";
+import {Button, Text} from "@ant-design/react-native";
+import {BSON} from "realm";
 import {StackParamList} from "./navigation.component.tsx";
 import {Hospital} from "../realms/hospital.ts";
-import {BSON} from "realm";
 import {MotherWeight} from "../realms/mother-weight.ts";
 import {MotherPressure} from "../realms/mother-pressure.ts";
 import {MotherTemperature} from "../realms/mother-temperature.ts";
 import {List} from "../components/list.component.tsx";
 import {Input} from "../components/form/Input.component.tsx";
+import {Textarea} from "../components/form/Textarea.component.tsx";
 
 type Props = NativeStackScreenProps<StackParamList, 'HospitalAppointment'>;
 
@@ -183,9 +184,10 @@ export const Appointment: FC<Props> = ({ route }) => {
                             <List.Item><Text>Q: {appointment.questions?.[0]}</Text></List.Item>
                         )
                         : (
-                            <TextareaItem
-                                rows={4}
-                                count={5000}
+                            <Textarea
+                                minRows={4}
+                                maxLength={5000}
+                                showCount={true}
                                 placeholder="Вопросы"
                                 defaultValue={appointment.questions?.[0] ?? ''}
                                 onChangeText={questions}
@@ -198,10 +200,11 @@ export const Appointment: FC<Props> = ({ route }) => {
                             <List.Item><Text>A: {appointment.recommendations}</Text></List.Item>
                         )
                         : (
-                            <TextareaItem
-                                rows={4}
+                            <Textarea
+                                minRows={4}
+                                maxLength={5000}
+                                showCount={true}
                                 disabled={appointment.isCompleted}
-                                count={5000}
                                 placeholder="Рекомендация"
                                 defaultValue={appointment.recommendations ?? ''}
                                 onChangeText={recommendation}

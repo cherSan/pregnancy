@@ -1,10 +1,11 @@
-import {FC} from "react";
+import {FC, useCallback} from "react";
 import {useNavigation} from "@react-navigation/core";
 import {Icon, Text} from "@ant-design/react-native";
 import { List } from "./list.component";
 import {Hospital} from "../realms/hospital.ts";
 import {Colors} from "../constants/colors.ts";
 import {useDate} from "../hooks/useDate.ts";
+import {useRealm} from "@realm/react";
 
 type Props = {
     appointment: Hospital;
@@ -15,10 +16,29 @@ export const AppointmentRecord: FC<Props> = ({
 }) => {
     const {now} = useDate();
 
-    const navigation = useNavigation<any>()
+    const realm = useRealm();
+
+    const navigation = useNavigation<any>();
+
+    const remove = useCallback(() => {
+        realm.write(() => {
+            realm.delete(appointment)
+        });
+    }, [realm, appointment]);
     
     return (
         <List.Item
+            actions={{
+                right: !appointment.isCompleted
+                    ? [
+                        {
+                            text: 'Отменить запись',
+                            backgroundColor: Colors.accent.error,
+                            onPress: remove
+                        }
+                    ]
+                    : undefined
+            }}
             key={appointment._id.toString()}
             extra={appointment.datetime.toLocaleString()}
             title={appointment.visitType}

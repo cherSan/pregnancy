@@ -1,15 +1,65 @@
 import {StyleSheet, TextInput, View} from "react-native";
-import {ComponentProps, FC} from "react";
+import {ComponentProps, FC, useMemo, useState} from "react";
 import {Colors} from "../../constants/colors.ts";
 
-type Props = ComponentProps<typeof TextInput>;
+type Props = ComponentProps<typeof TextInput> & {
+    status?: 'error' | 'success' | 'info' | 'warning';
+};
 
-export const Input: FC<Props> = (props) => {
+export const Input: FC<Props> = ({
+    status,
+    onChangeText,
+    ...props
+}) => {
+    const [touched, setTouched] = useState(false);
+    
+    const color = useMemo(() => {
+        if (!touched) return {}
+        const tmp = {
+            borderRightWidth: 4,
+            boxSizing: 'border-box',
+        }
+
+        switch (status) {
+
+            case "error":
+                return {
+                    ...tmp,
+                    borderLeftColor: Colors.accent.error,
+                };
+            case "success":
+                return {
+                    ...tmp,
+                    borderLeftColor: Colors.accent.success,
+                };
+            case "info":
+                return {
+                    ...tmp,
+                    borderLeftColor: Colors.accent.info,
+                };
+            case "warning":
+                return {
+                    ...tmp,
+                    borderLeftColor: Colors.accent.warning,
+                };
+            default:
+                return {}
+        }
+    }, [status, touched]);
+
     return (
-        <View style={styles.inputWrapper}>
+        <View style={[styles.inputWrapper]}>
             <TextInput
-                style={styles.input}
+                style={[styles.input, color]}
                 {...props}
+                onBlur={(e) => {
+                    setTouched(true);
+                    props.onBlur?.(e);
+                }}
+                onChangeText={e => {
+                    setTouched(false);
+                    onChangeText?.(e);
+                }}
             />
         </View>
     )

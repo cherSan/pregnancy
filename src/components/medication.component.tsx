@@ -64,8 +64,8 @@ export const Medication: FC<Props> = ({
                         />
                     )
             }
-            title={medication.realTime?.toLocaleTimeString() || medication.planingTime?.toLocaleTimeString()}
-            extra={medication?.name}
+            title={medication?.name || '-'}
+            extra={medication.realTime?.toLocaleTimeString() || medication.planingTime?.toLocaleTimeString() || '-'}
             description={medication.comment}
         />
     )

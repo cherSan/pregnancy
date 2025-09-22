@@ -2,7 +2,7 @@ import {
     Button,
     Text,
 } from "@ant-design/react-native";
-import {FC, useCallback, useMemo} from "react";
+import {FC, useCallback} from "react";
 import {useQuery, useRealm} from "@realm/react";
 import {Medication as MP} from "../realms/medication.ts";
 import {useReactive} from "ahooks";
@@ -71,6 +71,7 @@ export const Medications: FC<Props> = () => {
                 <Input
                     placeholder={'Дополнительное лекарство'}
                     value={`${extraMedications.name}`}
+                    status={!extraMedications.name ? "error" : undefined}
                     onChangeText={e => {
                         extraMedications.name = e
                     }}

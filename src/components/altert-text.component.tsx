@@ -29,7 +29,7 @@ export const AlertText: FC<Props> = ({
 
 const styles = StyleSheet.create({
     text: {
-        fontSize: 10,
+        fontSize: 11,
     },
     time: {
         fontWeight: 'bold',

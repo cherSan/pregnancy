@@ -57,17 +57,6 @@ export const HeaderNotification: FC<Props> = ({
     return (
         <Card style={[styles.container, animationStyle]}>
             {
-                upcoming[0]
-                    ? (
-                        <AlertText
-                            time={upcoming[0]?.planingTime.toLocaleString()}
-                        >
-                            Запланирован прием {upcoming[0]?.name}
-                        </AlertText>
-                    )
-                    : null
-            }
-            {
                 Array.from({ length: Math.min(missed.length, 2)}).map((_, i) => {
                     const item = missed[i];
                     return (
@@ -80,6 +69,17 @@ export const HeaderNotification: FC<Props> = ({
                         </AlertText>
                     )
                 })
+            }
+            {
+                upcoming[0]
+                    ? (
+                        <AlertText
+                            time={upcoming[0]?.planingTime.toLocaleString()}
+                        >
+                            Запланирован прием {upcoming[0]?.name}
+                        </AlertText>
+                    )
+                    : null
             }
             {
                 nextHospitalVisit

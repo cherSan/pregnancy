@@ -1,5 +1,5 @@
 import {useQuery, useRealm} from "@realm/react";
-import {Button, Text} from "@ant-design/react-native";
+import {Button} from "@ant-design/react-native";
 import {useCallback} from "react";
 import {BSON} from "realm";
 import {useFormik} from "formik";
@@ -13,13 +13,19 @@ const PressureSchema = Yup.object().shape({
     valueTop: Yup.number()
         .typeError("Введите число")
         .integer("Должно быть целое")
+        .max(300, 'Меньше 300')
+        .min(40, 'Больше 40')
         .required("Обязательное поле"),
     valueBottom: Yup.number()
         .typeError("Введите число")
         .integer("Должно быть целое")
+        .max(300, 'Меньше 300')
+        .min(40, 'Больше 40')
         .required("Обязательное поле"),
     pulse: Yup.number()
         .typeError("Введите число")
+        .max(300, 'Меньше 300')
+        .min(40, 'Больше 40')
         .integer("Должно быть целое"),
 });
 

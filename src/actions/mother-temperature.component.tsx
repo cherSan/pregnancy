@@ -1,7 +1,7 @@
 import {useQuery, useRealm} from "@realm/react";
 import {useCallback} from "react";
 import {BSON} from "realm";
-import {Button, Text} from "@ant-design/react-native";
+import {Button} from "@ant-design/react-native";
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import {Page} from "../components/page.component";
@@ -12,7 +12,7 @@ import {Input} from "../components/form/Input.component.tsx";
 const TemperatureSchema = Yup.object().shape({
     value: Yup.number()
         .typeError("Введите число")
-        .min(30, "Температура не может быть ниже 20°C")
+        .min(30, "Температура не может быть ниже 30°C")
         .max(50, "Температура не может быть выше 50°C")
         .required("Обязательное поле"),
 });

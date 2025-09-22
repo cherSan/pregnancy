@@ -1,8 +1,7 @@
 import {useQuery, useRealm} from "@realm/react";
 import {useCallback} from "react";
 import {BSON} from "realm";
-import {Button, Text} from "@ant-design/react-native";
-import {View} from "react-native";
+import {Button} from "@ant-design/react-native";
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import {Page} from "../components/page.component";

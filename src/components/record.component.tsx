@@ -236,6 +236,7 @@ const styles = StyleSheet.create({
         gap: 6,
         flexDirection: "column",
         backgroundColor: 'transparent',
+        overflow: "hidden",
     },
     headerDataRow: {
         display: "flex",
@@ -245,17 +246,24 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         alignItems: "center",
         backgroundColor: 'transparent',
-        flexWrap: "wrap",
+        overflow: "hidden",
+        maxWidth: '100%'
     },
     title: {
         fontWeight: "bold",
         color: Colors.secondary.contrastText,
         backgroundColor: 'transparent',
+        flex: 1,
+        flexWrap: "wrap",
+        flexShrink: 1,
     },
     extra: {
         fontWeight: "bold",
         color: Colors.secondary.default,
         backgroundColor: 'transparent',
+        justifyContent: "flex-end",
+        textAlign: 'right',
+        minWidth: 30,
     },
     description: {
         color: Colors.neutral[600],

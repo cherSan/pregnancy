@@ -8,8 +8,8 @@ export const MedicationStatistic = () => {
         .sorted('realTime', true)
     const agregation = useMemo(() => {
         return Object.entries(medications.reduce((acc, med) => {
-            if (!acc[med.name]) acc[med.name] = [];
-            acc[med.name].push(med)
+            if (!acc[med.name.toUpperCase().trim()]) acc[med.name.toUpperCase().trim()] = [];
+            acc[med.name.toUpperCase().trim()].push(med)
             return acc;
         }, {} as Record<string, MP[]>));
     }, [medications]);

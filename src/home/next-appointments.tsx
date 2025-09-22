@@ -3,6 +3,7 @@ import {Icon, Text} from "@ant-design/react-native";
 import {useDate} from "../hooks/useDate.ts";
 import {List} from "../components/list.component.tsx";
 import {Hospital} from "../realms/hospital.ts";
+import {AppointmentRecord} from "../components/appointment-record.component.tsx";
 
 
 export const NextAppointments = () => {
@@ -22,29 +23,12 @@ export const NextAppointments = () => {
         >
             {
                 Array.from({ length: Math.min(3, nextHospitalVisits.length) }, (_, i) => {
-                    const h = nextHospitalVisits[i];
+                    const hv = nextHospitalVisits[i];
                     return (
-                        <List.Item
-                            key={h._id.toString()}
-                            extra={h.datetime.toLocaleString()}
-                            icon={
-                                h.isCompleted
-                                    ? <Icon name={'check'} color={'green'} />
-                                    : (
-                                        <Icon
-                                            name={'clock-circle'}
-                                            color={now.getTime() > h.datetime.getTime() ? 'red' : undefined}
-                                        />
-                                    )
-                            }
-                        >
-                            <Text>
-                                {h.doctor}
-                            </Text>
-                            <Text>
-                                {h.hospital}
-                            </Text>
-                        </List.Item>
+                        <AppointmentRecord
+                            key={hv._id.toString()}
+                            appointment={hv}
+                        />
                     )
                 })
             }

@@ -1,9 +1,9 @@
 import {Children, FC, ReactElement} from "react";
-import {Card} from "./card.component.tsx";
+import {Text} from "@ant-design/react-native";
 import {StyleSheet, View} from "react-native";
+import {Card} from "./card.component.tsx";
 import {Colors} from "../constants/colors.ts";
 import {Record} from "./record.component.tsx";
-import {Text} from "@ant-design/react-native";
 
 type Props = {
     title?: string;
@@ -41,7 +41,6 @@ const styles = StyleSheet.create({
         backgroundColor: "transparent",
         flex: 1,
         borderColor: Colors.background.solidLight,
-        padding: 8,
     },
     header: {
         display: "flex",

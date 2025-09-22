@@ -4,6 +4,7 @@ import {useCallback} from "react";
 import {MedicationConfiguration as MCC} from "../realms/medication-configuration.ts";
 import {List} from "../components/list.component.tsx";
 import {AddMedication} from "./add.medication.component.tsx";
+import {Colors} from "../constants/colors.ts";
 
 function formatTime(hours: number, minutes: number) {
     const hh = hours.toString().padStart(2, '0');
@@ -33,24 +34,20 @@ export const MedicationConfiguration = () => {
                     !medicationConfiguration?.length
                         ? <List.Item>Нет лекарств</List.Item>
                         :  medicationConfiguration.map((mconfig) => (
-                            <SwipeAction
+                            <List.Item
                                 key={mconfig._id.toString()}
-                                right={[
-                                    {
-                                        text: 'Убрать',
-                                        onPress: () => remove(mconfig),
-                                        backgroundColor: 'red',
-                                        color: 'white',
-                                    },
-                                ]}
-                                closeOnAction
-                                closeOnTouchOutside
-                            >
-                                <List.Item
-                                    title={mconfig.name}
-                                    extra={formatTime(mconfig.planingTimeHours, mconfig.planingTimeMinutes)}
-                                />
-                            </SwipeAction>
+                                actions={{
+                                    right: [
+                                        {
+                                            text: 'Убрать',
+                                            onPress: () => remove(mconfig),
+                                            backgroundColor: Colors.accent.error,
+                                        },
+                                    ]
+                                }}
+                                title={mconfig.name}
+                                extra={formatTime(mconfig.planingTimeHours, mconfig.planingTimeMinutes)}
+                            />
                         ))
                 }
             </List>

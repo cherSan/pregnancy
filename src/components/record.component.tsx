@@ -1,5 +1,6 @@
-import {FC, ReactNode} from "react";
-import {StyleSheet, View, Text} from "react-native";
+import {ComponentProps, FC, ReactNode, useMemo} from "react";
+import {StyleSheet, View, Text, StyleProp, TextStyle} from "react-native";
+import {Icon, SwipeAction, SwipeoutButtonProps} from "@ant-design/react-native";
 import {Pressable} from "react-native-gesture-handler";
 import {Colors} from "../constants/colors.ts";
 
@@ -10,6 +11,8 @@ type Props = {
     extra?: string | ReactNode;
     children?: ReactNode;
     onPress?: () => void;
+    arrow?: boolean;
+    actions?: ComponentProps<typeof SwipeAction>;
 }
 
 export const Record: FC<Props> = ({
@@ -18,35 +21,35 @@ export const Record: FC<Props> = ({
     icon,
     extra,
     children,
-    onPress = () => {},
+    onPress,
+    arrow = false,
+    actions
 }) => {
-    if (
-        !title
-        && !description
-        && !icon
-        && !extra
-        && !children
-    ) return null;
+    const content = useMemo(() => {
+        if (
+            !title
+            && !description
+            && !icon
+            && !extra
+            && !children
+        ) return null;
 
-    if (
-        !title
-        && !description
-        && !icon
-        && !extra
-    ) return (
-        <Pressable style={styles.container} onPress={onPress}>
+        if (
+            !title
+            && !description
+            && !icon
+            && !extra
+        ) return (
             <View style={styles.content}>
                 {children}
             </View>
-        </Pressable>
-    )
+        );
 
-    if (
-        !title
-        && !description
-        && !extra
-    ) return (
-        <Pressable style={styles.container} onPress={onPress}>
+        if (
+            !title
+            && !description
+            && !extra
+        ) return (
             <View
                 style={styles.header}
             >
@@ -59,82 +62,162 @@ export const Record: FC<Props> = ({
                     {children}
                 </View>
             </View>
-        </Pressable>
-    )
+        );
 
-    return (
-        <Pressable style={styles.container} onPress={onPress}>
-            <View
-                style={styles.header}
-            >
-                {
-                    icon
-                        ? (
-                            <View
-                                style={styles.icon}
-                            >
-                                { icon }
-                            </View>
-                        )
-                        : null
-                }
-                {
-                    title || extra || description
-                        ? (
-                            <View
-                                style={styles.headerData}
-                            >
+        return (
+            <View style={styles.mainContent}>
+                <View
+                    style={styles.header}
+                >
+                    {
+                        icon
+                            ? (
                                 <View
-                                    style={styles.headerDataRow}
+                                    style={styles.icon}
                                 >
-                                    {title ? <Text style={styles.title}>{title}</Text> : null}
+                                    { icon }
+                                </View>
+                            )
+                            : null
+                    }
+                    {
+                        title || extra || description
+                            ? (
+                                <View
+                                    style={styles.headerData}
+                                >
+                                    <View
+                                        style={styles.headerDataRow}
+                                    >
+                                        {title ? <Text style={styles.title}>{title}</Text> : null}
+                                        {
+                                            extra
+                                                ? (
+                                                    typeof extra === 'string'
+                                                        ? <Text style={styles.extra}>{extra}</Text>
+                                                        : extra
+                                                )
+                                                : null
+                                        }
+                                    </View>
                                     {
-                                        extra
+                                        description
                                             ? (
-                                                typeof extra === 'string'
-                                                    ? <Text style={styles.extra}>{extra}</Text>
-                                                    : extra
+                                                <View>
+                                                    <Text style={styles.description}>
+                                                        {description}
+                                                    </Text>
+                                                </View>
                                             )
                                             : null
                                     }
                                 </View>
-                                {
-                                    description
-                                        ? (
-                                            <View>
-                                                <Text style={styles.description}>
-                                                    {description}
-                                                </Text>
-                                            </View>
-                                        )
-                                        : null
-                                }
+                            )
+                            : null
+                    }
+                    {
+                        arrow ? <View style={styles.arrow}><Icon name={"right"} /></View> : null
+                    }
+                </View>
+                {
+                    children
+                        ? (
+                            <View style={styles.content}>
+                                {children}
                             </View>
                         )
                         : null
                 }
             </View>
-            {
-                children
-                    ? (
-                        <View style={styles.content}>
-                            {children}
-                        </View>
-                    )
-                    : null
-            }
-        </Pressable>
-    )
+        );
+    }, [arrow, children, description, extra, icon, title]);
+
+    const pressable = useMemo(() => {
+        if (!content) return null;
+        return onPress
+            ? (
+                <Pressable style={styles.container} onPress={onPress}>
+                    {content}
+                </Pressable>
+            )
+            : (
+                <View style={styles.container}>
+                    {content}
+                </View>
+            );
+    }, [content, onPress]);
+    
+    const styledActions = useMemo<ComponentProps<typeof SwipeAction> | null>(() => {
+        if (!actions) return null;
+
+        const mainStyles: StyleProp<TextStyle> = {
+            paddingHorizontal: 12,
+            paddingVertical: 0,
+            display: 'flex',
+            justifyContent: 'center',
+            margin: 0,
+            fontSize: 14,
+            shadowColor: Colors.secondary.contrastText,
+            textShadowOffset: { width: 1, height: 1 },
+            textShadowRadius: 1,
+        }
+
+        return {
+            ...actions,
+            right: actions.right?.map<SwipeoutButtonProps>(button => ({
+                ...button,
+                style: {
+                    ...mainStyles,
+                    ...StyleSheet.flatten(button.style),
+                }
+            })),
+            left: actions.left?.map<SwipeoutButtonProps>(button => ({
+                ...button,
+                style: {
+                    ...mainStyles,
+                    ...StyleSheet.flatten(button.style),
+                }
+            }))
+        }
+    }, [actions])
+
+    if (!pressable) return null;
+
+    return styledActions
+        ? (
+            <SwipeAction
+                closeOnAction={true}
+                closeOnTouchOutside={true}
+                useNativeAnimations={true}
+                {...styledActions}
+            >
+                {pressable}
+            </SwipeAction>
+        )
+        : pressable
 }
 
 const styles = StyleSheet.create({
     container: {
         display: "flex",
         flex: 1,
+        flexDirection: "row",
+        color: Colors.secondary.contrastText,
+        backgroundColor: 'transparent',
+        alignItems: "center",
+        padding: 8
+    },
+    arrow: {
+        width: 30,
+        paddingLeft: 8,
+        backgroundColor: 'transparent',
+    },
+    mainContent: {
+        display: "flex",
+        flex: 1,
         flexDirection: "column",
         color: Colors.secondary.contrastText,
         backgroundColor: 'transparent',
-
     },
     header: {
         display: "flex",
@@ -144,6 +227,7 @@ const styles = StyleSheet.create({
     },
     icon: {
         width: 30,
+        paddingRight: 8,
         backgroundColor: 'transparent',
     },
     headerData: {

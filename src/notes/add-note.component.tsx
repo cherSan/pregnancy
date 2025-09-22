@@ -2,11 +2,12 @@ import {useReactive} from "ahooks";
 import {useCallback} from "react";
 import {BSON} from "realm";
 import {useRealm} from "@realm/react";
-import {Button, Input, TextareaItem} from "@ant-design/react-native";
+import {Button, TextareaItem} from "@ant-design/react-native";
 import {StyleSheet} from "react-native";
 import {useNavigation} from "@react-navigation/core";
 import {Notes} from "../realms/notes.ts";
 import {List} from "../components/list.component.tsx";
+import {Input} from "../components/form/Input.component.tsx";
 
 export const AddNote = () => {
     const realm = useRealm();
@@ -41,9 +42,11 @@ export const AddNote = () => {
         <List>
             <Input
                 placeholder={'Заголовок'}
-                value={`${data.title}`}
-                onChange={e => {
-                    data.title = (e.target as any).value
+                value={data.title}
+                autoCapitalize="characters"
+                maxLength={50}
+                onChangeText={e => {
+                    data.title = e
                 }}
             />
             <TextareaItem

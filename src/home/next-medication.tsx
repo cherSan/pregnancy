@@ -1,10 +1,10 @@
 import {useQuery, useRealm} from "@realm/react";
-import {Icon, Modal, SwipeAction} from "@ant-design/react-native";
+import {Modal} from "@ant-design/react-native";
 import {useCallback} from "react";
-import {Medication} from "../realms/medication.ts";
+import {Medication as Med} from "../realms/medication.ts";
 import {useDate} from "../hooks/useDate.ts";
-import {Colors} from "../constants/colors.ts";
 import {List} from "../components/list.component.tsx";
+import {Medication} from "../components/medication.component.tsx";
 
 
 export const NextMedication = () => {
@@ -14,12 +14,12 @@ export const NextMedication = () => {
         startOfTheDay,
     } = useDate();
 
-    const upcoming = useQuery(Medication)
+    const upcoming = useQuery(Med)
         .filtered('planingTime >= $0 AND planingTime <= $1 AND realTime = NULL', startOfTheDay, endOfTheDay)
         .sorted('planingTime', false);
 
     const realm = useRealm();
-    const done = useCallback((medication: Medication) => {
+    const done = useCallback((medication: Med) => {
         realm.write(() => {
             medication.realTime = new Date();
         });
@@ -48,44 +48,10 @@ export const NextMedication = () => {
             {
                 upcoming.map((medication) => {
                     return (
-                        <SwipeAction
-                            right={
-                                !medication.realTime
-                                    ? [
-                                        {
-                                            text: 'Принять',
-                                            onPress: () => done(medication),
-                                            backgroundColor: Colors.accent.success,
-                                            color: 'white',
-                                        },
-                                    ]
-                                    : undefined
-                            }
-                            closeOnAction
-                            closeOnTouchOutside
-                        >
-                            <List.Item
-                                icon={
-                                    medication.realTime
-                                        ? (
-                                            <Icon name={'check'} color={Colors.accent.success} />
-                                        )
-                                        : (
-                                            <Icon
-                                                name={'clock-circle'}
-                                                color={
-                                                    !medication.realTime && medication.planingTime?.getTime() < now.getTime()
-                                                        ? Colors.accent.error
-                                                        : Colors.accent.info
-                                                }
-                                            />
-                                        )
-                                }
-                                title={medication.realTime?.toLocaleTimeString() || medication.planingTime?.toLocaleTimeString()}
-                                extra={medication?.name}
-                                description={medication.comment}
-                            />
-                        </SwipeAction>
+                        <Medication
+                            key={medication._id.toString()}
+                            medication={medication}
+                        />
                     )
                 })
             }

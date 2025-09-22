@@ -6,6 +6,7 @@ import {StackParamList} from './navigation.component.tsx';
 import {List} from "../components/list.component.tsx";
 import {Hospital} from "../realms/hospital.ts";
 import {useDate} from "../hooks/useDate.ts";
+import {Colors} from "../constants/colors.ts";
 
 type Props = NativeStackScreenProps<StackParamList, 'HospitalAppointments'>;
 
@@ -37,11 +38,15 @@ export const Index: FC<Props> = ({ navigation }) => {
                             }}
                             icon={
                                 h.isCompleted
-                                    ? <Icon name={'check'} color={'green'} />
+                                    ? <Icon name={'check'} color={Colors.accent.success} />
                                     : (
                                         <Icon
                                             name={'clock-circle'}
-                                            color={now.getTime() > h.datetime.getTime() ? 'red' : undefined}
+                                            color={
+                                                now.getTime() > h.datetime.getTime()
+                                                    ? Colors.accent.error
+                                                    : Colors.accent.info
+                                            }
                                         />
                                     )
                             }

@@ -21,6 +21,7 @@ export const MotherWeight = ({ props }: any) => {
     const saveWeight = useCallback(() => {
         const value = parseFloat(newData.weight);
         if (isNaN(value) || !value) return;
+
         realm.write(() => {
             realm.create<MW>(
                 MW,

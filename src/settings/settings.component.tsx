@@ -1,10 +1,11 @@
 import {useCallback} from "react";
-import {DatePicker, Input} from "@ant-design/react-native";
+import {DatePicker} from "@ant-design/react-native";
 import {useQuery, useRealm} from "@realm/react";
 import {User} from "../realms/user.ts";
 import {List} from "../components/list.component.tsx";
 import {KicksInformation} from "./kicks-information.component.tsx";
 import {MedicationStatistic} from "./medications-statistic.component.tsx";
+import {Input} from "../components/form/Input.component.tsx";
 
 export const Settings = () => {
     const realm = useRealm()
@@ -43,9 +44,10 @@ export const Settings = () => {
         <>
             <List>
                 <Input
-                    defaultValue={user.name}
+                    defaultValue={user.name || ''}
                     onChangeText={onNameChange}
                     placeholder={'User Name'}
+                    maxLength={14}
                 />
                 <DatePicker
                     defaultValue={user.dob}
@@ -55,7 +57,7 @@ export const Settings = () => {
                     onChange={onDOBChange}
                     format="YYYY-MM-DD"
                 >
-                    <List.Item title="Дата рождения" />
+                    <List.Item title="Дата рождения" arrow />
                 </DatePicker>
                 <DatePicker
                     defaultValue={user.eddate}
@@ -65,7 +67,7 @@ export const Settings = () => {
                     onChange={onEDDChange}
                     format="YYYY-MM-DD"
                 >
-                    <List.Item title="EDD" />
+                    <List.Item title="EDD" arrow />
                 </DatePicker>
             </List>
             <KicksInformation />

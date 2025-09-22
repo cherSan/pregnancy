@@ -1,13 +1,16 @@
 import React, {useCallback, useEffect, useRef} from "react";
 import {BSON} from "realm";
-import {useRealm} from "@realm/react";
+import {Animated, StyleSheet, Text} from "react-native";
+import {Pressable} from "react-native-gesture-handler";
 import LinearGradient from "react-native-linear-gradient";
 import {useReactive} from "ahooks";
-import {Animated, StyleSheet, Text, TouchableOpacity} from "react-native";
-import {Input, WhiteSpace} from "@ant-design/react-native";
+import {useRealm} from "@realm/react";
+import {WhiteSpace} from "@ant-design/react-native";
 import {Kick} from "../realms/kick.ts";
 import {Colors} from "../constants/colors.ts";
 import {Card} from "../components/card.component.tsx";
+import {Input} from "../components/form/Input.component.tsx";
+import {List} from "../components/list.component.tsx";
 
 type Props = {
     title?: string;
@@ -50,7 +53,7 @@ export const KickButton: React.FC<Props> = ({ title = "Толчок" }) => {
     }, [data, realm])
 
     return (
-        <Card>
+        <List>
             <Input
                 multiline={true}
                 numberOfLines={4}
@@ -60,10 +63,8 @@ export const KickButton: React.FC<Props> = ({ title = "Толчок" }) => {
                     data.comment = (e.target as any).value
                 }}
             />
-            <WhiteSpace />
-            <TouchableOpacity
+            <Pressable
                 onPress={registerKick}
-                activeOpacity={0.8}
                 onLayout={e => setButtonWidth(e.nativeEvent.layout.width)}
             >
                 <Card style={styles.button}>
@@ -82,8 +83,8 @@ export const KickButton: React.FC<Props> = ({ title = "Толчок" }) => {
                         />
                     </Animated.View>
                 </Card>
-            </TouchableOpacity>
-        </Card>
+            </Pressable>
+        </List>
     );
 };
 

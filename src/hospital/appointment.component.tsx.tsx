@@ -2,7 +2,7 @@ import {FC, useCallback, useMemo} from "react";
 import {useObject, useRealm} from "@realm/react";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {StyleSheet} from "react-native";
-import {Button, Input, Text, TextareaItem} from "@ant-design/react-native";
+import {Button, Text, TextareaItem} from "@ant-design/react-native";
 import {StackParamList} from "./navigation.component.tsx";
 import {Hospital} from "../realms/hospital.ts";
 import {BSON} from "realm";
@@ -10,6 +10,7 @@ import {MotherWeight} from "../realms/mother-weight.ts";
 import {MotherPressure} from "../realms/mother-pressure.ts";
 import {MotherTemperature} from "../realms/mother-temperature.ts";
 import {List} from "../components/list.component.tsx";
+import {Input} from "../components/form/Input.component.tsx";
 
 type Props = NativeStackScreenProps<StackParamList, 'HospitalAppointment'>;
 
@@ -176,130 +177,101 @@ export const Appointment: FC<Props> = ({ route }) => {
             <List
                 title={'Q&A'}
             >
-                <List.Item>
-                    {
-                        appointment.isCompleted
-                            ? (
-                                <Text>Q: {appointment.questions?.[0]}</Text>
-                            )
-                            : (
-                                <TextareaItem
-                                    rows={4}
-                                    count={5000}
-                                    placeholder="Вопросы"
-                                    defaultValue={appointment.questions?.[0] ?? ''}
-                                    onChangeText={questions}
-                                />
-                            )
-                    }
-                </List.Item>
-                <List.Item>
-                    {
-                        appointment.isCompleted
-                            ? (
-                                <Text>A: {appointment.recommendations}</Text>
-                            )
-                            : (
-                                <TextareaItem
-                                    rows={4}
-                                    disabled={appointment.isCompleted}
-                                    count={5000}
-                                    placeholder="Рекомендация"
-                                    defaultValue={appointment.recommendations ?? ''}
-                                    onChangeText={recommendation}
-                                />
-                            )
-                    }
-                </List.Item>
+                {
+                    appointment.isCompleted
+                        ? (
+                            <List.Item><Text>Q: {appointment.questions?.[0]}</Text></List.Item>
+                        )
+                        : (
+                            <TextareaItem
+                                rows={4}
+                                count={5000}
+                                placeholder="Вопросы"
+                                defaultValue={appointment.questions?.[0] ?? ''}
+                                onChangeText={questions}
+                            />
+                        )
+                }
+                {
+                    appointment.isCompleted
+                        ? (
+                            <List.Item><Text>A: {appointment.recommendations}</Text></List.Item>
+                        )
+                        : (
+                            <TextareaItem
+                                rows={4}
+                                disabled={appointment.isCompleted}
+                                count={5000}
+                                placeholder="Рекомендация"
+                                defaultValue={appointment.recommendations ?? ''}
+                                onChangeText={recommendation}
+                            />
+                        )
+                }
             </List>
             <List
                 title={'Мама'}
             >
-                <List.Item>
                     <Input
-                        type={'number'}
-                        disabled={appointment.isCompleted}
+                        keyboardType={'numeric'}
+                        editable={!appointment.isCompleted}
                         placeholder={'Вес мамы'}
                         defaultValue={`${appointment.motherWeight?.value || ''}`}
                         onChangeText={motherWeight}
-                        suffix="кг"
                     />
-                </List.Item>
-                <List.Item>
                     <Input
-                        type={'number'}
-                        disabled={appointment.isCompleted}
+                        keyboardType={'numeric'}
+                        editable={!appointment.isCompleted}
                         placeholder={'Давление мамы верхнее'}
                         defaultValue={`${appointment.motherPressure?.valueTop || ''}`}
                         onChangeText={motherPressureTop}
-                        suffix="мм рт. ст."
                     />
-                </List.Item>
-                <List.Item>
                     <Input
-                        type={'number'}
-                        disabled={appointment.isCompleted}
+                        keyboardType={'numeric'}
+                        editable={!appointment.isCompleted}
                         placeholder={'Давление мамы нижнее'}
                         defaultValue={`${appointment.motherPressure?.valueBottom || ''}`}
                         onChangeText={motherPressureBottom}
-                        suffix="мм рт. ст."
                     />
-                </List.Item>
-                <List.Item>
                     <Input
-                        type={'number'}
-                        disabled={appointment.isCompleted}
+                        keyboardType={'numeric'}
+                        editable={!appointment.isCompleted}
                         placeholder={'Температура мамы'}
                         defaultValue={`${appointment.motherTemperature?.value || ''}`}
                         onChangeText={motherTemperature}
-                        suffix="С"
                     />
-                </List.Item>
-
             </List>
             <List
                 title={'Малыш'}
             >
-                <List.Item>
-                    <Input
-                        type={'number'}
-                        disabled={appointment.isCompleted}
-                        placeholder={'Вес ребенка'}
-                        defaultValue={`${appointment.babyWeight || ''}`}
-                        onChangeText={babyWeight}
-                        suffix="кг"
-                    />
-                </List.Item>
-                <List.Item>
-                    <Input
-                        type={'number'}
-                        disabled={appointment.isCompleted}
-                        placeholder={'Размер ребенка'}
-                        defaultValue={`${appointment.babySize || ''}`}
-                        onChangeText={babySize}
-                        suffix="см"
-                    />
-                </List.Item>
-                <List.Item>
-                    <Input
-                        type={'number'}
-                        disabled={appointment.isCompleted}
-                        placeholder={'Размер головы'}
-                        defaultValue={`${appointment.babyHeadSize || ''}`}
-                        onChangeText={babyHeadSize}
-                        suffix="см"
-                    />
-                </List.Item>
-                <List.Item>
-                    <Input
-                        type={'number'}
-                        disabled={appointment.isCompleted}
-                        placeholder={'Серцебиение'}
-                        defaultValue={`${appointment.babyHeartBeat || ''}`}
-                        onChangeText={babyHeartBeat}
-                        suffix="герц"
-                    />
-                </List.Item>
+                <Input
+                    keyboardType={'numeric'}
+                    editable={!appointment.isCompleted}
+                    placeholder={'Вес ребенка'}
+                    defaultValue={`${appointment.babyWeight || ''}`}
+                    onChangeText={babyWeight}
+                />
+                <Input
+                    keyboardType={'numeric'}
+                    editable={!appointment.isCompleted}
+                    placeholder={'Размер ребенка'}
+                    defaultValue={`${appointment.babySize || ''}`}
+                    onChangeText={babySize}
+                />
+                <Input
+                    keyboardType={'numeric'}
+                    editable={!appointment.isCompleted}
+                    placeholder={'Размер головы'}
+                    defaultValue={`${appointment.babyHeadSize || ''}`}
+                    onChangeText={babyHeadSize}
+                />
+                <Input
+                    keyboardType={'numeric'}
+                    editable={!appointment.isCompleted}
+                    placeholder={'Серцебиение'}
+                    defaultValue={`${appointment.babyHeartBeat || ''}`}
+                    onChangeText={babyHeartBeat}
+                />
             </List>
             {
                 !appointment.isCompleted

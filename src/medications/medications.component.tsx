@@ -9,7 +9,7 @@ import {Medication as MP} from "../realms/medication.ts";
 import {useReactive} from "ahooks";
 import {BSON} from "realm";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
-import {Medication} from "./medication.component.tsx";
+import {Medication} from "../components/medication.component.tsx";
 import {MedicationStackParamList} from "./navigation.component.tsx";
 import {List} from "../components/list.component.tsx";
 

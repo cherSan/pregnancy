@@ -1,9 +1,9 @@
 import React, {ComponentType, FC, ReactNode, useMemo} from "react";
 import {View, TouchableOpacity, StyleSheet} from "react-native";
-import { ScrollView } from "./scroll-view.component.tsx";
 import Animated, {
     Extrapolation,
-    interpolate, interpolateColor,
+    interpolate,
+    interpolateColor,
     useAnimatedScrollHandler,
     useAnimatedStyle,
     useSharedValue,
@@ -11,13 +11,14 @@ import Animated, {
 import {useNavigation} from "@react-navigation/core";
 import {Icon} from "@ant-design/react-native";
 import {IconNames} from "@ant-design/react-native/lib/icon";
-import {Colors} from "../constants/colors.ts";
 import {useQuery} from "@realm/react";
 import {HeaderActions} from "./header-action.tsx";
-import {User} from "../realms/user.ts";
 import { HeaderBackground } from "./header-background.tsx";
 import {MotherSummary} from "./mother-summary.component.tsx";
 import {HeaderNotification} from "./header-notification.component.tsx";
+import { ScrollView } from "./scroll-view.component.tsx";
+import {User} from "../realms/user.ts";
+import {Colors} from "../constants/colors.ts";
 
 type Actions = {
     action: Function;
@@ -139,7 +140,7 @@ export const Page: FC<Props> = ({
                     p={pressure}
                 />
                 <Animated.Text style={[styles.title, nameAnimatedStyle]}>
-                    { user[0] ? `Привет, ${user[0].name}` : null }
+                    { user[0]?.name ? user[0].name : 'Незнакомка' }
                 </Animated.Text>
                 <Animated.Text style={[styles.title, titleAnimatedStyle]}>
                     { title }
@@ -209,7 +210,7 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: 20,
         left: 70,
-        fontSize: 20,
+        fontSize: 16,
         lineHeight: 20,
         fontWeight: "700",
         color: Colors.primary.contrastText,

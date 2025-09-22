@@ -1,98 +1,103 @@
 import {useQuery, useRealm} from "@realm/react";
 import {Button, Text} from "@ant-design/react-native";
-import {useReactive} from "ahooks";
 import {useCallback} from "react";
 import {BSON} from "realm";
-import { Page } from "../components/page.component"
+import {useFormik} from "formik";
+import * as Yup from "yup";
+import { Page } from "../components/page.component";
 import {MotherPressure as MP} from "../realms/mother-pressure.ts";
 import {List} from "../components/list.component.tsx";
 import {Input} from "../components/form/Input.component.tsx";
 
+const PressureSchema = Yup.object().shape({
+    valueTop: Yup.number()
+        .typeError("Введите число")
+        .integer("Должно быть целое")
+        .required("Обязательное поле"),
+    valueBottom: Yup.number()
+        .typeError("Введите число")
+        .integer("Должно быть целое")
+        .required("Обязательное поле"),
+    pulse: Yup.number()
+        .typeError("Введите число")
+        .integer("Должно быть целое"),
+});
+
 export const MotherPressure = ({ props }: any) => {
     const realm = useRealm();
+    const data = useQuery(MP).sorted('datetime', true);
 
-    const newData = useReactive({
-        valueTop: '',
-        valueBottom: '',
-        pulse: '',
-    })
+    const savePressure = useCallback(
+        (values: { valueTop: string; valueBottom: string; pulse: string }) => {
+            const v1 = parseInt(values.valueTop, 10);
+            const v2 = parseInt(values.valueBottom, 10);
+            const v3 = parseInt(values.pulse, 10);
 
-    const data = useQuery(MP)
-        .sorted('datetime', true);
-
-    const savePressure = useCallback(() => {
-        const v1 = parseFloat(newData.valueTop);
-        const v2 = parseFloat(newData.valueBottom);
-        const v3 = parseFloat(newData.pulse);
-        if (isNaN(v1) || isNaN(v2) || !v1 || !v2) return;
-        realm.write(() => {
-            realm.create<MP>(
-                MP,
-                {
+            realm.write(() => {
+                realm.create<MP>(MP, {
                     _id: new BSON.ObjectId(),
                     valueTop: v1,
                     valueBottom: v2,
                     pulse: v3,
                     datetime: new Date(),
-                }
-            );
-            newData.valueBottom = '';
-            newData.valueTop = '';
-            newData.pulse = '';
-        });
-    }, [newData, realm]);
+                });
+            });
+        },
+        [realm]
+    );
+
+    const formik = useFormik({
+        initialValues: { valueTop: '', valueBottom: '', pulse: '' },
+        validationSchema: PressureSchema,
+        onSubmit: (values, { resetForm }) => {
+            savePressure(values);
+            resetForm();
+        },
+    });
 
     return (
-        <Page
-            title={'Давление и пульс мамы'}
-            pressure={true}
-            {...props}
-        >
+        <Page title={'Давление и пульс мамы'} pressure={true} {...props}>
             <List>
                 <Input
-                    placeholder={'Систолическое давление'}
-                    keyboardType={'numeric'}
-                    value={newData.valueTop}
-                    onChangeText={v => {
-                        newData.valueTop = v
-                    }}
+                    placeholder="Систолическое давление *"
+                    keyboardType="numeric"
+                    value={formik.values.valueTop}
+                    onChangeText={formik.handleChange('valueTop')}
+                    onBlur={formik.handleBlur('valueTop')}
+                    error={formik.touched.valueTop ? formik.errors.valueTop : undefined}
                 />
                 <Input
-                    placeholder={'Диастолическое давление'}
-                    keyboardType={'numeric'}
-                    value={newData.valueBottom}
-                    onChangeText={v => {
-                        newData.valueBottom = v
-                    }}
+                    placeholder="Диастолическое давление *"
+                    keyboardType="numeric"
+                    value={formik.values.valueBottom}
+                    onChangeText={formik.handleChange('valueBottom')}
+                    onBlur={formik.handleBlur('valueBottom')}
+                    error={formik.touched.valueBottom ? formik.errors.valueBottom : undefined}
                 />
                 <Input
-                    keyboardType={'numeric'}
-                    placeholder={'Пульс'}
-                    value={newData.pulse}
-                    onChangeText={v => {
-                        newData.pulse = v
-                    }}
+                    placeholder="Пульс"
+                    keyboardType="numeric"
+                    value={formik.values.pulse}
+                    onChangeText={formik.handleChange('pulse')}
+                    onBlur={formik.handleBlur('pulse')}
+                    error={formik.touched.pulse ? formik.errors.pulse : undefined}
                 />
-                <Button onPress={savePressure} type={'primary'}>
-                    <Text>Сохранить</Text>
+                <Button onPress={formik.handleSubmit} type="primary">
+                    Сохранить
                 </Button>
             </List>
-            {
-                data.length
-                    ? (
-                        <List>
-                            {
-                                data.map((w) => (
-                                    <List.Item
-                                        title={w.datetime.toLocaleString()}
-                                        extra={`${w.valueTop}-${w.valueBottom} / ${w.pulse || '-'}`}
-                                    />
-                                ))
-                            }
-                        </List>
-                    )
-                    : null
-            }
+
+            {data.length > 0 && (
+                <List>
+                    {data.map((w) => (
+                        <List.Item
+                            key={w._id.toHexString()}
+                            title={w.datetime.toLocaleString()}
+                            extra={`${w.valueTop}-${w.valueBottom} / ${w.pulse || '-'}`}
+                        />
+                    ))}
+                </List>
+            )}
         </Page>
-    )
-}
+    );
+};

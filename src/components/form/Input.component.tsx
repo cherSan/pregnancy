@@ -1,76 +1,56 @@
 import {StyleSheet, TextInput, View} from "react-native";
-import {ComponentProps, FC, useMemo, useState} from "react";
+import {ComponentProps, FC} from "react";
 import {Colors} from "../../constants/colors.ts";
+import {Text} from "@ant-design/react-native";
 
 type Props = ComponentProps<typeof TextInput> & {
-    status?: 'error' | 'success' | 'info' | 'warning';
+    error?: string;
 };
 
 export const Input: FC<Props> = ({
-    status,
-    onChangeText,
+    error,
     ...props
 }) => {
-    const [touched, setTouched] = useState(false);
-    
-    const color = useMemo(() => {
-        if (!touched) return {}
-        const tmp = {
-            borderRightWidth: 4,
-            boxSizing: 'border-box',
-        }
-
-        switch (status) {
-
-            case "error":
-                return {
-                    ...tmp,
-                    borderLeftColor: Colors.accent.error,
-                };
-            case "success":
-                return {
-                    ...tmp,
-                    borderLeftColor: Colors.accent.success,
-                };
-            case "info":
-                return {
-                    ...tmp,
-                    borderLeftColor: Colors.accent.info,
-                };
-            case "warning":
-                return {
-                    ...tmp,
-                    borderLeftColor: Colors.accent.warning,
-                };
-            default:
-                return {}
-        }
-    }, [status, touched]);
-
     return (
         <View style={[styles.inputWrapper]}>
             <TextInput
-                style={[styles.input, color]}
-                {...props}
+                style={styles.input}
                 placeholderTextColor={Colors.neutral[400]}
-                onBlur={(e) => {
-                    setTouched(true);
-                    props.onBlur?.(e);
-                }}
-                onChangeText={e => {
-                    setTouched(false);
-                    onChangeText?.(e);
-                }}
+                {...props}
             />
+            <View style={styles.errorContainer}>
+                <Text style={styles.error}>{error || ''}</Text>
+            </View>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     inputWrapper: {
-       paddingHorizontal: 4
+        position: "relative",
+        paddingHorizontal: 4,
+        display: "flex",
+        flexDirection: 'column'
+    },
+    errorContainer: {
+        position: "absolute",
+        bottom: 0,
+        right: 0,
+        display: 'flex',
+        height: 16,
+        paddingBottom: 4,
+        boxSizing: 'border-box',
+        justifyContent: 'flex-end',
+        alignItems: 'flex-end',
+        flexWrap: 'nowrap'
+    },
+    error: {
+        color: Colors.accent.error,
+        fontSize: 10,
+        lineHeight: 10,
     },
     input: {
+        paddingBottom: 18,
         fontWeight: "bold",
         color: Colors.secondary.default,
         backgroundColor: 'transparent',

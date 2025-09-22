@@ -1,75 +1,78 @@
 import {useQuery, useRealm} from "@realm/react";
-import {useReactive} from "ahooks";
 import {useCallback} from "react";
 import {BSON} from "realm";
 import {Button, Text} from "@ant-design/react-native";
-import { Page } from "../components/page.component"
+import {useFormik} from "formik";
+import * as Yup from "yup";
+import {Page} from "../components/page.component";
 import {MotherTemperature as MT} from "../realms/mother-temperature.ts";
 import {List} from "../components/list.component.tsx";
 import {Input} from "../components/form/Input.component.tsx";
 
+const TemperatureSchema = Yup.object().shape({
+    value: Yup.number()
+        .typeError("Введите число")
+        .min(30, "Температура не может быть ниже 20°C")
+        .max(50, "Температура не может быть выше 50°C")
+        .required("Обязательное поле"),
+});
+
 export const MotherTemperature = ({ props }: any) => {
     const realm = useRealm();
+    const data = useQuery(MT).sorted("datetime", true);
 
-    const newData = useReactive({
-        value: '',
-    })
+    const saveTemperature = useCallback(
+        (values: { value: string }) => {
+            const value = parseFloat(values.value);
+            if (isNaN(value)) return;
 
-    const data = useQuery(MT)
-        .sorted('datetime', true);
-
-    const saveData = useCallback(() => {
-        const value = parseFloat(newData.value);
-        if (isNaN(value) || !value) return;
-        realm.write(() => {
-            realm.create<MT>(
-                MT,
-                {
+            realm.write(() => {
+                realm.create<MT>(MT, {
                     _id: new BSON.ObjectId(),
                     value,
                     datetime: new Date(),
-                }
-            );
+                });
+            });
+        },
+        [realm]
+    );
 
-            newData.value = '';
-        });
-    }, [newData, realm]);
+    const formik = useFormik({
+        initialValues: { value: "" },
+        validationSchema: TemperatureSchema,
+        onSubmit: (values, { resetForm }) => {
+            saveTemperature(values);
+            resetForm();
+        },
+    });
 
     return (
-        <Page
-            title={'Температура мамы'}
-            temperature={true}
-            {...props}
-        >
+        <Page title={"Температура мамы"} temperature={true} {...props}>
             <List>
                 <Input
-                    keyboardType={'numeric'}
-                    placeholder={'Температура'}
-                    value={newData.value}
-                    onChangeText={v => {
-                        newData.value = v
-                    }}
+                    placeholder="Температура *"
+                    keyboardType="numeric"
+                    value={formik.values.value}
+                    onChangeText={formik.handleChange("value")}
+                    onBlur={formik.handleBlur("value")}
+                    error={formik.touched.value ? formik.errors.value : undefined}
                 />
-                <Button onPress={saveData} type={'primary'}>
-                    <Text>Сохранить</Text>
+                <Button onPress={formik.handleSubmit} type="primary">
+                    Сохранить
                 </Button>
             </List>
-            {
-                data.length
-                    ? (
-                        <List>
-                            {
-                                data.map((w) => (
-                                    <List.Item
-                                        title={w.datetime.toLocaleString()}
-                                        extra={w.value.toFixed(1)}
-                                    />
-                                ))
-                            }
-                        </List>
-                    )
-                    : null
-            }
+
+            {data.length > 0 && (
+                <List>
+                    {data.map((w) => (
+                        <List.Item
+                            key={w._id.toHexString()}
+                            title={w.datetime.toLocaleString()}
+                            extra={w.value.toFixed(1)}
+                        />
+                    ))}
+                </List>
+            )}
         </Page>
-    )
-}
+    );
+};

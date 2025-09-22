@@ -1,5 +1,4 @@
 import {useQuery} from "@realm/react";
-import {Icon, Text} from "@ant-design/react-native";
 import {useDate} from "../hooks/useDate.ts";
 import {List} from "../components/list.component.tsx";
 import {Hospital} from "../realms/hospital.ts";

@@ -1,6 +1,5 @@
 import {
     Button,
-    Input,
     Text,
 } from "@ant-design/react-native";
 import {FC, useCallback, useMemo} from "react";
@@ -12,26 +11,13 @@ import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {Medication} from "../components/medication.component.tsx";
 import {MedicationStackParamList} from "./navigation.component.tsx";
 import {List} from "../components/list.component.tsx";
+import {Input} from "../components/form/Input.component.tsx";
+import {useDate} from "../hooks/useDate.ts";
 
 type Props = NativeStackScreenProps<MedicationStackParamList, 'MedicationsInformation'>;
 
 export const Medications: FC<Props> = () => {
-    const [fromDate, toDate] = useMemo(() => {
-        const now = new Date();
-        const from = new Date(
-            now.getFullYear(),
-            now.getMonth(),
-            now.getDate(),
-        );
-
-        const to = new Date(
-            now.getFullYear(),
-            now.getMonth(),
-            now.getDate() + 1,
-        );
-
-        return [from, to];
-    }, []);
+    const {startOfTheDay, endOfTheDay} = useDate();
 
     const extraMedications = useReactive({
         name: '',
@@ -41,7 +27,7 @@ export const Medications: FC<Props> = () => {
     const realm = useRealm();
 
     const medication = useQuery(MP)
-        .filtered("planingTime >= $0 AND planingTime < $1", fromDate, toDate)
+        .filtered("planingTime >= $0 AND planingTime < $1", startOfTheDay, endOfTheDay)
         .sorted('planingTime', false);
 
     const takeExtra = useCallback(() => {
@@ -85,15 +71,15 @@ export const Medications: FC<Props> = () => {
                 <Input
                     placeholder={'Дополнительное лекарство'}
                     value={`${extraMedications.name}`}
-                    onChange={e => {
-                        extraMedications.name = (e.target as any).value
+                    onChangeText={e => {
+                        extraMedications.name = e
                     }}
                 />
                 <Input
                     placeholder={'Комментарий'}
                     value={`${extraMedications.comment}`}
-                    onChange={e => {
-                        extraMedications.comment = (e.target as any).value
+                    onChangeText={e => {
+                        extraMedications.comment = e
                     }}
                 />
                 <Button

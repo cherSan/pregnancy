@@ -42,6 +42,7 @@ export const MotherTemperature = ({ props }: any) => {
         >
             <List>
                 <Input
+                    keyboardType={'numeric'}
                     placeholder={'Температура'}
                     value={newData.value}
                     onChangeText={v => {

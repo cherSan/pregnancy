@@ -1,11 +1,12 @@
 import {StyleSheet} from "react-native";
-import {Button, Input, Switch} from "@ant-design/react-native";
+import {Button, Switch} from "@ant-design/react-native";
 import {useReactive} from "ahooks";
 import {useCallback} from "react";
 import {BSON} from "realm";
 import {useRealm} from "@realm/react";
 import {MedicationConfiguration as MCC} from "../realms/medication-configuration.ts";
 import {List} from "../components/list.component.tsx";
+import {Input} from "../components/form/Input.component.tsx";
 
 export const AddMedication = () => {
     const realm = useRealm();
@@ -18,7 +19,7 @@ export const AddMedication = () => {
     });
 
     const onCreate = useCallback(() => {
-        const [planingTimeHours, planingTimeMinutes] = structure.time.split(':').map(Number);
+        const [planingTimeHours, planingTimeMinutes] = structure.time.split('.').map(Number);
         const isValidHours = Number.isInteger(planingTimeHours) && planingTimeHours >= 0 && planingTimeHours <= 23;
         const isValidMinutes = Number.isInteger(planingTimeMinutes) && planingTimeMinutes >= 0 && planingTimeMinutes <= 59;
 
@@ -55,10 +56,11 @@ export const AddMedication = () => {
                 }}
             />
             <Input
-                placeholder={'Время (12:01, 01:20, 17:30)'}
+                placeholder={'Время (12.01, 01.20, 17.30)'}
                 defaultValue={`${structure.time}`}
-                onChange={e => {
-                    structure.time = (e.target as any).value
+                keyboardType={'numeric'}
+                onChangeText={e => {
+                    structure.time = e
                 }}
             />
             <List.Item

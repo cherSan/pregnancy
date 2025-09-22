@@ -45,6 +45,7 @@ export const MotherWeight = ({ props }: any) => {
             <List>
                 <Input
                     placeholder={'Вес'}
+                    keyboardType={'numeric'}
                     value={newData.weight}
                     onChangeText={v => {
                         newData.weight = v

@@ -11,7 +11,8 @@ export const MotherPressure = ({ props }: any) => {
     const realm = useRealm();
 
     const newData = useReactive({
-        pressure: '',
+        valueTop: '',
+        valueBottom: '',
         pulse: '',
     })
 
@@ -19,9 +20,8 @@ export const MotherPressure = ({ props }: any) => {
         .sorted('datetime', true);
 
     const savePressure = useCallback(() => {
-        const [valueTop, valueBottom] = newData.pressure.split(' ');
-        const v1 = parseFloat(valueTop);
-        const v2 = parseFloat(valueBottom);
+        const v1 = parseFloat(newData.valueTop);
+        const v2 = parseFloat(newData.valueBottom);
         const v3 = parseFloat(newData.pulse);
         if (isNaN(v1) || isNaN(v2) || !v1 || !v2) return;
         realm.write(() => {
@@ -35,7 +35,9 @@ export const MotherPressure = ({ props }: any) => {
                     datetime: new Date(),
                 }
             );
-            newData.pressure = '';
+            newData.valueBottom = '';
+            newData.valueTop = '';
+            newData.pulse = '';
         });
     }, [newData, realm]);
 
@@ -47,13 +49,23 @@ export const MotherPressure = ({ props }: any) => {
         >
             <List>
                 <Input
-                    placeholder={'Давление (Формат: 120 80)'}
-                    value={newData.pressure}
+                    placeholder={'Систолическое давление'}
+                    keyboardType={'numeric'}
+                    value={newData.valueTop}
                     onChangeText={v => {
-                        newData.pressure = v
+                        newData.valueTop = v
                     }}
                 />
                 <Input
+                    placeholder={'Диастолическое давление'}
+                    keyboardType={'numeric'}
+                    value={newData.valueBottom}
+                    onChangeText={v => {
+                        newData.valueBottom = v
+                    }}
+                />
+                <Input
+                    keyboardType={'numeric'}
                     placeholder={'Пульс'}
                     value={newData.pulse}
                     onChangeText={v => {

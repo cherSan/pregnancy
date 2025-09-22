@@ -5,7 +5,6 @@ import {Pressable} from "react-native-gesture-handler";
 import LinearGradient from "react-native-linear-gradient";
 import {useReactive} from "ahooks";
 import {useRealm} from "@realm/react";
-import {WhiteSpace} from "@ant-design/react-native";
 import {Kick} from "../realms/kick.ts";
 import {Colors} from "../constants/colors.ts";
 import {Card} from "../components/card.component.tsx";

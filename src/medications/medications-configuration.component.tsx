@@ -1,4 +1,3 @@
-import {SwipeAction} from "@ant-design/react-native";
 import {useQuery, useRealm} from "@realm/react";
 import {useCallback} from "react";
 import {MedicationConfiguration as MCC} from "../realms/medication-configuration.ts";

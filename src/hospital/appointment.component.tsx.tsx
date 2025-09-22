@@ -1,7 +1,6 @@
 import {FC, useMemo, useCallback, useRef} from "react";
 import { useObject, useRealm } from "@realm/react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { Button } from "@ant-design/react-native";
 import { BSON } from "realm";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -13,6 +12,7 @@ import { MotherTemperature } from "../realms/mother-temperature.ts";
 import { List } from "../components/list.component.tsx";
 import { Input } from "../components/form/Input.component.tsx";
 import { Textarea } from "../components/form/Textarea.component.tsx";
+import {Button} from "../components/form/Button.component.tsx";
 
 const HospitalSchema = Yup.object().shape({
     doctor: Yup.string(),
@@ -84,7 +84,10 @@ const HospitalSchema = Yup.object().shape({
 
 type Props = NativeStackScreenProps<StackParamList, 'HospitalAppointment'>;
 
-export const Appointment: FC<Props> = ({ route }) => {
+export const Appointment: FC<Props> = ({
+    route,
+    navigation,
+}) => {
     const realm = useRealm();
     const id = useMemo(() => route.params.id, [route]);
     const appointment = useObject(Hospital, new BSON.ObjectId(id));
@@ -160,7 +163,7 @@ export const Appointment: FC<Props> = ({ route }) => {
             });
         }
     });
-    const timeout = useRef<number>(null);
+    const timeout = useRef<any>(null);
     const handleChange = useCallback((field: keyof typeof formik.values) => (ev: string) => {
         formik.handleChange(field)(ev);
         if (timeout.current !== null) clearTimeout(timeout.current)
@@ -303,7 +306,18 @@ export const Appointment: FC<Props> = ({ route }) => {
                     editable={!appointment.isCompleted}
                 />
             </List>
-
+            <List>
+                <List.Item
+                    onPress={() => navigation.navigate(
+                        {
+                            name: 'HospitalAppointmentPhotos',
+                            params: { id }
+                        }
+                    )}
+                    title={'Вложения'}
+                    arrow={true}
+                />
+            </List>
             {!appointment.isCompleted && (
                 <List>
                     <Button type="primary" onPress={finialise}>

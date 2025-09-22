@@ -1,5 +1,5 @@
 import {StyleSheet} from "react-native";
-import {Button, DatePicker, Text} from "@ant-design/react-native";
+import {DatePicker} from "@ant-design/react-native";
 import {useCallback} from "react";
 import {BSON} from "realm";
 import {useRealm} from "@realm/react";
@@ -9,6 +9,7 @@ import * as Yup from "yup";
 import {Hospital} from "../realms/hospital.ts";
 import {List} from "../components/list.component.tsx";
 import {Input} from "../components/form/Input.component.tsx";
+import {Button} from "../components/form/Button.component.tsx";
 
 const AppointmentSchema = Yup.object().shape({
     datetime: Yup.date().required("Выберите дату и время"),
@@ -88,7 +89,7 @@ export const AddAppointment = () => {
             />
 
             <Button type="primary" onPress={formik.handleSubmit as any} style={styles.aButton}>
-                <Text>Запланировать</Text>
+                Запланировать
             </Button>
         </List>
     );

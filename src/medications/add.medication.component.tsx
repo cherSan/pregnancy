@@ -1,4 +1,4 @@
-import {Button, Switch, Text} from "@ant-design/react-native";
+import {Switch} from "@ant-design/react-native";
 import {useCallback} from "react";
 import {BSON} from "realm";
 import {useRealm} from "@realm/react";
@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import {MedicationConfiguration as MCC} from "../realms/medication-configuration.ts";
 import {List} from "../components/list.component.tsx";
 import {Input} from "../components/form/Input.component.tsx";
+import {Button} from "../components/form/Button.component.tsx";
 
 const MedicationSchema = Yup.object().shape({
     name: Yup.string()

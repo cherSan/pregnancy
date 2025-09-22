@@ -1,4 +1,4 @@
-import {FC, useCallback, useRef} from "react";
+import {FC, useCallback, useMemo, useRef} from "react";
 import {DatePicker} from "@ant-design/react-native";
 import {useQuery, useRealm} from "@realm/react";
 import {useFormik} from "formik";
@@ -8,6 +8,7 @@ import {List} from "../components/list.component.tsx";
 import {Input} from "../components/form/Input.component.tsx";
 import {KicksInformation} from "./kicks-information.component.tsx";
 import {MedicationStatistic} from "./medications-statistic.component.tsx";
+import {useDate} from "../hooks/useDate.ts";
 
 const SettingsSchema = Yup.object().shape({
     name: Yup.string().max(14, "Не более 14 символов"),
@@ -19,6 +20,7 @@ export const Settings: FC = () => {
     const realm = useRealm();
     const users = useQuery(User);
     const user = users[0];
+    const { now } = useDate();
 
     const formik = useFormik({
         initialValues: {
@@ -43,7 +45,7 @@ export const Settings: FC = () => {
         },
     });
 
-    const timeout = useRef<number>(null);
+    const timeout = useRef<any>(null);
     const handleChange = useCallback(
         (field: keyof typeof formik.values) => (value: any) => {
             formik.setFieldValue(field, value);
@@ -51,6 +53,12 @@ export const Settings: FC = () => {
         },
         [formik]
     );
+
+    const maxEDD = useMemo(() => {
+        const maxEdd = new Date();
+        maxEdd.setDate(now.getDate() + 280);
+        return maxEdd;
+    }, [now]);
 
     if (!user) return null;
 
@@ -83,7 +91,7 @@ export const Settings: FC = () => {
                     value={formik.values.eddate || undefined}
                     precision="day"
                     minDate={new Date()}
-                    maxDate={new Date(2100, 11, 3)}
+                    maxDate={maxEDD}
                     onChange={handleChange("eddate")}
                     format="YYYY-MM-DD"
                 >

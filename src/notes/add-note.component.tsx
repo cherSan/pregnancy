@@ -1,7 +1,6 @@
 import {useCallback} from "react";
 import {BSON} from "realm";
 import {useRealm} from "@realm/react";
-import {Button, Text} from "@ant-design/react-native";
 import {StyleSheet} from "react-native";
 import {useNavigation} from "@react-navigation/core";
 import {useFormik} from "formik";
@@ -10,6 +9,7 @@ import {Notes} from "../realms/notes.ts";
 import {List} from "../components/list.component.tsx";
 import {Input} from "../components/form/Input.component.tsx";
 import {Textarea} from "../components/form/Textarea.component.tsx";
+import {Button} from "../components/form/Button.component.tsx";
 
 // ✅ схема валидации
 const NoteSchema = Yup.object().shape({
@@ -77,7 +77,7 @@ export const AddNote = () => {
                 error={formik.touched.important ? formik.errors.important : undefined}
             />
             <Button type="primary" onPress={formik.handleSubmit as any} style={styles.aButton}>
-                <Text>Добавить</Text>
+                Добавить
             </Button>
         </List>
     );

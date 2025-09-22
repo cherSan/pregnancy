@@ -1,5 +1,5 @@
 import { FC, useCallback } from "react";
-import { Button, Text } from "@ant-design/react-native";
+import { Text } from "@ant-design/react-native";
 import { useQuery, useRealm } from "@realm/react";
 import { BSON } from "realm";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -12,6 +12,7 @@ import { MedicationStackParamList } from "./navigation.component.tsx";
 import { List } from "../components/list.component.tsx";
 import { Input } from "../components/form/Input.component.tsx";
 import { useDate } from "../hooks/useDate.ts";
+import {Button} from "../components/form/Button.component.tsx";
 
 type Props = NativeStackScreenProps<
     MedicationStackParamList,
@@ -87,7 +88,7 @@ export const Medications: FC<Props> = () => {
                 />
 
                 <Button type="primary" onPress={formik.handleSubmit as any}>
-                    <Text>Принять</Text>
+                    Принять
                 </Button>
             </List>
         </>

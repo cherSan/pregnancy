@@ -1,5 +1,4 @@
 import {useQuery, useRealm} from "@realm/react";
-import {Button} from "@ant-design/react-native";
 import {useCallback} from "react";
 import {BSON} from "realm";
 import {useFormik} from "formik";
@@ -8,6 +7,7 @@ import { Page } from "../components/page.component";
 import {MotherPressure as MP} from "../realms/mother-pressure.ts";
 import {List} from "../components/list.component.tsx";
 import {Input} from "../components/form/Input.component.tsx";
+import {Button} from "../components/form/Button.component.tsx";
 
 const PressureSchema = Yup.object().shape({
     valueTop: Yup.number()

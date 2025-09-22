@@ -1,11 +1,12 @@
 import {useQuery, useRealm} from "@realm/react";
-import { Page } from "../components/page.component"
-import {MotherPressure as MP} from "../realms/mother-pressure.ts";
-import {List} from "../components/list.component.tsx";
-import {Button, Input, Text} from "@ant-design/react-native";
+import {Button, Text} from "@ant-design/react-native";
 import {useReactive} from "ahooks";
 import {useCallback} from "react";
 import {BSON} from "realm";
+import { Page } from "../components/page.component"
+import {MotherPressure as MP} from "../realms/mother-pressure.ts";
+import {List} from "../components/list.component.tsx";
+import {Input} from "../components/form/Input.component.tsx";
 
 export const MotherPressure = ({ props }: any) => {
     const realm = useRealm();

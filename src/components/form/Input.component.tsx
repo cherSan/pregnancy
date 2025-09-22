@@ -52,6 +52,7 @@ export const Input: FC<Props> = ({
             <TextInput
                 style={[styles.input, color]}
                 {...props}
+                placeholderTextColor={Colors.neutral[400]}
                 onBlur={(e) => {
                     setTouched(true);
                     props.onBlur?.(e);

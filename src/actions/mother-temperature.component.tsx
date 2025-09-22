@@ -2,10 +2,11 @@ import {useQuery, useRealm} from "@realm/react";
 import {useReactive} from "ahooks";
 import {useCallback} from "react";
 import {BSON} from "realm";
-import {Button, Input, Text} from "@ant-design/react-native";
+import {Button, Text} from "@ant-design/react-native";
 import { Page } from "../components/page.component"
 import {MotherTemperature as MT} from "../realms/mother-temperature.ts";
 import {List} from "../components/list.component.tsx";
+import {Input} from "../components/form/Input.component.tsx";
 
 export const MotherTemperature = ({ props }: any) => {
     const realm = useRealm();
@@ -49,11 +50,9 @@ export const MotherTemperature = ({ props }: any) => {
                         newData.value = v
                     }}
                 />
-                <List.Item>
-                    <Button onPress={saveData} type={'primary'}>
-                        <Text>Сохранить</Text>
-                    </Button>
-                </List.Item>
+                <Button onPress={saveData} type={'primary'}>
+                    <Text>Сохранить</Text>
+                </Button>
             </List>
             {
                 data.length

@@ -30,6 +30,7 @@ export const Textarea: FC<Props> = ({
                 {...props}
                 multiline
                 style={[styles.input, style, { height: inputHeight }]}
+                placeholderTextColor={Colors.neutral[400]}
                 onChangeText={(text) => {
                     if (maxLength) text = text.slice(0, maxLength);
                     setValue(text);

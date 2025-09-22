@@ -2,11 +2,12 @@ import {useQuery, useRealm} from "@realm/react";
 import {useReactive} from "ahooks";
 import {useCallback} from "react";
 import {BSON} from "realm";
-import {Button, Input, Text} from "@ant-design/react-native";
+import {Button, Text} from "@ant-design/react-native";
+import {View} from "react-native";
 import { Page } from "../components/page.component"
 import {MotherWeight as MW} from "../realms/mother-weight.ts";
 import {List} from "../components/list.component.tsx";
-import {View} from "react-native";
+import {Input} from "../components/form/Input.component.tsx";
 
 export const MotherWeight = ({ props }: any) => {
     const realm = useRealm();

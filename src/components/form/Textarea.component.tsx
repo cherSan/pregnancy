@@ -6,6 +6,7 @@ type Props = TextInputProps & {
     minRows?: number;
     showCount?: boolean;
     lineHeight?: number;
+    error?: string;
 };
 
 export const Textarea: FC<Props> = ({
@@ -14,6 +15,7 @@ export const Textarea: FC<Props> = ({
     maxLength,
     style,
     lineHeight = 20,
+    error,
     ...props
 }) => {
     const [value, setValue] = useState(props.value || "");
@@ -45,25 +47,54 @@ export const Textarea: FC<Props> = ({
                     {value.length} / {maxLength}
                 </Text>
             ) : null}
+            <View style={styles.errorContainer}>
+                <Text style={styles.error}>{error || ''}</Text>
+            </View>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
     wrapper: {
+        position: "relative",
         paddingHorizontal: 4,
+        display: "flex",
+        flexDirection: 'column'
     },
     input: {
         fontWeight: "bold",
         color: Colors.secondary.default,
         backgroundColor: "transparent",
-        paddingVertical: 4,
         paddingHorizontal: 4,
+        paddingBottom: 34,
     },
     count: {
-        color: Colors.neutral[600],
+        position: "absolute",
+        bottom: 16,
+        right: 0,
+        display: 'flex',
+        fontSize: 10,
+        paddingBottom: 4,
+        boxSizing: 'border-box',
+        justifyContent: 'flex-end',
+        alignItems: 'flex-end',
+        flexWrap: 'nowrap'
+    },
+    errorContainer: {
+        position: "absolute",
+        bottom: 0,
+        right: 0,
+        display: 'flex',
         fontSize: 12,
-        marginTop: 4,
-        textAlign: "right",
+        paddingBottom: 4,
+        boxSizing: 'border-box',
+        justifyContent: 'flex-end',
+        alignItems: 'flex-end',
+        flexWrap: 'nowrap'
+    },
+    error: {
+        color: Colors.accent.error,
+        fontSize: 10,
+        lineHeight: 10,
     },
 });

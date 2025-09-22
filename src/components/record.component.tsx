@@ -41,7 +41,7 @@ export const Record: FC<Props> = ({
             && !extra
         ) return (
             <View style={styles.content}>
-                {children}
+                {typeof children === 'string' ? <Text>{children}</Text> : children}
             </View>
         );
 
@@ -59,7 +59,7 @@ export const Record: FC<Props> = ({
                     { icon }
                 </View>
                 <View style={styles.content}>
-                    {children}
+                    {typeof children === 'string' ? <Text>{children}</Text> : children}
                 </View>
             </View>
         );
@@ -123,7 +123,7 @@ export const Record: FC<Props> = ({
                     children
                         ? (
                             <View style={styles.content}>
-                                {children}
+                                {typeof children === 'string' ? <Text>{children}</Text> : children}
                             </View>
                         )
                         : null

@@ -40,7 +40,7 @@ export const HeaderNotification: FC<Props> = ({
         .sorted('planingTime', true);
 
     const upcoming = useQuery(Medication)
-        .filtered('planingTime >= $0 AND planingTime <= $1', now, endOfTheDay)
+        .filtered('planingTime >= $0 AND planingTime <= $1 AND realTime == null', now, endOfTheDay)
         .sorted('planingTime', false);
 
     const nextHospitalVisit = useQuery(Hospital)
@@ -74,6 +74,7 @@ export const HeaderNotification: FC<Props> = ({
                 upcoming[0]
                     ? (
                         <AlertText
+                            type={'success'}
                             time={upcoming[0]?.planingTime.toLocaleString()}
                         >
                             Запланирован прием {upcoming[0]?.name}

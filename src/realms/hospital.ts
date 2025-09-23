@@ -2,6 +2,7 @@ import { Realm } from 'realm';
 import {MotherWeight} from "./mother-weight.ts";
 import {MotherPressure} from "./mother-pressure.ts";
 import {MotherTemperature} from "./mother-temperature.ts";
+import {Image} from "./image.ts";
 
 export class Hospital extends Realm.Object<Hospital> {
     _id!: Realm.BSON.ObjectId;
@@ -29,7 +30,7 @@ export class Hospital extends Realm.Object<Hospital> {
     ultrasoundNotes?: string;         // текстовое описание УЗИ
 
     // Дополнительно
-    attachments!: string[];           // файлы: pdf, jpg, doc и т.п.
+    attachments!: Image[];           // файлы: pdf, jpg, doc и т.п.
     tags!: string[];                  // теги для фильтрации
 
     createdAt!: Date;                 // дата создания записи
@@ -63,7 +64,7 @@ export class Hospital extends Realm.Object<Hospital> {
             eddUS: 'date?',
             ultrasoundNotes: 'string?',
 
-            attachments: 'string[]',
+            attachments: 'Image[]',
             tags: 'string[]',
 
             createdAt: 'date',

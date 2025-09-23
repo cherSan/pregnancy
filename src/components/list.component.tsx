@@ -1,4 +1,4 @@
-import {Children, FC, ReactElement} from "react";
+import {Children, FC, ReactElement, ReactNode} from "react";
 import {Text} from "@ant-design/react-native";
 import {StyleSheet, View} from "react-native";
 import {Card} from "./card.component.tsx";
@@ -7,7 +7,7 @@ import {Record} from "./record.component.tsx";
 
 type Props = {
     title?: string;
-    children?: ReactElement | ReactElement[];
+    children?: ReactElement | ReactElement[] | ReactNode | ReactNode[];
 }
 
 export const List: FC<Props> & { Item: typeof Record } = ({children, title}) => {

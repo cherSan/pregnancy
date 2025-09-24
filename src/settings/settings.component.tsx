@@ -9,6 +9,7 @@ import {Input} from "../components/form/Input.component.tsx";
 import {KicksInformation} from "./kicks-information.component.tsx";
 import {MedicationStatistic} from "./medications-statistic.component.tsx";
 import {useDate} from "../hooks/useDate.ts";
+import {Report} from "./report.component.tsx";
 
 const SettingsSchema = Yup.object().shape({
     name: Yup.string().max(14, "Не более 14 символов"),
@@ -101,6 +102,7 @@ export const Settings: FC = () => {
                         arrow
                     />
                 </DatePicker>
+                <Report />
             </List>
             <KicksInformation />
             <MedicationStatistic />

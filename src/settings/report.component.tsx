@@ -25,7 +25,7 @@ export const Report = () => {
         const hospitals = realm.objects(Hospital).filtered("datetime >= $0", fromDate).sorted("datetime", true);
         const kicks = realm.objects(Kick).filtered("datetime >= $0", fromDate).sorted("datetime", true);
         const medications = realm.objects(Medication).filtered("realTime >= $0 AND realTime != nil", fromDate).sorted("realTime", true);
-        const medicationsPlan = realm.objects(MedicationConfiguration).sorted("planingTimeHours", true).sorted("planingTimeMinutes", true);
+        const medicationsPlan = realm.objects(MedicationConfiguration).sorted("planingTimeMinutes", true).sorted("planingTimeHours", true);
         const moods = realm.objects(MotherMood).filtered("datetime >= $0", fromDate).sorted("datetime", true);
         const pressures = realm.objects(MotherPressure).filtered("datetime >= $0", fromDate).sorted("datetime", true);
         const temperatures = realm.objects(MotherTemperature).filtered("datetime >= $0", fromDate).sorted("datetime", true);

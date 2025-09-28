@@ -1,10 +1,11 @@
-import { FC, useCallback } from "react";
+import { FC, useCallback, useMemo } from "react";
 import { Text } from "@ant-design/react-native";
 import { useQuery, useRealm } from "@realm/react";
 import { BSON } from "realm";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useT } from "../i18n";
 
 import { Medication as MP } from "../realms/medication.ts";
 import { Medication } from "../components/medication.component.tsx";
@@ -19,14 +20,16 @@ type Props = NativeStackScreenProps<
     "MedicationsInformation"
 >;
 
-const ExtraMedicationSchema = Yup.object().shape({
-    name: Yup.string().max(100, "Максимум 100 символов").required("Введите название лекарства"),
-    comment: Yup.string().max(250, "Максимум 250 символов"),
-});
 
 export const Medications: FC<Props> = () => {
+    const t = useT();
     const { startOfTheDay, endOfTheDay } = useDate();
     const realm = useRealm();
+
+    const ExtraMedicationSchema = useMemo(() => Yup.object().shape({
+        name: Yup.string().max(100, t("Maximum 100 characters")).required(t("Enter the medicine name")),
+        comment: Yup.string().max(250, t("Maximum 250 characters")),
+    }), [t]);
 
     const medications = useQuery(MP)
         .filtered("planingTime >= $0 AND planingTime < $1", startOfTheDay, endOfTheDay)
@@ -66,21 +69,21 @@ export const Medications: FC<Props> = () => {
                     ))
                 ) : (
                     <List.Item>
-                        <Text>Нет лекарств</Text>
+                        <Text>{t("No medications")}</Text>
                     </List.Item>
                 )}
             </List>
 
             <List>
                 <Input
-                    placeholder="Дополнительное лекарство *"
+                    placeholder={t("Additional medicine *") }
                     value={formik.values.name}
                     onChangeText={formik.handleChange("name")}
                     onBlur={formik.handleBlur("name")}
                     error={formik.touched.name ? formik.errors.name : undefined}
                 />
                 <Input
-                    placeholder="Комментарий"
+                    placeholder={t("Comment")}
                     value={formik.values.comment}
                     onChangeText={formik.handleChange("comment")}
                     onBlur={formik.handleBlur("comment")}
@@ -88,7 +91,7 @@ export const Medications: FC<Props> = () => {
                 />
 
                 <Button type="primary" onPress={formik.handleSubmit as any}>
-                    Принять
+                    {t("Accept")}
                 </Button>
             </List>
         </>

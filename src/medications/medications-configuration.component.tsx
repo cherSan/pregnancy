@@ -4,6 +4,7 @@ import {MedicationConfiguration as MCC} from "../realms/medication-configuration
 import {List} from "../components/list.component.tsx";
 import {AddMedication} from "./add.medication.component.tsx";
 import {Colors} from "../constants/colors.ts";
+import { useT } from "../i18n";
 
 function formatTime(hours: number, minutes: number) {
     const hh = hours.toString().padStart(2, '0');
@@ -12,6 +13,7 @@ function formatTime(hours: number, minutes: number) {
 }
 
 export const MedicationConfiguration = () => {
+    const t = useT();
     const medicationConfiguration = useQuery(MCC).sorted([
         ["planingTimeHours", false],
         ["planingTimeMinutes", false],
@@ -31,14 +33,14 @@ export const MedicationConfiguration = () => {
             <List>
                 {
                     !medicationConfiguration?.length
-                        ? <List.Item>Нет лекарств</List.Item>
+                        ? <List.Item>{t("No medications")}</List.Item>
                         :  medicationConfiguration.map((mconfig) => (
                             <List.Item
                                 key={mconfig._id.toString()}
                                 actions={{
                                     right: [
                                         {
-                                            text: 'Убрать',
+                                            text: t('Remove'),
                                             onPress: () => remove(mconfig),
                                             backgroundColor: Colors.accent.error,
                                         },

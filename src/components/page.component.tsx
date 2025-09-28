@@ -19,6 +19,7 @@ import {HeaderNotification} from "./header-notification.component.tsx";
 import { ScrollView } from "./scroll-view.component.tsx";
 import {User} from "../realms/user.ts";
 import {Colors} from "../constants/colors.ts";
+import { useT } from "../i18n";
 
 type Actions = {
     action: Function;
@@ -49,6 +50,7 @@ export const Page: FC<Props> = ({
     pressure = false,
     mood = false,
 }) => {
+    const t = useT();
     const navigation = useNavigation();
     
     const hasBackButton = useMemo(
@@ -140,10 +142,10 @@ export const Page: FC<Props> = ({
                     p={pressure}
                 />
                 <Animated.Text style={[styles.title, nameAnimatedStyle]}>
-                    { user[0]?.name ? user[0].name : 'Незнакомка' }
+                    { user[0]?.name ? user[0].name : t('Stranger') }
                 </Animated.Text>
                 <Animated.Text style={[styles.title, titleAnimatedStyle]}>
-                    { title }
+                    { t(title) }
                 </Animated.Text>
                 <View style={styles.actions}>
                     {

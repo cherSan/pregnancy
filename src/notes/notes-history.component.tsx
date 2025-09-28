@@ -3,8 +3,10 @@ import {Icon, Text} from "@ant-design/react-native";
 import {useQuery} from "@realm/react";
 import {Notes} from "../realms/notes.ts";
 import {List} from "../components/list.component.tsx";
+import { useT } from "../i18n";
 
 export const NotesHistory = () => {
+    const t = useT();
     const notes = useQuery(Notes)
         .sorted('datetime', true);
 
@@ -21,7 +23,7 @@ export const NotesHistory = () => {
                                 ? <Icon name="alert" color={'red'} />
                                 : null
                         }
-                        title={note.title || 'No Title'}
+                        title={note.title || t('No Title')}
                         extra={note?.datetime?.toLocaleString()}
                         description={note.important}
                     >

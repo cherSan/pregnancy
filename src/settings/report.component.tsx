@@ -18,6 +18,7 @@ import {User} from "../realms/user.ts";
 import {MedicationConfiguration} from "../realms/medication-configuration.ts";
 import {Image as RImage} from "../realms/image.ts";
 import {Button} from "../components/form/Button.component.tsx";
+import { useT } from "../i18n";
 
 function formatTime(hours: number, minutes: number) {
     const hh = hours.toString().padStart(2, '0');
@@ -27,6 +28,7 @@ function formatTime(hours: number, minutes: number) {
 
 export const Report = () => {
     const realm = useRealm();
+    const t = useT();
 
     const state = useReactive({
         loading: false,
@@ -34,8 +36,8 @@ export const Report = () => {
 
     const resize = useCallback(async (
         bigBase64: string,
-        targetWidth = 300,
-        quality = 90,
+        targetWidth = 800,
+        quality = 100,
     ) => {
         try {
             const tempPath = `${RNBlobUtil.fs.dirs.CacheDir}/temp.jpg`;
@@ -75,7 +77,7 @@ export const Report = () => {
             for (let i = 0; i < images.length; i++) {
                 const img = images[i];
                 if (!img.base64) continue;
-                const smallBase64 = await resize(img.base64, 300, 90);
+                const smallBase64 = await resize(img.base64, 800, 100);
                 if (smallBase64) {
                     imageMap.set(img._id.toString(), smallBase64);
                 }
@@ -99,105 +101,105 @@ export const Report = () => {
       </style>
     </head>
     <body>
-      <h1>Report: ${new Date().toLocaleString()}</h1>
-      <h2>User: ${user.name}</h2>
-      <h2>DOB: ${user.dob?.toLocaleString()}</h2>
-      <h2>EDD: ${user.eddate?.toLocaleString()}</h2>
+      <h1>${t('Report')}: ${new Date().toLocaleString()}</h1>
+      <h2>${t('User')}: ${user.name}</h2>
+      <h2>${t('DOB')}: ${user.dob?.toLocaleString()}</h2>
+      <h2>${t('EDD')}: ${user.eddate?.toLocaleString()}</h2>
       <div class="report">
-          <h2>Hospital Visits</h2>
+          <h2>${t('Hospital Visits')}</h2>
           ${hospitals.map(h => `
             <div class="card grouped">
-                <p><b>${h.datetime.toLocaleString()}</b> - ${h.hospital} (${h.visitType || "type?"})</p>
-                <p><b>Doctor:</b> ${h.doctor}</p>
-                <p><b>Questions:</b> ${h.questions}</p>
-                <p><b>Recomendations:</b> ${h.recommendations}</p>
-                <h3>Mother:</h3>
+                <p><b>${h.datetime.toLocaleString()}</b> - ${h.hospital} (${h.visitType || t('type?')})</p>
+                <p><b>${t('Doctor')}:</b> ${h.doctor}</p>
+                <p><b>${t('Questions')}:</b> ${h.questions}</p>
+                <p><b>${t('Recommendations')}:</b> ${h.recommendations}</p>
+                <h3>${t('Mother')}:</h3>
                 <dl>
-                  <dt>Weight</dt>
+                  <dt>${t('Weight')}</dt>
                   <dd>${h.motherWeight?.value}</dd>
-                  <dt>Temperature</dt>
+                  <dt>${t('Temperature')}</dt>
                   <dd>${h.motherTemperature?.value}</dd>
-                  <dt>Pressure</dt>
-                  <dd>${h.motherPressure?.valueTop}/${h.motherPressure?.valueBottom} - ${h.motherPressure?.pulse}</dd>
+                  <dt>${t('Blood Pressure')}</dt>
+                  <dd>${h.motherPressure?.valueTop}/${h.motherPressure?.valueBottom} - ${t('pulse')} ${h.motherPressure?.pulse}</dd>
                 </dl>
-                <h3>Baby:</h3>
+                <h3>${t('Baby')}:</h3>
                 <dl>
-                  <dt>Weight</dt>
+                  <dt>${t('Weight')}</dt>
                   <dd>${h.babyWeight}</dd>
-                  <dt>Head Size</dt>
+                  <dt>${t('Head Size')}</dt>
                   <dd>${h.babyHeadSize}</dd>
-                  <dt>Heart Beat</dt>
+                  <dt>${t('Heart Beat')}</dt>
                   <dd>${h.babyHeartBeat}</dd>
                 </dl>
                 <div class="images">
                     ${h.attachments
-                        .map(img => imageMap.has(img._id.toString()) ? `<div class="image-box"><img src="data:image/jpeg;base64,${imageMap.get(img._id.toString())}" width="300px" /></div>` : null)
+                        .map(img => imageMap.has(img._id.toString()) ? `<div class="image-box"><img alt="image" src="data:image/jpeg;base64,${imageMap.get(img._id.toString())}" width="300px" /></div>` : null)
                         .filter(i => !!i).join('')}
                 </div>
             </div>
           `).join('')}
       </div>
       <div class="report">
-          <h2>Baby Kicks</h2>
+          <h2>${t('Baby Kicks')}</h2>
           <div class="card">
             ${kicks.map(k => `<p><b>${k.datetime?.toLocaleString() || "-"}</b> - ${k.comment || ""}</p>`).join('')}
           </div>
       </div>
       <div class="report">
-          <h2>Medication Plan</h2>
+          <h2>${t('Medication Plan')}</h2>
           <div class="card">
             ${medicationsPlan.map(m => `<p><b>${formatTime(m.planingTimeHours, m.planingTimeMinutes)}</b> - ${m.name}</p>`).join('')}
           </div>
       </div>
       <div class="report">
-          <h2>Medications</h2>
+          <h2>${t('Medications')}</h2>
           <div class="card">
-            ${medications.filter((m) => !!m.realTime).map(m => `<p><b>${m.realTime?.toLocaleString()} (plan: ${m.planingTime.toLocaleString()})</b> - ${m.name.toUpperCase()} ${m.comment || ""}</p>`).join('')}
+            ${medications.filter((m) => !!m.realTime).map(m => `<p><b>${m.realTime?.toLocaleString()} (${t('plan')}: ${m.planingTime.toLocaleString()})</b> - ${m.name.toUpperCase()} ${m.comment || ""}</p>`).join('')}
           </div>
       </div>
       <div class="report">
-          <h2>Mother's Mood</h2>
+          <h2>${t("Mother's Mood")}</h2>
           <div class="card">
             ${moods.filter(v => v.value).map(m => `<p><b>${m.datetime.toLocaleString()}</b> - ${m.value}</p>`).join('')}
           </div>
       </div>
       <div class="report">
-          <h2>Blood Pressure</h2>
+          <h2>${t('Blood Pressure')}</h2>
           <div class="card">
-            ${pressures.filter(v => v.valueTop && v.valueBottom).map(p => `<p><b>${p.datetime.toLocaleString()}</b> - ${p.valueTop}/${p.valueBottom} ${p.pulse ? `(pulse ${p.pulse})` : ""}</p>`).join('')}
+            ${pressures.filter(v => v.valueTop && v.valueBottom).map(p => `<p><b>${p.datetime.toLocaleString()}</b> - ${p.valueTop}/${p.valueBottom} ${p.pulse ? `(${t('pulse')} ${p.pulse})` : ""}</p>`).join('')}
           </div>
       </div>
       <div class="report">
-          <h2>Temperature</h2>
+          <h2>${t('Temperature')}</h2>
           <div class="card">
-            ${temperatures.filter(v => v.value).map(t => `<p><b>${t.datetime.toLocaleString()}</b> - ${t.value}°C</p>`).join('')}
+            ${temperatures.filter(v => v.value).map(v => `<p><b>${v.datetime.toLocaleString()}</b> - ${v.value}${t('°C')}</p>`).join('')}
           </div>
       </div>
       <div class="report">
-          <h2>Weight</h2>
+          <h2>${t('Weight')}</h2>
           <div class="card">
-            ${weights.filter(v => v.value).map(w => `<p><b>${w.datetime.toLocaleString()}</b> - ${w.value} kg</p>`).join('')}
+            ${weights.filter(v => v.value).map(w => `<p><b>${w.datetime.toLocaleString()}</b> - ${w.value} ${t('kg')}</p>`).join('')}
           </div>
       </div>
       <div class="report">
-          <h2>Notes</h2>
+          <h2>${t('Notes')}</h2>
           <div class="card">
             ${notes.map(n => `<p><b>${n.datetime.toLocaleString()}</b> - ${n.title || ""} ${n.comment || ""} <span class="${n.important ? 'important': ''}">${n.important || ""}</span></p>`).join('')}
           </div>
       </div>
       <div class="report">
-          <h2>Full Chronology</h2>
+          <h2>${t('Full Chronology')}</h2>
           <div class="card">
-          ${[...hospitals.map(h => ({ datetime: h.datetime, desc: `Visit: ${h.hospital} (${h.visitType || "type?"}) - ${h.doctor}`, isImportant: false })),
-                ...kicks.map(k => k.datetime ? { datetime: k.datetime, desc: `Kick: ${k.comment || ""}`, isImportant: false } : null).filter(Boolean),
-                ...medications.filter((m) => !!m.realTime).map(m => ({ datetime: m.realTime!, desc: `Medication: ${m.name} ${m.comment || ""}`, isImportant: false })),
-                ...moods.filter(v => v.value).map(m => ({ datetime: m.datetime, desc: `Mood: ${m.value}`, isImportant: false })),
-                ...pressures.filter(v => v.valueBottom && v.valueTop).map(p => ({ datetime: p.datetime, desc: `Blood Pressure: ${p.valueTop}/${p.valueBottom} - ${p?.pulse}`, isImportant: false })),
-                ...temperatures.filter(v => v.value).map(t => ({ datetime: t.datetime, desc: `Temperature: ${t.value}°C`, isImportant: false })),
-                ...weights.filter(v => v.value).map(w => ({ datetime: w.datetime, desc: `Weight: ${w.value} kg`, isImportant: false })),
-                ...notes.map(n => ({ datetime: n.datetime, desc: `Note: ${n.title || ""} ${n.comment || ""} ${n.important ? n.important : ""}`, isImportant: !!n.important }))
+          ${[...hospitals.map(h => ({ datetime: h.datetime, desc: `${t('Visit')}: ${h.hospital} (${h.visitType || t('type?')}) - ${h.doctor}`, isImportant: false })),
+                ...kicks.map(k => k.datetime ? { datetime: k.datetime, desc: `${t('Kick')}: ${k.comment || ""}`, isImportant: false } : null).filter(Boolean),
+                ...medications.filter((m) => !!m.realTime).map(m => ({ datetime: m.realTime!, desc: `${t('Medication')}: ${m.name} ${m.comment || ""}`, isImportant: false })), 
+                ...moods.filter(v => v.value).map(m => ({ datetime: m.datetime, desc: `${t('Mood')}: ${m.value}`, isImportant: false })), 
+                ...pressures.filter(v => v.valueBottom && v.valueTop).map(p => ({ datetime: p.datetime, desc: `${t('Pressure')}: ${p.valueTop}/${p.valueBottom} - ${p?.pulse ?? ''}`, isImportant: false })), 
+                ...temperatures.filter(v => v.value).map(ti => ({ datetime: ti.datetime, desc: `${t('Temperature')}: ${ti.value}${t('°C')}`, isImportant: false })), 
+                ...weights.filter(v => v.value).map(w => ({ datetime: w.datetime, desc: `${t('Weight')}: ${w.value} ${t('kg')}`, isImportant: false })), 
+                ...notes.map(n => ({ datetime: n.datetime, desc: `${t('Note')}: ${n.title || ""} ${n.comment || ""} ${n.important ? n.important : ""}`, isImportant: !!n.important }))
             ].sort((a, b) => b!.datetime.getTime() - a!.datetime.getTime())
-                .map(t => `<p class="${t!.isImportant ? "important" : ""}"><b>${t!.datetime.toLocaleString()}</b> - ${t!.desc}</p>`).join('')}
+                .map(x => `<p class="${x!.isImportant ? "important" : ""}"><b>${x!.datetime.toLocaleString()}</b> - ${x!.desc}</p>`).join('')}
           </div>
       </div>
     </body>
@@ -213,15 +215,15 @@ export const Report = () => {
                 type: "application/pdf",
                 saveToFiles: true
             });
-            console.log("Share открылся");
+            console.log(t('Success'));
         } catch (e) {
-            Alert.alert(`Share ошибка: ${e}`);
+            Alert.alert(t('Error'), String(e));
         } finally {
             state.loading = false;
         }
-    }, [realm, resize, state]);
+    }, [realm, resize, state, t]);
 
     return (
-        <Button onPress={onChange} loading={state.loading} disabled={state.loading}>Сформировать отчет</Button>
+        <Button onPress={onChange} loading={state.loading} disabled={state.loading}>{t('Generate Report')}</Button>
     );
 };

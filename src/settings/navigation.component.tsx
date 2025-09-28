@@ -9,6 +9,6 @@ export const SettingsNavigation = createAppStack<StackParamList>([
     {
         name: 'SettingsIndex',
         component: Settings,
-        title: 'Настройки',
+        title: 'Settings',
     }
 ])

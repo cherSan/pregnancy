@@ -10,20 +10,21 @@ import {List} from "../components/list.component.tsx";
 import {Input} from "../components/form/Input.component.tsx";
 import {Textarea} from "../components/form/Textarea.component.tsx";
 import {Button} from "../components/form/Button.component.tsx";
-
-// ✅ схема валидации
-const NoteSchema = Yup.object().shape({
-    title: Yup.string()
-        .max(50, "Максимум 50 символов")
-        .required("Введите заголовок"),
-    comment: Yup.string()
-        .max(5000, "Максимум 5000 символов")
-        .required("Введите сообщение"),
-    important: Yup.string()
-        .max(5000, "Максимум 5000 символов"),
-});
+import { useT } from "../i18n";
+import { useMemo } from "react";
 
 export const AddNote = () => {
+    const t = useT();
+    const NoteSchema = useMemo(() => Yup.object().shape({
+        title: Yup.string()
+            .max(50, t("Maximum 50 characters"))
+            .required(t("Enter a title")),
+        comment: Yup.string()
+            .max(5000, t("Maximum 5000 characters"))
+            .required(t("Enter a message")),
+        important: Yup.string()
+            .max(5000, t("Maximum 5000 characters")),
+    }), [t]);
     const realm = useRealm();
     const navigation = useNavigation();
 
@@ -50,7 +51,7 @@ export const AddNote = () => {
     return (
         <List>
             <Input
-                placeholder="Заголовок *"
+                placeholder={t("Title *")}
                 value={formik.values.title}
                 onChangeText={formik.handleChange("title")}
                 onBlur={formik.handleBlur("title")}
@@ -60,7 +61,7 @@ export const AddNote = () => {
                 minRows={4}
                 maxLength={5000}
                 showCount
-                placeholder="Сообщение *"
+                placeholder={t("Message *")}
                 value={formik.values.comment}
                 onChangeText={formik.handleChange("comment")}
                 onBlur={formik.handleBlur("comment")}
@@ -70,14 +71,14 @@ export const AddNote = () => {
                 minRows={4}
                 maxLength={5000}
                 showCount
-                placeholder="Важно"
+                placeholder={t("Important")}
                 value={formik.values.important}
                 onChangeText={formik.handleChange("important")}
                 onBlur={formik.handleBlur("important")}
                 error={formik.touched.important ? formik.errors.important : undefined}
             />
             <Button type="primary" onPress={formik.handleSubmit as any} style={styles.aButton}>
-                Добавить
+                {t("Add")}
             </Button>
         </List>
     );

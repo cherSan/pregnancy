@@ -3,8 +3,10 @@ import {useQuery} from "@realm/react";
 import {Kick} from "../realms/kick.ts";
 import {useDate} from "../hooks/useDate.ts";
 import {List} from "../components/list.component.tsx";
+import { useT } from "../i18n";
 
 export const KicksInformation = () => {
+    const t = useT();
     const { now } = useDate()
     const kicks = useQuery(Kick);
     const lastKick = useMemo(
@@ -47,28 +49,28 @@ export const KicksInformation = () => {
     return (
         <List>
             <List.Item
-                title={'Всего толчков'}
+                title={t('Total kicks')}
                 extra={kicks.length.toString()}
             />
             <List.Item
-                title={'Последний толчок'}
-                extra={lastKick?.datetime?.toLocaleString() || 'Не известно'}
+                title={t('Last kick')}
+                extra={lastKick?.datetime?.toLocaleString() || t('Unknown')}
             />
             <List.Item
-                title={'За последний час'}
-                extra={recent1Kicks?.length.toString() || 'Не известно'}
+                title={t('In the last hour')}
+                extra={recent1Kicks?.length.toString() || t('Unknown')}
             />
             <List.Item
-                title={'За последние 2 часа'}
-                extra={recent2Kicks?.length.toString() || 'Не известно'}
+                title={t('In the last 2 hours')}
+                extra={recent2Kicks?.length.toString() || t('Unknown')}
             />
             <List.Item
-                title={'За последние 12 часов'}
-                extra={recent12Kicks?.length.toString() || 'Не известно'}
+                title={t('In the last 12 hours')}
+                extra={recent12Kicks?.length.toString() || t('Unknown')}
             />
             <List.Item
-                title={'За последние 24 часа'}
-                extra={recent24Kicks?.length.toString() || 'Не известно'}
+                title={t('In the last 24 hours')}
+                extra={recent24Kicks?.length.toString() || t('Unknown')}
             />
         </List>
     )

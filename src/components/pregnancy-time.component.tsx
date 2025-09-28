@@ -9,8 +9,10 @@ import {useDate} from "../hooks/useDate.ts";
 import {User} from "../realms/user.ts";
 import {Colors} from "../constants/colors.ts";
 import {MotherMood} from "../realms/mother-mood.ts";
+import { useT } from "../i18n";
 
 export const PregnancyTime = () => {
+    const t = useT();
     const realm = useRealm();
     const {
         startOfTheDay,
@@ -76,11 +78,11 @@ export const PregnancyTime = () => {
             <View style={styles.ageContainer}>
                 <View style={styles.ageBlock}>
                     <Text style={styles.number}>{edd.weeks}</Text>
-                    <Text style={styles.label}>недель</Text>
+                    <Text style={styles.label}>{t("weeks")}</Text>
                 </View>
                 <View style={styles.ageBlock}>
                     <Text style={styles.number}>{edd.days}</Text>
-                    <Text style={styles.label}>дней</Text>
+                    <Text style={styles.label}>{t("days")}</Text>
                 </View>
             </View>
             <View style={styles.rate}>

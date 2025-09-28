@@ -11,7 +11,7 @@ export const NotesNavigation = createAppStack<NotesStackParamList>([
     {
         name: 'NotesHistory',
         component: NotesHistory,
-        title: 'Заметки',
+        title: 'Notes',
         actions: [
             {
                 action: (navigation) => navigation.navigate('NotesAdd'),
@@ -22,6 +22,6 @@ export const NotesNavigation = createAppStack<NotesStackParamList>([
     {
         name: 'NotesAdd',
         component: AddNote,
-        title: 'Добавить Заметку',
+        title: 'Add Note',
     }
 ])

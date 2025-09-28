@@ -5,7 +5,7 @@ import {List} from "../components/list.component.tsx";
 
 export const MedicationsHistory: FC = () => {
     const medications = useQuery(Medication)
-        .filtered('realTime != NULL')
+        .filtered('realTime != nil')
         .sorted('realTime', true);
 
     return (

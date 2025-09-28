@@ -19,7 +19,7 @@ export const HospitalNavigation = createAppStack<StackParamList>([
     {
         name: 'HospitalAppointments',
         component: Index,
-        title: 'Записи',
+        title: 'Appointments',
         actions: [
             {
                 action: (navigation) => navigation.navigate('HospitalAppointmentAdd'),
@@ -30,16 +30,16 @@ export const HospitalNavigation = createAppStack<StackParamList>([
     {
         name: 'HospitalAppointmentAdd',
         component: AddAppointment,
-        title: 'Записаться',
+        title: 'Make an appointment',
     },
     {
         name: 'HospitalAppointment',
         component: Appointment,
-        title: 'Запись',
+        title: 'Appointment',
     },
     {
         name: 'HospitalAppointmentPhotos',
         component: Attachments,
-        title: 'Фотографии',
+        title: 'Photos',
     }
 ])

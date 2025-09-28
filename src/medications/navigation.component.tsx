@@ -13,7 +13,7 @@ export const MedicationNavigation = createAppStack<MedicationStackParamList>([
     {
         name: 'MedicationsInformation',
         component: Medications,
-        title: 'Медикаменты',
+        title: 'Medications',
         actions: [
             {
                 action: (navigation) => navigation.navigate('MedicationsHistory'),
@@ -28,11 +28,11 @@ export const MedicationNavigation = createAppStack<MedicationStackParamList>([
     {
         name: 'MedicationConfiguration',
         component: MedicationConfiguration,
-        title: 'Расписание лекарств',
+        title: 'Medication schedule',
     },
     {
         name: 'MedicationsHistory',
         component: MedicationsHistory,
-        title: 'История приема лекарств',
+        title: 'Medication intake history',
     }
 ])

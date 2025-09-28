@@ -17,6 +17,7 @@ import {MotherTemperature} from "./realms/mother-temperature.ts";
 import {MotherWeight} from "./realms/mother-weight.ts";
 import {MotherMood} from "./realms/mother-mood.ts";
 import {Image} from "./realms/image.ts";
+import { I18nProvider } from "./i18n";
 
 const style = StyleSheet.create({
     container: {
@@ -71,9 +72,11 @@ export const Application = () => {
                     <SafeAreaProvider>
                         <StatusBar translucent backgroundColor={'transparent'} />
                         <SafeAreaView style={style.container}>
-                            <Initialize>
-                                <RootNavigation />
-                            </Initialize>
+                            <I18nProvider initialLanguage={"en"}>
+                                <Initialize>
+                                    <RootNavigation />
+                                </Initialize>
+                            </I18nProvider>
                         </SafeAreaView>
                     </SafeAreaProvider>
                 </GestureHandlerRootView>

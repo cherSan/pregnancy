@@ -12,7 +12,7 @@ export const HomeNavigation = createAppStack<HomeStackParamList>([
     {
         name: 'HomeInformation',
         component: Home,
-        title: 'Информация',
+        title: 'Information',
         actions: [
             {
                 action: (navigation) => {
@@ -25,7 +25,7 @@ export const HomeNavigation = createAppStack<HomeStackParamList>([
     {
         name: 'HomeKicks',
         component: KicksHistory,
-        title: 'История толчков',
+        title: 'Kicks history',
     }
 ])
 

@@ -6,10 +6,12 @@ import {MedicationNavigation} from "./medications/navigation.component.tsx";
 import {NotesNavigation} from "./notes/navigation.component.tsx";
 import {HospitalNavigation} from "./hospital/navigation.component.tsx";
 import {SettingsNavigation} from "./settings/navigation.component.tsx";
+import { useT } from "./i18n";
 
 const Navigator = createBottomTabNavigator();
 
 export const RootNavigation = () => {
+    const t = useT();
     return (
         <NavigationContainer>
             <Navigator.Navigator
@@ -20,7 +22,7 @@ export const RootNavigation = () => {
                 <Navigator.Screen
                     name={'Home'}
                     options={{
-                        title: 'Главная',
+                        title: t('Home'),
                         tabBarIcon: () => (
                             <Icon name="info-circle" />
                         )
@@ -30,7 +32,7 @@ export const RootNavigation = () => {
                 <Navigator.Screen
                     name={'Medications'}
                     options={{
-                        title: 'Лекарства',
+                        title: t('Medications'),
                         tabBarIcon: () => <Icon name="medicine-box" />
                     }}
                     component={MedicationNavigation}
@@ -38,7 +40,7 @@ export const RootNavigation = () => {
                 <Navigator.Screen
                     name={'Notes'}
                     options={{
-                        title: 'Заметки',
+                        title: t('Notes'),
                         tabBarIcon: () => <Icon name="message" />
                     }}
                     component={NotesNavigation}
@@ -46,7 +48,7 @@ export const RootNavigation = () => {
                 <Navigator.Screen
                     name={'Hospital'}
                     options={{
-                        title: 'Госпиталь',
+                        title: t('Hospital'),
                         tabBarIcon: () => <Icon name="home" />
                     }}
                     component={HospitalNavigation}
@@ -55,7 +57,7 @@ export const RootNavigation = () => {
                     name={'Settings'}
                     component={SettingsNavigation}
                     options={{
-                        title: 'Информация',
+                        title: t('Settings'),
                         tabBarIcon: () => <Icon name="profile" />
                     }}
                 />

@@ -5,8 +5,10 @@ import RNBlobUtil from "react-native-blob-util";
 import {Button} from "../components/form/Button.component.tsx";
 import {pick} from "@react-native-documents/picker";
 import {Alert} from "react-native";
+import { useT } from "../i18n";
 
 export const BackupComponent = () => {
+    const t = useT();
     const [loading, setLoading] = useState(false);
 
     const realm = useRealm();
@@ -23,13 +25,13 @@ export const BackupComponent = () => {
                 saveToFiles: true,
             });
 
-            Alert.alert("Успех", "Бэкап готов для экспорта");
+            Alert.alert(t("Success"), t("Backup is ready for export"));
         } catch (err) {
-            Alert.alert("Ошибка", "Не удалось экспортировать базу");
+            Alert.alert(t("Error"), t("Failed to export the database"));
         } finally {
             setLoading(false);
         }
-    }, [realm]);
+    }, [realm.path, t]);
 
     const importAll = useCallback(async () => {
         setLoading(true);
@@ -51,21 +53,21 @@ export const BackupComponent = () => {
             await RNBlobUtil.fs.unlink(realmPath);
             await RNBlobUtil.fs.cp(filePath, realmPath);
 
-            Alert.alert("Успех", "База успешно восстановлена. Перезапустите приложение.");
+            Alert.alert(t("Success"), t("Database successfully restored. Please restart the app."));
         } catch (err) {
-            Alert.alert("Ошибка", "Не удалось импортировть базу");
+            Alert.alert(t("Error"), t("Failed to import the database"));
         } finally {
             setLoading(false);
         }
-    }, [realm]);
+    }, [realm, t]);
 
     return (
         <>
             <Button onPress={exportAll} disabled={loading} loading={loading} type="primary">
-                Экспорт Данных
+                {t("Export Data")}
             </Button>
             <Button onPress={importAll} disabled={loading} loading={loading} type="warning">
-                Импорт Данных
+                {t("Import Data")}
             </Button>
         </>
     );

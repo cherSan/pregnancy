@@ -11,18 +11,22 @@ import {MedicationStatistic} from "./medications-statistic.component.tsx";
 import {useDate} from "../hooks/useDate.ts";
 import {Report} from "./report.component.tsx";
 import {BackupComponent} from "./backup.component.tsx";
+import { useT } from "../i18n";
 
-const SettingsSchema = Yup.object().shape({
-    name: Yup.string().max(14, "Не более 14 символов"),
-    dob: Yup.date().nullable(),
-    eddate: Yup.date().nullable(),
-});
+// Moved schema inside component to access t()
 
 export const Settings: FC = () => {
+    const t = useT();
     const realm = useRealm();
     const users = useQuery(User);
     const user = users[0];
     const { now } = useDate();
+
+    const SettingsSchema = useMemo(() => Yup.object().shape({
+        name: Yup.string().max(14, t("No more than 14 characters")),
+        dob: Yup.date().nullable(),
+        eddate: Yup.date().nullable(),
+    }), [t]);
 
     const formik = useFormik({
         initialValues: {
@@ -71,7 +75,7 @@ export const Settings: FC = () => {
                     value={formik.values.name}
                     onChangeText={handleChange("name")}
                     onBlur={formik.handleBlur("name")}
-                    placeholder="User Name"
+                    placeholder={t("User Name")}
                     maxLength={14}
                     error={formik.touched.name ? formik.errors.name : undefined}
                 />
@@ -84,7 +88,7 @@ export const Settings: FC = () => {
                     format="YYYY-MM-DD"
                 >
                     <List.Item
-                        title="Дата рождения"
+                        title={t("Date of birth") }
                         extra={formik.values.dob instanceof Date ? formik.values.dob?.toLocaleDateString() : ""}
                         arrow
                     />
@@ -98,7 +102,7 @@ export const Settings: FC = () => {
                     format="YYYY-MM-DD"
                 >
                     <List.Item
-                        title="EDD"
+                        title={t("EDD")}
                         extra={formik.values.eddate instanceof Date ? formik.values.eddate?.toLocaleDateString() : ""}
                         arrow
                     />

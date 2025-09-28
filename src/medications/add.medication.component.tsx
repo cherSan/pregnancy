@@ -1,5 +1,5 @@
 import {Switch} from "@ant-design/react-native";
-import {useCallback} from "react";
+import {useCallback, useMemo} from "react";
 import {BSON} from "realm";
 import {useRealm} from "@realm/react";
 import {useFormik} from "formik";
@@ -8,24 +8,26 @@ import {MedicationConfiguration as MCC} from "../realms/medication-configuration
 import {List} from "../components/list.component.tsx";
 import {Input} from "../components/form/Input.component.tsx";
 import {Button} from "../components/form/Button.component.tsx";
-
-const MedicationSchema = Yup.object().shape({
-    name: Yup.string()
-        .max(50, "Максимум 50 символов")
-        .required("Введите название лекарства"),
-    time: Yup.string()
-        .matches(/^\d{1,2}\.\d{2}$/, "Формат: ЧЧ.ММ (например, 08.30)")
-        .test("valid-time", "Некорректное время", (val) => {
-            if (!val) return false;
-            const [h, m] = val.split(".").map(Number);
-            return Number.isInteger(h) && Number.isInteger(m) && h >= 0 && h <= 23 && m >= 0 && m <= 59;
-        })
-        .required("Введите время"),
-    hasComment: Yup.boolean(),
-});
+import { useT } from "../i18n";
 
 export const AddMedication = () => {
+    const t = useT();
     const realm = useRealm();
+
+    const MedicationSchema = useMemo(() => Yup.object().shape({
+        name: Yup.string()
+            .max(50, t("Maximum 50 characters"))
+            .required(t("Enter the medicine name")),
+        time: Yup.string()
+            .matches(/^\d{1,2}\.\d{2}$/, t("Format: HH.MM (e.g., 08.30)"))
+            .test("valid-time", t("Invalid time"), (val) => {
+                if (!val) return false;
+                const [h, m] = val.split(".").map(Number);
+                return Number.isInteger(h) && Number.isInteger(m) && h >= 0 && h <= 23 && m >= 0 && m <= 59;
+            })
+            .required(t("Enter time")),
+        hasComment: Yup.boolean(),
+    }), [t]);
 
     const saveMedication = useCallback(
         (values: { name: string; time: string; hasComment: boolean }) => {
@@ -60,14 +62,14 @@ export const AddMedication = () => {
     return (
         <List>
             <Input
-                placeholder="Лекарство *"
+                placeholder={t("Additional medicine *")}
                 value={formik.values.name}
                 onChangeText={formik.handleChange("name")}
                 onBlur={formik.handleBlur("name")}
                 error={formik.touched.name ? formik.errors.name : undefined}
             />
             <Input
-                placeholder="Время ЧЧ.ММ (например, 08.02) *"
+                placeholder={t("Time HH.MM (e.g., 08.02) *")}
                 value={formik.values.time}
                 keyboardType="numeric"
                 onChangeText={formik.handleChange("time")}
@@ -75,7 +77,7 @@ export const AddMedication = () => {
                 error={formik.touched.time ? formik.errors.time : undefined}
             />
             <List.Item
-                title="Доступны комментарии"
+                title={t("Comments available")}
                 extra={
                     <Switch
                         checked={formik.values.hasComment}
@@ -85,8 +87,13 @@ export const AddMedication = () => {
                     />
                 }
             />
-            <Button type="primary" onPress={formik.handleSubmit}>
-                Запланировать
+            <Button
+                type="primary"
+                onPress={() => {
+                    formik.handleSubmit();
+                }}
+            >
+                {t("Schedule")}
             </Button>
         </List>
     );

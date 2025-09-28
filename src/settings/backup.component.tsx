@@ -15,17 +15,16 @@ export const BackupComponent = () => {
         setLoading(true);
         try {
             const srcPath = realm.path;
-            const destPath = RNBlobUtil.fs.dirs.LegacyDownloadDir + "/backup.zip";
+            const destPath = `${RNBlobUtil.fs.dirs.CacheDir}/backup_${new Date().getTime()}.zip`;
             await RNBlobUtil.fs.cp(srcPath, destPath);
             await Share.open({
-                url: `file://${destPath}`,
+                url: `content://${destPath}`,
                 type: "application/octet-stream",
                 saveToFiles: true,
             });
 
             Alert.alert("Успех", "Бэкап готов для экспорта");
         } catch (err) {
-            console.error("Ошибка при экспорте Realm:", err);
             Alert.alert("Ошибка", "Не удалось экспортировать базу");
         } finally {
             setLoading(false);
@@ -54,8 +53,7 @@ export const BackupComponent = () => {
 
             Alert.alert("Успех", "База успешно восстановлена. Перезапустите приложение.");
         } catch (err) {
-            console.error(err);
-            setLoading(false);
+            Alert.alert("Ошибка", "Не удалось импортировть базу");
         } finally {
             setLoading(false);
         }
@@ -63,10 +61,10 @@ export const BackupComponent = () => {
 
     return (
         <>
-            <Button onPress={exportAll} disabled={loading} type="primary">
+            <Button onPress={exportAll} disabled={loading} loading={loading} type="primary">
                 Экспорт Данных
             </Button>
-            <Button onPress={importAll} disabled={loading} type="warning">
+            <Button onPress={importAll} disabled={loading} loading={loading} type="warning">
                 Импорт Данных
             </Button>
         </>

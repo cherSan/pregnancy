@@ -13,7 +13,6 @@ import {MotherMood} from "../realms/mother-mood.ts";
 export const PregnancyTime = () => {
     const realm = useRealm();
     const {
-        now,
         startOfTheDay,
         endOfTheDay
     } = useDate();
@@ -22,7 +21,7 @@ export const PregnancyTime = () => {
     const edd = useMemo(() => {
         const eddData = user?.eddate;
         if(!eddData) return null;
-        const diffMs = eddData.getTime() - now.getTime();
+        const diffMs = eddData.getTime() - startOfTheDay.getTime();
         const daysUntilEDD = Math.round(diffMs / (1000 * 60 * 60 * 24));
 
         const totalPregnancyDays = 280;
@@ -31,7 +30,7 @@ export const PregnancyTime = () => {
         const days = daysElapsed % 7;
 
         return { weeks, days };
-    }, [user?.eddate, now]);
+    }, [user?.eddate, startOfTheDay]);
 
 
     const moods = useQuery(MotherMood)

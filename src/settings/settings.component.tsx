@@ -1,5 +1,5 @@
 import {FC, useCallback, useMemo, useRef} from "react";
-import {DatePicker} from "@ant-design/react-native";
+import {DatePicker, Picker} from "@ant-design/react-native";
 import {useQuery, useRealm} from "@realm/react";
 import {useFormik} from "formik";
 import * as Yup from "yup";
@@ -12,8 +12,7 @@ import {useDate} from "../hooks/useDate.ts";
 import {Report} from "./report.component.tsx";
 import {BackupComponent} from "./backup.component.tsx";
 import { useT } from "../i18n";
-
-// Moved schema inside component to access t()
+import {useReactive} from "ahooks";
 
 export const Settings: FC = () => {
     const t = useT();
@@ -21,6 +20,11 @@ export const Settings: FC = () => {
     const users = useQuery(User);
     const user = users[0];
     const { now } = useDate();
+
+    const state = useReactive({
+        lang: false,
+        langValue: user.lang || 'en',
+    })
 
     const SettingsSchema = useMemo(() => Yup.object().shape({
         name: Yup.string().max(14, t("No more than 14 characters")),
@@ -33,12 +37,14 @@ export const Settings: FC = () => {
             name: user?.name || "",
             dob: user?.dob || null,
             eddate: user?.eddate || null,
+            lang: user?.lang || 'en'
         },
         validationSchema: SettingsSchema,
         onSubmit: (values) => {
             if (!user) return;
             realm.write(() => {
                 user.name = values.name;
+                user.lang = values.lang;
                 if (values.dob && values.dob instanceof Date) {
                     values.dob.setHours(0, 0, 0, 0);
                     user.dob = values.dob;
@@ -93,6 +99,14 @@ export const Settings: FC = () => {
                         arrow
                     />
                 </DatePicker>
+                <List.Item
+                    onPress={() => {
+                        state.lang = true
+                    }}
+                    title={t("Language") }
+                    extra={formik.values.lang || 'en'}
+                    arrow
+                />
                 <DatePicker
                     value={formik.values.eddate || undefined}
                     precision="day"
@@ -112,6 +126,30 @@ export const Settings: FC = () => {
             </List>
             <KicksInformation />
             <MedicationStatistic />
+            <Picker
+                visible={state.lang}
+                data={[
+                    {
+                        label: 'English',
+                        value: 'en'
+                    },
+                    {
+                        label: 'Русский',
+                        value: 'ru'
+                    }
+                ]}
+                numberOfLines={1}
+                onPickerChange={(value, index) => {
+                    state.langValue = (value[index] as string) || 'en';
+                }}
+                onOk={() => {
+                    handleChange("lang")(state.langValue);
+                }}
+                onClose={() => {
+                    state.langValue = user.lang || 'en';
+                    state.lang = false;
+                }}
+            />
         </>
     );
 };

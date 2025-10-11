@@ -1,6 +1,6 @@
 import {StyleSheet} from "react-native";
 import {DatePicker} from "@ant-design/react-native";
-import {useCallback} from "react";
+import {useCallback, useMemo} from "react";
 import {BSON} from "realm";
 import {useRealm} from "@realm/react";
 import {useNavigation} from "@react-navigation/core";
@@ -10,15 +10,16 @@ import {Hospital} from "../realms/hospital.ts";
 import {List} from "../components/list.component.tsx";
 import {Input} from "../components/form/Input.component.tsx";
 import {Button} from "../components/form/Button.component.tsx";
-
-const AppointmentSchema = Yup.object().shape({
-    datetime: Yup.date().required("Выберите дату и время"),
-    doctor: Yup.string().max(100, "Максимум 100 символов").required("Введите имя врача"),
-    hospital: Yup.string().max(100, "Максимум 100 символов").required("Введите название больницы"),
-    visitType: Yup.string().max(100, "Максимум 100 символов"),
-});
+import { useT } from "../i18n";
 
 export const AddAppointment = () => {
+    const t = useT();
+    const AppointmentSchema = useMemo(() => Yup.object().shape({
+        datetime: Yup.date().required(t("Select date and time")),
+        doctor: Yup.string().max(100, t("Maximum 100 characters")).required(t("Enter the doctor's name")),
+        hospital: Yup.string().max(100, t("Maximum 100 characters")).required(t("Enter the hospital name")),
+        visitType: Yup.string().max(100, t("Maximum 100 characters")),
+    }), [t]);
     const realm = useRealm();
     const navigation = useNavigation();
 
@@ -63,25 +64,25 @@ export const AddAppointment = () => {
                 maxDate={new Date(2100, 11, 3)}
                 onChange={(val) => formik.setFieldValue("datetime", val)}
             >
-                <List.Item title="Дата *" />
+                <List.Item title={t("Date *")} />
             </DatePicker>
 
             <Input
-                placeholder="Врач *"
+                placeholder={t("Doctor *")}
                 value={formik.values.doctor}
                 onChangeText={formik.handleChange("doctor")}
                 onBlur={formik.handleBlur("doctor")}
                 error={formik.touched.doctor ? formik.errors.doctor : undefined}
             />
             <Input
-                placeholder="Больница *"
+                placeholder={t("Hospital *")}
                 value={formik.values.hospital}
                 onChangeText={formik.handleChange("hospital")}
                 onBlur={formik.handleBlur("hospital")}
                 error={formik.touched.hospital ? formik.errors.hospital : undefined}
             />
             <Input
-                placeholder="Тип визита"
+                placeholder={t("Visit type")}
                 value={formik.values.visitType}
                 onChangeText={formik.handleChange("visitType")}
                 onBlur={formik.handleBlur("visitType")}
@@ -89,7 +90,7 @@ export const AddAppointment = () => {
             />
 
             <Button type="primary" onPress={formik.handleSubmit as any} style={styles.aButton}>
-                Запланировать
+                {t("Schedule")}
             </Button>
         </List>
     );

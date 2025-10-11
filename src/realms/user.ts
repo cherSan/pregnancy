@@ -9,6 +9,7 @@ export class User extends Realm.Object {
             name: 'string',
             dob: 'date?',
             eddate: 'date?',
+            lang: 'string?',
         },
     };
 
@@ -16,4 +17,5 @@ export class User extends Realm.Object {
     name!: string;
     dob?: Date;
     eddate?: Date;
+    lang?: string = 'en';
 }

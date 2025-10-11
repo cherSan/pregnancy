@@ -13,73 +13,9 @@ import { List } from "../components/list.component.tsx";
 import { Input } from "../components/form/Input.component.tsx";
 import { Textarea } from "../components/form/Textarea.component.tsx";
 import {Button} from "../components/form/Button.component.tsx";
+import { useT } from "../i18n";
 
-const HospitalSchema = Yup.object().shape({
-    doctor: Yup.string(),
-    hospital: Yup.string(),
-    visitType: Yup.string(),
-
-    motherWeight: Yup.number()
-        .transform((value, originalValue) => originalValue === '' ? null : value)
-        .nullable()
-        .typeError("Введите число")
-        .min(30, "Слишком маленький вес")
-        .max(400, "Слишком большой вес"),
-
-    motherPulse: Yup.number()
-        .transform((value, originalValue) => originalValue === '' ? null : value)
-        .nullable()
-        .max(300, 'Меньше 300')
-        .min(40, 'Больше 40')
-        .integer("Должно быть целое")
-        .typeError("Должно быть число"),
-
-    motherPressureTop: Yup.number()
-        .transform((value, originalValue) => originalValue === '' ? null : value)
-        .nullable()
-        .max(300, 'Меньше 300')
-        .min(40, 'Больше 40')
-        .integer("Должно быть целое")
-        .typeError("Должно быть число"),
-
-    motherPressureBottom: Yup.number()
-        .transform((value, originalValue) => originalValue === '' ? null : value)
-        .nullable()
-        .max(300, 'Меньше 300')
-        .min(40, 'Больше 40')
-        .integer("Должно быть целое")
-        .typeError("Должно быть число"),
-
-    motherTemperature: Yup.number()
-        .transform((value, originalValue) => originalValue === '' ? null : value)
-        .nullable()
-        .typeError("Введите число")
-        .min(30, "Температура не может быть ниже 30°C")
-        .max(50, "Температура не может быть выше 50°C"),
-
-    babyWeight: Yup.number()
-        .transform((value, originalValue) => originalValue === '' ? null : value)
-        .nullable()
-        .typeError("Должно быть число"),
-
-    babySize: Yup.number()
-        .transform((value, originalValue) => originalValue === '' ? null : value)
-        .nullable()
-        .typeError("Должно быть число"),
-
-    babyHeadSize: Yup.number()
-        .transform((value, originalValue) => originalValue === '' ? null : value)
-        .nullable()
-        .typeError("Должно быть число"),
-
-    babyHeartBeat: Yup.number()
-        .transform((value, originalValue) => originalValue === '' ? null : value)
-        .nullable()
-        .typeError("Должно быть число"),
-
-    questions: Yup.string(),
-    recommendations: Yup.string(),
-});
+// Schema moved into component to allow i18n messages
 
 
 type Props = NativeStackScreenProps<StackParamList, 'HospitalAppointment'>;
@@ -88,9 +24,77 @@ export const Appointment: FC<Props> = ({
     route,
     navigation,
 }) => {
+    const t = useT();
     const realm = useRealm();
     const id = useMemo(() => route.params.id, [route]);
     const appointment = useObject(Hospital, new BSON.ObjectId(id));
+
+    const HospitalSchema = useMemo(() => Yup.object().shape({
+        doctor: Yup.string(),
+        hospital: Yup.string(),
+        visitType: Yup.string(),
+
+        motherWeight: Yup.number()
+            .transform((value, originalValue) => originalValue === '' ? null : value)
+            .nullable()
+            .typeError(t("Enter a number"))
+            .min(30, t("Too low weight"))
+            .max(400, t("Too high weight")),
+
+        motherPulse: Yup.number()
+            .transform((value, originalValue) => originalValue === '' ? null : value)
+            .nullable()
+            .max(300, t('No more than 300'))
+            .min(40, t('At least 40'))
+            .integer(t("Must be an integer"))
+            .typeError(t("Must be a number")),
+
+        motherPressureTop: Yup.number()
+            .transform((value, originalValue) => originalValue === '' ? null : value)
+            .nullable()
+            .max(300, t('No more than 300'))
+            .min(40, t('At least 40'))
+            .integer(t("Must be an integer"))
+            .typeError(t("Must be a number")),
+
+        motherPressureBottom: Yup.number()
+            .transform((value, originalValue) => originalValue === '' ? null : value)
+            .nullable()
+            .max(300, t('No more than 300'))
+            .min(40, t('At least 40'))
+            .integer(t("Must be an integer"))
+            .typeError(t("Must be a number")),
+
+        motherTemperature: Yup.number()
+            .transform((value, originalValue) => originalValue === '' ? null : value)
+            .nullable()
+            .typeError(t("Enter a number"))
+            .min(30, t("Temperature cannot be below 30°C"))
+            .max(50, t("Temperature cannot be above 50°C")),
+
+        babyWeight: Yup.number()
+            .transform((value, originalValue) => originalValue === '' ? null : value)
+            .nullable()
+            .typeError(t("Must be a number")),
+
+        babySize: Yup.number()
+            .transform((value, originalValue) => originalValue === '' ? null : value)
+            .nullable()
+            .typeError(t("Must be a number")),
+
+        babyHeadSize: Yup.number()
+            .transform((value, originalValue) => originalValue === '' ? null : value)
+            .nullable()
+            .typeError(t("Must be a number")),
+
+        babyHeartBeat: Yup.number()
+            .transform((value, originalValue) => originalValue === '' ? null : value)
+            .nullable()
+            .typeError(t("Must be a number")),
+
+        questions: Yup.string(),
+        recommendations: Yup.string(),
+    }), [t]);
 
     const formik = useFormik({
         initialValues: {
@@ -181,16 +185,16 @@ export const Appointment: FC<Props> = ({
 
     return (
         <>
-            <List title="Прием">
-                <List.Item title="Время приема" extra={appointment.datetime.toLocaleString()} />
-                <List.Item title="Доктор" extra={formik.values.doctor} />
-                <List.Item title="Клиника" extra={formik.values.hospital} />
-                <List.Item title="Тип визита" extra={formik.values.visitType} />
+            <List title={t("Appointment")}>
+                <List.Item title={t("Visit time")} extra={appointment.datetime.toLocaleString()} />
+                <List.Item title={t("Doctor")} extra={formik.values.doctor} />
+                <List.Item title={t("Hospital")} extra={formik.values.hospital} />
+                <List.Item title={t("Visit type")} extra={formik.values.visitType} />
             </List>
 
-            <List title="Вопросы и Рекомендации">
+            <List title={t("Questions and Recommendations")}>
                 <Textarea
-                    placeholder="Вопросы"
+                    placeholder={t("Questions")}
                     minRows={4}
                     maxLength={5000}
                     showCount
@@ -200,7 +204,7 @@ export const Appointment: FC<Props> = ({
                     editable={!appointment.isCompleted}
                 />
                 <Textarea
-                    placeholder="Рекомендации"
+                    placeholder={t("Recommendations")}
                     minRows={4}
                     maxLength={5000}
                     showCount
@@ -211,10 +215,10 @@ export const Appointment: FC<Props> = ({
                 />
             </List>
 
-            <List title="Мама">
+            <List title={t("Mother")}>
                 <Input
                     inline={true}
-                    placeholder="Вес мамы"
+                    placeholder={t("Mother's weight")}
                     keyboardType="numeric"
                     value={`${formik.values.motherWeight}`}
                     onChangeText={handleChange('motherWeight')}
@@ -224,7 +228,7 @@ export const Appointment: FC<Props> = ({
                 />
                 <Input
                     inline={true}
-                    placeholder="Давление верхнее"
+                    placeholder={t("Top pressure")}
                     keyboardType="numeric"
                     value={`${formik.values.motherPressureTop}`}
                     onChangeText={handleChange('motherPressureTop')}
@@ -234,7 +238,7 @@ export const Appointment: FC<Props> = ({
                 />
                 <Input
                     inline={true}
-                    placeholder="Давление нижнее"
+                    placeholder={t("Bottom pressure")}
                     keyboardType="numeric"
                     value={`${formik.values.motherPressureBottom}`}
                     onChangeText={handleChange('motherPressureBottom')}
@@ -244,7 +248,7 @@ export const Appointment: FC<Props> = ({
                 />
                 <Input
                     inline={true}
-                    placeholder="Пульс"
+                    placeholder={t("Pulse")}
                     keyboardType="numeric"
                     value={`${formik.values.motherPulse}`}
                     onChangeText={handleChange('motherPulse')}
@@ -254,7 +258,7 @@ export const Appointment: FC<Props> = ({
                 />
                 <Input
                     inline={true}
-                    placeholder="Температура"
+                    placeholder={t("Temperature")}
                     keyboardType="numeric"
                     value={`${formik.values.motherTemperature}`}
                     onChangeText={handleChange('motherTemperature')}
@@ -264,10 +268,10 @@ export const Appointment: FC<Props> = ({
                 />
             </List>
 
-            <List title="Малыш">
+            <List title={t("Baby")}>
                 <Input
                     inline={true}
-                    placeholder="Вес ребенка"
+                    placeholder={t("Baby weight")}
                     keyboardType="numeric"
                     value={`${formik.values.babyWeight}`}
                     onChangeText={handleChange('babyWeight')}
@@ -277,7 +281,7 @@ export const Appointment: FC<Props> = ({
                 />
                 <Input
                     inline={true}
-                    placeholder="Размер ребенка"
+                    placeholder={t("Baby size")}
                     keyboardType="numeric"
                     value={`${formik.values.babySize}`}
                     onChangeText={handleChange('babySize')}
@@ -287,7 +291,7 @@ export const Appointment: FC<Props> = ({
                 />
                 <Input
                     inline={true}
-                    placeholder="Размер головы"
+                    placeholder={t("Head Size")}
                     keyboardType="numeric"
                     value={`${formik.values.babyHeadSize}`}
                     onChangeText={handleChange('babyHeadSize')}
@@ -297,7 +301,7 @@ export const Appointment: FC<Props> = ({
                 />
                 <Input
                     inline={true}
-                    placeholder="Сердцебиение"
+                    placeholder={t("Heart Beat")}
                     keyboardType="numeric"
                     value={`${formik.values.babyHeartBeat}`}
                     onChangeText={handleChange('babyHeartBeat')}
@@ -314,14 +318,14 @@ export const Appointment: FC<Props> = ({
                             params: { id }
                         }
                     )}
-                    title={'Вложения'}
+                    title={t('Attachments')}
                     arrow={true}
                 />
             </List>
             {!appointment.isCompleted && (
                 <List>
                     <Button type="primary" onPress={finialise}>
-                        Завершить
+                        {t("Finish")}
                     </Button>
                 </List>
             )}

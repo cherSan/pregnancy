@@ -1,11 +1,4 @@
 import {RealmProvider} from "@realm/react";
-import {Provider} from "@ant-design/react-native";
-import {StatusBar, StyleSheet} from "react-native";
-import {SafeAreaProvider, SafeAreaView} from "react-native-safe-area-context";
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import ruRu from "@ant-design/react-native/lib/locale-provider/ru_RU";
-import {RootNavigation} from "./navigation.component.tsx";
-import {Initialize} from "./initialize.component.tsx";
 import {User} from "./realms/user.ts";
 import {Kick} from "./realms/kick.ts";
 import {MedicationConfiguration} from "./realms/medication-configuration.ts";
@@ -18,22 +11,12 @@ import {MotherWeight} from "./realms/mother-weight.ts";
 import {MotherMood} from "./realms/mother-mood.ts";
 import {Image} from "./realms/image.ts";
 import { I18nProvider } from "./i18n";
-
-const style = StyleSheet.create({
-    container: {
-        flex: 1,
-        gap: 16,
-        backgroundColor: '#eee',
-    },
-    root: {
-        flex: 1,
-    }
-});
+import { UI } from "./ui.tsx";
 
 export const Application = () => {
     return (
         <RealmProvider
-            schemaVersion={14}
+            schemaVersion={15}
             onMigration={(oldRealm, newRealm) => {
                 if (oldRealm.schemaVersion < 3) {
                     const oldUsers = oldRealm.objects('User');
@@ -67,20 +50,9 @@ export const Application = () => {
                 Image,
             ]}
         >
-            <Provider locale={ruRu}>
-                <GestureHandlerRootView style={style.root}>
-                    <SafeAreaProvider>
-                        <StatusBar translucent backgroundColor={'transparent'} />
-                        <SafeAreaView style={style.container}>
-                            <I18nProvider initialLanguage={"en"}>
-                                <Initialize>
-                                    <RootNavigation />
-                                </Initialize>
-                            </I18nProvider>
-                        </SafeAreaView>
-                    </SafeAreaProvider>
-                </GestureHandlerRootView>
-            </Provider>
+            <I18nProvider initialLanguage={"en"}>
+                <UI />
+            </I18nProvider>
         </RealmProvider>
     )
 }

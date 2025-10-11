@@ -4,8 +4,10 @@ import {Text} from "@ant-design/react-native";
 import {List} from "../components/list.component.tsx";
 import {Hospital} from "../realms/hospital.ts";
 import {AppointmentRecord} from "../components/appointment-record.component.tsx";
+import { useT } from "../i18n";
 
 export const Index: FC = () => {
+    const t = useT();
     const appointments = useQuery(Hospital)
         .sorted('datetime', true);
 
@@ -21,7 +23,7 @@ export const Index: FC = () => {
                     ))
                     : (
                         <List.Item>
-                            <Text>Нет записей</Text>
+                            <Text>{t('No appointments')}</Text>
                         </List.Item>
                     )
             }
